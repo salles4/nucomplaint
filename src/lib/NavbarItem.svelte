@@ -10,9 +10,11 @@
 
 <a
   href="./#/{to}"
-  class="{isActive ? "bg-yellow-500" : "bg-white hover:bg-slate-200"} flex justify-center text-2xl gap-2 font-semibold p-4 w-full text-center border-black border"
-><span class="font-black">
+  class="{isActive ? "bg-yellow-500" : "bg-white hover:bg-slate-200"} grid grid-cols-4 text-2xl gap-5 font-semibold p-4 w-full"
+><div class="font-black text-right text-3xl">
   <i class="bi bi-{icon}"></i>
-</span>
+</div>
+<div class="col-span-3 my-auto">
   {label}
+</div>
 </a>
