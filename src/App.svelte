@@ -1,22 +1,30 @@
 <script>
-  import { location } from "svelte-spa-router";
+  import Routes, { location } from "svelte-spa-router";
   import NavbarItem from "./lib/NavbarItem.svelte";
+  import Header from "./lib/Header.svelte";
+  import Dashboard from "./pages/Dashboard.svelte";
+  import Profile from "./pages/Profile.svelte";
 </script>
 
-<div class="flex min-h-[100vh]">
+<div class="flex">
+  <!-- hidden lg: -->
   <aside
-    class="flex-col w-auto col-span-2 hidden lg:flex my-auto h-auto border-black"
+    class="flex flex-col h-[100vh] col-span-2 overflow-y-auto shadow-xl bg-white relative" 
   >
-    <div class="fixed top-0 flex flex-col px-14 items-center">
+    <div class="p-2 text-lg self-end m-2 rounded-lg w-min">
+      <i class="bi bi-arrow-bar-left"></i>
+    </div>
+    <div class="flex-shrink-0 flex flex-col px-14 pb-4 items-center">
       <img
         class="h-[120px] rounded-full"
-        src="https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM="
+        src="https://ctwbdevl.vercel.app/lab/img/Salles.jpg"
         alt=""
       />
       <div>Francis Salles</div>
       <div>Student No. 2022-129371</div>
     </div>
-    <div class="h-full">
+    <div class="border mx-8"></div>
+    <div class="flex-grow">
       <NavbarItem icon="house-door" label="Dashboard" to="dashboard" />
       <NavbarItem icon="person" label="Profile" to="profile" />
       <NavbarItem
@@ -29,17 +37,23 @@
       <NavbarItem icon="flag" label="Reports" to="reports" />
       <NavbarItem icon="card-text" label="Surveys" to="surveys" />
     </div>
+    <div>
+      <NavbarItem icon="door-open" label="Logout" to="logout" />
+    </div>
   </aside>
 
-  <main class="flex-1 text-2xl font-bold col-span-10 lg:col-span-8 border-s-2">
-    <div class="bg-blue-700 w-full flex justify-end p-6 gap-2 text-white">
-      <a href="./#/notif">
-        <i class="bi bi-bell"></i>
-      </a>
-      <a href="./#/logout">
-        <i class="bi bi-power"></i>
-      </a>
+  <main class="flex-1 text-2xl font-bold col-span-10 lg:col-span-8">
+    {#if !["/dashboard", "/profile"].includes($location)}
+      <Header />
+    {/if}
+    <div>
+      <Routes
+        routes={{
+          "/dashboard": Dashboard,
+          "/profile": Profile,
+        }}
+      />
+      {$location}
     </div>
-    {$location}
   </main>
 </div>
