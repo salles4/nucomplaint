@@ -3,3 +3,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+*{
+  font-family: "Helvetica";
+}
+body{
+  background-color: rgb(245, 245, 245);
+}
