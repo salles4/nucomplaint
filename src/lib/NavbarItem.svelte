@@ -1,5 +1,6 @@
 <script>
-  import { location } from "svelte-spa-router";
+  import { location, replace } from "svelte-spa-router";
+  import { sidebarLabel } from "../store";
   export let icon = "";
   export let label = "";
   export let to = "";
@@ -8,12 +9,12 @@
   $: if($location != `/${to}`){
     isActive = false
   }
-    
   
   let span = false
   let x = 0, y = 0;
   function rippleEffect(event) {
-    
+    replace(`/${to}`)
+
     x = event.clientX;
     y = event.clientY;
     span = true
@@ -29,19 +30,19 @@
 </script>
 
 <a
-  on:click={rippleEffect}
+  on:click|preventDefault={rippleEffect}
   href="./#/{to}"
   class="{isActive
     ? 'bg-yellow-500'
-    : 'bg-white hover:bg-gray-50'} grid grid-cols-4 text-2xl gap-5 font-semibold p-4 w-full overflow-hidden relative"
+    : 'bg-white hover:bg-gray-50'} {$sidebarLabel ? "grid-cols-4" : "grid-cols-1"} py-2 grid gap-5 font-semibold  w-full overflow-hidden relative"
 >
   {#if span}
     <span class="ripple left-[{x}px] top-[{y}px]"></span>
   {/if}
-  <div class="font-black text-right text-3xl">
+  <div class="font-black  {$sidebarLabel ? "text-right text-3xl" : "text-center text-2xl"}  ">
     <i class="bi bi-{icon}"></i>
   </div>
-  <div class="col-span-3 my-auto">
+  <div class="{$sidebarLabel ? "col-span-3" : "hidden"} my-auto text-xl">
     {label}
   </div>
 </a>

@@ -1,12 +1,16 @@
+<script>
+  import logo from '../assets/NU_shield.svg'
+</script>
+
 <div
   class="bg-blue-700 w-full flex justify-between items-center p-6 gap-2 text-white"
 >
   <img
-    src="https://upload.wikimedia.org/wikipedia/commons/9/90/NU_shield.svg"
+    src={logo}
     alt="nu logo"
     class="h-12"
   />
-  <div>
+  <div class="text-2xl">
     <a href="./#/notif">
       <i class="bi bi-bell"></i>
     </a>
