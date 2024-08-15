@@ -12,8 +12,8 @@ import Stat from "../lib/Stat.svelte";
   <div class="m-4 flex-grow bg-white text-center flex flex-col h-full shadow-lg">
     <div class="mt-4 text-2xl font-bold">Account Management</div>
     <div class="flex-grow flex gap-4 justify-center items-center flex-wrap">
-    <AccMng />
-    <AccMng />
+    <AccMng title="Students" src="./img/student.png" description="Get an access to the student's profile." />
+    <AccMng title="Guards" src="./img/guard.png" description="Get an access to the guard's profile." />
     </div>
   </div>
 </div>
