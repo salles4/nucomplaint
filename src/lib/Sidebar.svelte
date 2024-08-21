@@ -8,7 +8,9 @@
 </script>
 
 <aside
-  class="min-w-[64px] flex flex-col h-[100vh] overflow-y-auto w-fit shadow-xl bg-white sticky top-0"
+  class="{$sidebarLabel
+      ? "min-w-[300px]"
+      : "min-w-[64px]"} flex flex-col h-[100vh] overflow-y-auto w-fit shadow-xl bg-white sticky top-0"
 >
   <!-- Toggle Sidebar Button -->
   <button
@@ -32,7 +34,7 @@
     />
     <div class={$sidebarLabel ? "block" : "hidden"}>
       <div class="pt-2 text-center">Francis Salles</div>
-      <div>Student No. 2022-129371</div>
+      <div>2022-129371</div>
     </div>
   </div>
   <div class="border self-center w-[75%] mb-2"></div>
@@ -55,6 +57,9 @@
 </aside>
 
 <style>
+  aside {
+    transition: all 0.3s ease;
+  }
   aside div {
     transition: all 0.3s ease;
   }
