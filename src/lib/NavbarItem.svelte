@@ -1,18 +1,23 @@
 <script>
   import { location, replace } from "svelte-spa-router";
   import { sidebarLabel } from "../store";
+  import { onMount } from "svelte";
   export let icon = "";
   export let label = "";
   export let to = "";
-  let isActive = $location == `/${to}`;
+  $: isActive = $location == `/${to}`;
   
-  $: if($location != `/${to}`){
-    isActive = false
-  }
+  // $: if($location != `/${to}`){
+  //   isActive = false
+  //   console.log($location)
+  // }
   
   let span = false
   let x = 0, y = 0;
   function rippleEffect(event) {
+    if(isActive){
+      return;
+    }
     replace(`/${to}`)
 
     x = event.clientX;
@@ -20,9 +25,6 @@
     span = true
     
     // Remove span after 0.3s
-    setTimeout(() => {
-      isActive = true
-    }, 190);
     setTimeout(() => {
       span = false
     }, 300);
@@ -32,7 +34,7 @@
 <a
   on:click|preventDefault={rippleEffect}
   href="./#/{to}"
-  class="{isActive
+  class="navItem {isActive
     ? 'bg-yellow-500'
     : 'bg-white hover:bg-gray-50'} {$sidebarLabel ? "grid-cols-4" : "grid-cols-1"} py-2 grid gap-5 font-semibold  w-full overflow-hidden relative"
 >
@@ -48,6 +50,9 @@
 </a>
 
 <style>
+  .navItem{
+    transition: background-color 0.2s 0.15s;
+  }
   a span {
     position: absolute;
     border-radius: 50%;

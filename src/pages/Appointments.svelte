@@ -3,12 +3,10 @@
   import Tab from "../lib/Tab.svelte";
 
   const data = [
-    {status:true, type:"Equipments", sender:"Mark Anthony Gipit", message:"lorem kjasd ahjskdhkjsdujdh kjghasd kjh has hjkhasd", sentDate:"09-13-2024"},
-    {status:true, type:"Equipments", sender:"Mark Anthony Gipit", message:"Test Message", sentDate:"09-13-2024"},
-    {status:true, type:"Equipments", sender:"Mark Anthony Gipit", message:"Test Message", sentDate:"09-13-2024"},
+    {status:true, student_id: "2022-153827", name:"Mark Anthony Gipit", type:"Equipments", message:"lorem kjasd ahjskdhkjsdujdh kjghasd kjh has hjkhasd", sentDate:"09-13-2024"},
   ]
   const filters = []
-  let active = "unsettled"
+  let active = "due"
 
   function changeFilter(e){
     active = e.target.dataset.condition
@@ -20,12 +18,13 @@
     <div
       class="bg-nu-blue text-white text-xl mx-8 py-6 p-8 flex justify-between items-center"
     >
-      <div class="">Student Complaints:</div>
+      <div class="">Appointments:</div>
       <div class="flex flex-wrap gap-1 text-base items-center">
-        <Tab label="Unsettled" icon="bell" active={active} condition="unsettled" on:click={changeFilter} />
-        <Tab label="Settled" icon="bell" active={active} condition="settled" on:click={changeFilter} />
+        <Tab label="Due Date" icon="bell" active={active} condition="due" on:click={changeFilter} />
+        <Tab label="Upcoming" icon="bell" active={active} condition="upcoming" on:click={changeFilter} />
+        <Tab label="Cancelled" icon="bell" active={active} condition="cancelled" on:click={changeFilter} />
+        <Tab label="Done" icon="bell" active={active} condition="done" on:click={changeFilter} />
         <Tab label="Archive" icon="bell" active={active} condition="archive" on:click={changeFilter} />
-        <Tab label="Manage Complaint History" icon="bell" active={active} condition="history" on:click={changeFilter} />
       </div>
     </div>
     
@@ -41,19 +40,21 @@
       <thead class="text-lg border-b-2 ">
         <tr>
           <th class="w-[10%]">Status</th>
+          <th class="w-[10%]">Student ID</th>
+          <th class="w-[20%]">Full Name</th>
           <th class="w-[10%]">Type</th>
-          <th class="w-[20%]">Sender</th>
-          <th class="w-[35%]">Message</th>
+          <th class="w-[30%]">Message</th>
           <th class="w-[10%]">Date Sent</th>
           <th class="w-[15%]">Action</th>
         </tr>
       </thead>
       <tbody>
-        {#each data as {status, type, sender, message, sentDate}}
+        {#each data as {status, student_id, name, type, message, sentDate}}
         <tr class="border-b hover:bg-black/5">
           <td class="p-2"><input class="size-5" type="checkbox" name="status" bind:checked={status}></td>
+          <td>{student_id}</td>
+          <td>{name}</td>
           <td>{type}</td>
-          <td>{sender}</td>
           <td class="truncate">{message}</td>
           <td>{sentDate}</td>
           <td>

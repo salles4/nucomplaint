@@ -32,8 +32,8 @@
       src="https://ctwbdevl.vercel.app/lab/img/Salles.jpg"
       alt=""
     />
-    <div class={$sidebarLabel ? "block" : "hidden"}>
-      <div class="pt-2 text-center">Francis Salles</div>
+    <div class="{$sidebarLabel ? "block" : "hidden"} text-center">
+      <div class="pt-2">Francis Salles</div>
       <div>2022-129371</div>
     </div>
   </div>
@@ -47,7 +47,7 @@
       to="complaints"
     />
     <NavbarItem icon="envelope-exclamation" label="Offenses" to="offenses" />
-    <NavbarItem icon="calendar-check" label="Appointments" to="appointment" />
+    <NavbarItem icon="calendar-check" label="Appointments" to="appointments" />
     <NavbarItem icon="flag" label="Reports" to="reports" />
     <NavbarItem icon="card-text" label="Surveys" to="surveys" />
   </div>

@@ -3,7 +3,7 @@
 </script>
 
 <div
-  class="bg-blue-700 w-full flex justify-between items-center p-6 gap-2 text-white"
+  class="bg-nu-blue w-full flex justify-between items-center p-6 gap-2 text-white"
 >
   <img
     src={logo}
