@@ -4,13 +4,16 @@
   import { onMount } from "svelte";
   export let icon = "";
   export let label = "";
-  export let to = "";
+  export let to = null;
+  export let onclick = null;
   $: isActive = $location == `/${to}`;
   
-  // $: if($location != `/${to}`){
-  //   isActive = false
-  //   console.log($location)
-  // }
+  function clicked(e){
+    rippleEffect(e)
+    if (onclick) {
+      onclick();
+    }
+  }
   
   let span = false
   let x = 0, y = 0;
@@ -18,7 +21,9 @@
     if(isActive){
       return;
     }
-    replace(`/${to}`)
+    if(to){
+      replace(`/${to}`)
+    }
 
     x = event.clientX;
     y = event.clientY;
@@ -31,12 +36,12 @@
   }
 </script>
 
-<a
-  on:click|preventDefault={rippleEffect}
-  href="./#/{to}"
+<button
+  on:click|preventDefault={clicked}
+  
   class="navItem {isActive
     ? 'bg-yellow-500'
-    : 'bg-white hover:bg-gray-50'} {$sidebarLabel ? "grid-cols-4" : "grid-cols-1"} py-2 grid gap-5 font-semibold  w-full overflow-hidden relative"
+    : 'bg-white hover:bg-gray-50'} {$sidebarLabel ? "grid-cols-4" : "grid-cols-1"} text-left py-2 grid gap-5 font-semibold  w-full overflow-hidden relative"
 >
   {#if span}
     <span class="ripple left-[{x}px] top-[{y}px]"></span>
@@ -47,13 +52,13 @@
   <div class="{$sidebarLabel ? "col-span-3" : "hidden"} my-auto text-xl">
     {label}
   </div>
-</a>
+</button>
 
 <style>
   .navItem{
-    transition: background-color 0.2s 0.15s;
+    transition: background-color 0.15s 0.15s;
   }
-  a span {
+  button span {
     position: absolute;
     border-radius: 50%;
     /* To make it round */
@@ -61,8 +66,6 @@
 
     width: 100px;
     height: 100px;
-
-
     animation: ripple 1s;
     opacity: 0;
     

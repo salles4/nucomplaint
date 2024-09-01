@@ -1,9 +1,13 @@
 <script>
-  import { sidebarLabel } from "../store";
+  import { auth, sidebarLabel } from "../store";
   import NavbarItem from "./NavbarItem.svelte";
 
   function toggleSidebar() {
     sidebarLabel.set(!$sidebarLabel);
+  }
+  function logout(){
+    auth.set(null)
+    localStorage.removeItem("v0Auth")
   }
 </script>
 
@@ -52,7 +56,7 @@
     <NavbarItem icon="card-text" label="Surveys" to="surveys" />
   </div>
   <div>
-    <NavbarItem icon="door-open" label="Logout" to="logout" />
+    <NavbarItem onclick={logout} icon="door-open" label="Logout" />
   </div>
 </aside>
 

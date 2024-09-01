@@ -1,6 +1,12 @@
 <script>
   import AccMng from "../lib/AccMng.svelte";
-import Stat from "../lib/Stat.svelte";
+  import Stat from "../lib/Stat.svelte";
+  import { location, replace } from 'svelte-spa-router'
+
+  if($location == "/"){
+    replace("/dashboard")
+  }
+
 </script>
 
 <div class="flex flex-col h-full">
