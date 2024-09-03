@@ -1,5 +1,11 @@
 <script>
+  import { auth} from "../store";
   import logo from '../assets/NU_shield.svg'
+
+  function logout() {
+    auth.set(null);
+    localStorage.removeItem("v0Auth");
+  }
 </script>
 
 <div
@@ -14,8 +20,8 @@
     <a href="./#/notif">
       <i class="bi bi-bell"></i>
     </a>
-    <a href="./#/logout">
+    <button on:click={logout}>
       <i class="bi bi-power"></i>
-    </a>
+    </button>
   </div>
 </div>

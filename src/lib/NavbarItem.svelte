@@ -41,7 +41,7 @@
   
   class="navItem {isActive
     ? 'bg-yellow-500'
-    : 'bg-white hover:bg-gray-50'} {$sidebarLabel ? "grid-cols-4" : "grid-cols-1"} text-left py-2 grid gap-5 font-semibold  w-full overflow-hidden relative"
+    : 'bg-white hover:bg-gray-50 hovLight'} {$sidebarLabel ? "grid-cols-4" : "grid-cols-1"} text-left py-2 grid gap-5 font-semibold  w-full overflow-hidden relative"
 >
   {#if span}
     <span class="ripple left-[{x}px] top-[{y}px]"></span>
@@ -82,5 +82,8 @@
       opacity: 0;
       transform: scale(10);
     }
+  }
+  .hovLight{
+    transition: background-color 0.05s;
   }
 </style>

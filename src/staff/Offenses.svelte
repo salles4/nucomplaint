@@ -14,7 +14,7 @@
   }
 </script>
 
-<div class="bg-white m-6 h-full relative mt-10">
+<div class="bg-white m-6 h-fit relative mt-10 overflow-visible">
   <div class="w-full relative -top-5">
     <div
       class="bg-nu-blue text-white text-xl mx-8 py-6 p-8 flex justify-between items-center"
