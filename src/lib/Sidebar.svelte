@@ -1,28 +1,29 @@
 <script>
   import { auth, sidebarLabel } from "../store";
+  import { CalendarCheck, FileChartLine, FileLineChart, Gavel, House, LogOut, MessageSquareWarning, Newspaper, User } from 'lucide-svelte';
   import NavbarItem from "./NavbarItem.svelte";
 
   export let name, img, id;
 
   const tabs = {
     staff: [
-      { icon: "house-door", label: "Dashboard", to: "dashboard" },
-      { icon: "person", label: "Profile", to: "profile" },
-      { icon: "envelope-exclamation", label: "Complaints", to: "complaints" },
-      { icon: "envelope-exclamation", label: "Offenses", to: "offenses" },
-      { icon: "calendar-check", label: "Appointments", to: "appointments" },
-      { icon: "flag", label: "Reports", to: "reports" },
-      { icon: "card-text", label: "Surveys", to: "surveys" },
+      { "icon": House, label: "Dashboard", to: "dashboard" },
+      { "icon": User, label: "Profile", to: "profile" },
+      { "icon": MessageSquareWarning, label: "Complaints", to: "complaints" },
+      { "icon": Gavel, label: "Offenses", to: "offenses" },
+      { "icon": CalendarCheck, label: "Appointments", to: "appointments" },
+      { "icon": FileChartLine, label: "Reports", to: "reports" },
+      { "icon": Newspaper, label: "Surveys", to: "surveys" },
     ],
     student: [
-      { icon: "house-door", label: "Dashboard", to: "dashboard" },
-      { icon: "person", label: "Profile", to: "profile" },
-      { icon: "envelope-exclamation", label: "Complaints", to: "complaints" },
-      { icon: "envelope-exclamation", label: "Offenses", to: "offenses" },
+      { icon: House, label: "Dashboard", to: "dashboard" },
+      { icon: User, label: "Profile", to: "profile" },
+      { icon: MessageSquareWarning, label: "Complaints", to: "complaints" },
+      { icon: Gavel, label: "Offenses", to: "offenses" },
     ],
     guard: [
-      { icon: "house-door", label: "Add Offense", to: "offense" },
-      { icon: "person", label: "Record", to: "record" },
+      { icon: Gavel, label: "Add Offense", to: "offense" },
+      { icon: Newspaper, label: "Record", to: "record" },
     ]
   };
   function toggleSidebar() {
@@ -82,7 +83,7 @@
     {/each}
   </div>
   <div>
-    <NavbarItem onclick={logout} icon="door-open" label="Logout" />
+    <NavbarItem onclick={logout} icon={LogOut} label="Logout" />
   </div>
 </aside>
 

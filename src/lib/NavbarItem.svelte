@@ -2,7 +2,7 @@
   import { location, replace } from "svelte-spa-router";
   import { sidebarLabel } from "../store";
   import { onMount } from "svelte";
-  export let icon = "";
+  export let icon;
   export let label = "";
   export let to = null;
   export let onclick = null;
@@ -46,8 +46,9 @@
   {#if span}
     <span class="ripple left-[{x}px] top-[{y}px]"></span>
   {/if}
-  <div class="font-black  {$sidebarLabel ? "text-right text-3xl" : "text-center text-2xl"}  ">
-    <i class="bi bi-{icon}"></i>
+  <div class="font-black">
+    <!-- <i class="bi bi-{icon}"></i> -->
+     <svelte:component this={icon} class="{$sidebarLabel ? "ms-auto" : "m-auto"}" size={$sidebarLabel ? "32" : "28"} strokeWidth="1.75" />
   </div>
   <div class="{$sidebarLabel ? "col-span-3" : "hidden"} my-auto text-xl">
     {label}

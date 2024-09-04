@@ -6,13 +6,14 @@
 </script>
 
 <button
-  class="cursor-pointer p-2 rounded transition-all duration-200
+  class="cursor-pointer p-2 rounded transition-all duration-200 flex items-center gap-1
     {condition == active
     ? 'bg-white/15 shadow-md hover:bg-white/15'
     : 'active:bg-yellow-300/60 hover:bg-white/15'}"
     on:click
     data-condition={condition}
 >
-  <i class="bi bi-{icon} text-yellow-300" data-condition={condition}></i>
-  {label}
+  <!-- <i class="bi bi-{icon} text-yellow-300" data-condition={condition}></i> -->
+   <svelte:component this={icon} class="inline text-nu-yellow"  /> 
+    {label}
 </button>
