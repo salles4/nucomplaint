@@ -1,6 +1,6 @@
 <script>
   import { auth, sidebarLabel } from "../store";
-  import { CalendarCheck, FileChartLine, FileLineChart, Gavel, House, LogOut, MessageSquareWarning, Newspaper, User } from 'lucide-svelte';
+  import { ArrowLeftFromLine, ArrowRightFromLine, CalendarCheck, FileChartLine, Gavel, House, LogOut, MessageSquareWarning, Newspaper, User } from 'lucide-svelte';
   import NavbarItem from "./NavbarItem.svelte";
 
   export let name, img, id;
@@ -38,17 +38,22 @@
 <aside
   class="{$sidebarLabel
     ? 'min-w-[300px]'
-    : 'min-w-[70px]'} flex flex-col h-[100vh] overflow-y-auto overflow-x-hidden w-fit shadow-xl bg-white sticky top-0"
+    : 'min-w-[70px]'} flex flex-col h-[100vh] overflow-y-auto w-fit shadow-xl bg-white sticky top-0"
 >
   <!-- Toggle Sidebar Button -->
   <button
     on:click={toggleSidebar}
     class="{$sidebarLabel
       ? 'absolute self-end'
-      : 'self-center'} p-2 px-3 text-lg m-2 rounded-lg w-min border hover:cursor-pointer"
+      : 'self-center'} p-2 px-3 text-lg m-2 rounded-lg border hover:cursor-pointer"
   >
-    <i class="bi bi-arrow-bar-{$sidebarLabel ? 'left' : 'right'}"></i>
+  {#if $sidebarLabel}
+    <ArrowLeftFromLine size="20" />
+  {:else}
+    <ArrowRightFromLine size="20" />
+  {/if}
   </button>
+ 
   <!-- Profile -->
   <div
     class="{$sidebarLabel
@@ -66,18 +71,8 @@
     </div>
   </div>
   <div class="border self-center w-[75%] mb-2"></div>
+  <!-- Sidebar Tabs -->
   <div class="flex-grow">
-    <!-- <NavbarItem icon="house-door" label="Dashboard" to="dashboard" />
-    <NavbarItem icon="person" label="Profile" to="profile" />
-    <NavbarItem
-      icon="envelope-exclamation"
-      label="Complaints"
-      to="complaints"
-    />
-    <NavbarItem icon="envelope-exclamation" label="Offenses" to="offenses" />
-    <NavbarItem icon="calendar-check" label="Appointments" to="appointments" />
-    <NavbarItem icon="flag" label="Reports" to="reports" />
-    <NavbarItem icon="card-text" label="Surveys" to="surveys" /> -->
     {#each tabs[$auth] as { icon, label, to }}
       <NavbarItem {icon} {label} {to} />
     {/each}

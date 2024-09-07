@@ -1,6 +1,7 @@
 <script>
   import { auth} from "../store";
   import logo from '../assets/NU_shield.svg'
+  import { Bell, Power } from "lucide-svelte";
 
   function logout() {
     auth.set(null);
@@ -16,12 +17,12 @@
     alt="nu logo"
     class="h-12"
   />
-  <div class="text-2xl">
-    <a href="./#/notif">
-      <i class="bi bi-bell"></i>
-    </a>
+  <div class="flex gap-2">
+    <button>
+      <Bell />
+    </button>
     <button on:click={logout}>
-      <i class="bi bi-power"></i>
+      <Power />
     </button>
   </div>
 </div>
