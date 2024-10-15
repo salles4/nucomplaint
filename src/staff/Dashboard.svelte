@@ -3,6 +3,7 @@
   import AccMng from "../lib/AccMng.svelte";
   import Stat from "../lib/Stat.svelte";
   import { location, replace } from 'svelte-spa-router'
+  import StudentList from "./Dashboard/StudentList.svelte";
 
   if($location == "/"){
     replace("/dashboard")
@@ -26,5 +27,6 @@
     <AccMng title="Students" src="./img/student.png" description="Get an access to the student's profile." on:click={students} />
     <AccMng title="Guards" src="./img/guard.png" description="Get an access to the guard's profile." />
     </div>
+    <StudentList />
   </div>
 </div>

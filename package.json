@@ -17,8 +17,10 @@
     "vite": "^5.3.4"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
     "chart.js": "^4.4.4",
     "lucide-svelte": "^0.438.0",
+    "nucomplaint": "file:",
     "svelte-spa-router": "^4.0.1"
   }
 }
