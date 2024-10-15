@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from "svelte";
   import { supabase } from "../../supabase";
 
   let studentList;
@@ -15,8 +16,7 @@
     console.log(studentList);
     
   }
-
-  getList()
+  onMount(()=>{getList()})
 </script>
 
 {#if studentList}

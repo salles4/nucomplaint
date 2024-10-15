@@ -1,6 +1,7 @@
 <script>
   import { auth } from "../store";
   import { replace } from "svelte-spa-router"
+  export let params;
 
   let authType = "staff";
 
