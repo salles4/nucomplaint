@@ -2,16 +2,15 @@
   import { CalendarCheck, Gavel, MessageSquareWarning } from "lucide-svelte";
   import AccMng from "../lib/AccMng.svelte";
   import Stat from "../lib/Stat.svelte";
-  import { location, replace } from 'svelte-spa-router'
-  import StudentList from "./Dashboard/StudentList.svelte";
-
+  import { location, replace, push } from 'svelte-spa-router'
   if($location == "/"){
     replace("/dashboard")
   }
 
-  function students(){
-    console.log("asd");
-    
+
+
+  function changePath(path){
+    push(path)
   }
 </script>
 
@@ -24,9 +23,8 @@
   <div class="m-4 flex-grow bg-white text-center flex flex-col h-full shadow-lg">
     <div class="mt-4 text-2xl font-bold">Account Management</div>
     <div class="flex-grow flex gap-4 justify-center items-center flex-wrap">
-    <AccMng title="Students" src="./img/student.png" description="Get an access to the student's profile." on:click={students} />
-    <AccMng title="Guards" src="./img/guard.png" description="Get an access to the guard's profile." />
+    <AccMng title="Students" src="./img/student.png" description="Get an access to the student's profile." on:click={() => changePath("/students")} />
+    <AccMng title="Guards" src="./img/guard.png" description="Get an access to the guard's profile." on:click={() => changePath("/guards")} />
     </div>
-    <StudentList />
   </div>
 </div>

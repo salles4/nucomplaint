@@ -6,7 +6,8 @@
   export let label = "";
   export let to = null;
   export let onclick = null;
-  $: isActive = $location == `/${to}`;
+  export let routes = [];
+  $: isActive = $location == `/${to}` || routes.includes($location);
 
   function clicked(e) {
     rippleEffect(e);

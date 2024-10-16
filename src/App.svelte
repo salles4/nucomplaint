@@ -21,6 +21,8 @@
   import Record from "./guard/Record.svelte";
 
   import { auth } from "./store";
+  import StudentList from "./staff/Dashboard/StudentList.svelte";
+  import GuardsList from "./staff/Dashboard/GuardsList.svelte";
 </script>
 
 <div class="flex">
@@ -34,6 +36,8 @@
         routes={{
           "/": Dashboard,
           "/dashboard": Dashboard,
+            "/students": StudentList,
+            "/guards": GuardsList,
           "/profile": Profile,
           "/complaints": Complaints,
           "/offenses": Offenses,

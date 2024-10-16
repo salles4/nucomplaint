@@ -7,7 +7,7 @@
 
   const tabs = {
     staff: [
-      { "icon": House, label: "Dashboard", to: "dashboard" },
+      { "icon": House, label: "Dashboard", to: "dashboard", routes: ["/students", "/guards"] },
       { "icon": User, label: "Profile", to: "profile" },
       { "icon": MessageSquareWarning, label: "Complaints", to: "complaints" },
       { "icon": Gavel, label: "Offenses", to: "offenses" },
@@ -73,8 +73,8 @@
   <div class="border self-center w-[75%] mb-2"></div>
   <!-- Sidebar Tabs -->
   <div class="flex-grow">
-    {#each tabs[$auth] as { icon, label, to }}
-      <NavbarItem {icon} {label} {to} />
+    {#each tabs[$auth] as { icon, label, to, routes = [] }}
+      <NavbarItem {icon} {label} {to} {routes} />
     {/each}
   </div>
   <div>
