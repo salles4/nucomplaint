@@ -12,3 +12,6 @@
 body{
   background-color: rgb(245, 245, 245);
 }
+a{
+  @apply text-nu-darkYellow underline
+}

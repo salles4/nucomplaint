@@ -9,6 +9,7 @@ export default {
       colors: {
         'nu-blue': '#35408E',
         'nu-yellow': '#FFE469',
+        'nu-darkYellow': '#eab308',
       },
     },
   },
