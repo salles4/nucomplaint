@@ -1,39 +1,45 @@
 <script>
-  import { auth } from "../store";
+  import { auth, user_id } from "../store";
   import { replace } from "svelte-spa-router"
-  export let params;
+  import { supabase } from "../supabase";
+  export const params = "";
 
   let authType = "staff";
+  let emailInput, passwordInput;
 
   replace("/")
-  function login(){
-    localStorage.setItem("v0Auth", authType)
-    auth.set(authType)
+  async function login(){
+    const {data, error} = await supabase
+    .from("access_data")
+    .select("account_type, user_id")
+    .eq("email", emailInput)
+    .eq("password", passwordInput)
+    .maybeSingle()
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+    if (!data) {
+      alert("Wrong Credentials.");
+      return;
+    } 
+
+    localStorage.setItem("v0Auth", data.account_type);
+    localStorage.setItem("user_id", data.user_id);
+    auth.set(data.account_type)
+    user_id.set(data.user_id)
   }
 </script>
 
 <div class="entry flex justify-center items-center min-h-[100svh] min-w-full">
   <div class="flex flex-col w-fit gap-4 bg-white p-12 rounded-md shadow-lg">
     <label>
-      Username: <input type="text">
+      Email: <input type="text" bind:value={emailInput}>
     </label>
     <label>
-      Password: <input type="password">
+      Password: <input type="password" bind:value={passwordInput}>
     </label>
-    <div class="radio flex justify-around">
-      <label>
-        <input type="radio" name="auth" bind:group={authType} value="staff">
-        Staff
-      </label>
-      <label>
-        <input type="radio" name="auth" bind:group={authType} value="student">
-        Student
-      </label>
-      <label>
-        <input type="radio" name="auth" bind:group={authType} value="guard">
-        Guard
-      </label>
-    </div>
     <button on:click={login} class="p-2 bg-nu-yellow rounded-lg">Log In</button>
   </div>
 </div>
@@ -45,8 +51,5 @@
   }
   input{
     @apply border
-  }
-  input[type=radio], .radio label{
-    cursor: pointer;
   }
 </style>

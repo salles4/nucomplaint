@@ -77,11 +77,6 @@
       }}
     />
   {/if}
-  {#if [].includes($location)}
-    <div>
-      <img src="./{$location.substring(1)}.png" alt="placeholder" />
-    </div>
-  {/if}
 </div>
 <style>
   main{
