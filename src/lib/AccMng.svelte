@@ -14,5 +14,5 @@
     <div class="pt-2 text-xl font-bold">{title}</div>
     <div>{description}</div>
   </div>
-  <button class="w-full bg-yellow-400 shadow-lg p-1 m-2" on:click>Manage</button>
+  <button class="w-full btn btn-secondary btn-sm my-2 shadow-lg" on:click>Manage</button>
 </div>

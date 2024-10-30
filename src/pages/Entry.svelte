@@ -4,9 +4,15 @@
   import { supabase } from "../supabase";
   import { fly } from "svelte/transition";
   import { onMount } from "svelte";
-  export const params = "";
+  import Loader from "../lib/Loader.svelte";
+  import numoa from '/img/numoa.png'
+  
+  export let params = "";
+  console.log(params)
 
   let loginPage = true;
+  let disableButton = false;
+
   let emailInput, passwordInput;
   let studentID, regEmail, regPass, confirmPass, fName, lName, contact, address, gender;
 
@@ -21,6 +27,8 @@
   }
   onMount(() => {getAccessData()})
   async function login() {
+    disableButton = true
+    emailInput = emailInput.trim();
     const { data, error } = await supabase
       .from("access_data")
       .select("account_type, user_id")
@@ -33,6 +41,7 @@
       return;
     }
     if (!data) {
+      disableButton = false
       alert("Wrong Credentials.");
       return;
     }
@@ -84,7 +93,7 @@
   }
 </script>
 {#if credentials}
-<div class="absolute top-0 right-0 text-center">
+<div class="absolute top-0 right-0 text-center h-[100px] overflow-auto">
   <table>
     <tr>
       <th class="px-2">Email</th>
@@ -101,11 +110,11 @@
   </table>
 </div>
 {/if}
-<div class="entry flex justify-center items-center min-h-[100svh] min-w-full">
-  <div class="field bg-white rounded-xl shadow-lg {loginPage ? "h-[320px] w-[400px] p-12" : "p-8 h-[580px] w-[600px]"}">
+<div class="entry flex justify-center items-center min-h-[100svh] min-w-full " style="background-image: url({numoa});">
+  <div class="field bg-white rounded-xl shadow-lg {loginPage ? "md:h-[320px] h-[380px] w-[400px] p-12" : "p-8 h-[620px] w-[550px]"}">
     {#if loginPage}
       <form
-        class="flex flex-col gap-4 my-auto"
+        class="flex flex-col gap-2 my-auto"
         on:submit|preventDefault={() => login()}
       >
         <div class="text-2xl text-center">Log In</div>
@@ -117,8 +126,12 @@
           <label for="password"> Password: </label>
           <input required type="password" id="password" bind:value={passwordInput} />
         </div>
-        <button type="submit" class="p-2 bg-nu-yellow rounded-lg"
-          >Log In</button
+        <button type="submit" class="btn btn-secondary" disabled={disableButton}
+          >{#if disableButton}
+          <Loader />
+          {:else}
+          Log In
+          {/if}</button
         >
         <div class="text-center">
           Don't have an account yet? <a
@@ -131,10 +144,11 @@
       </form>
     {:else}
       <form
-        class="field register flex flex-col gap-4"
+        class="field register flex gap-2 flex-col"
         on:submit|preventDefault={() => register()}
       >
         <div class="text-2xl text-center">Register</div>
+        
         <div class="row">
           <label for="studID"> Student ID: </label>
           <input required type="number" id="studID" bind:value={studentID} />
@@ -147,7 +161,7 @@
           <label for="password"> Password: </label>
           <input required type="password" id="password" bind:value={regPass} />
         </div>
-        <div class="row">
+        <div class="row text-nowrap">
           <label for="confirmPassword"> Confirm Password: </label>
           <input required type="password" id="confirmPassword" bind:value={confirmPass} />
         </div>
@@ -176,7 +190,7 @@
             <option value="Other">Other</option>
           </select>
         </div>
-        <button type="submit" class="p-2 bg-nu-yellow rounded-lg"
+        <button type="submit" class="btn btn-secondary" disabled={disableButton}
           >Register</button
         >
         <div class="text-center">
@@ -194,31 +208,22 @@
 
 <style>
   .entry {
-    background-image: url("./img/numoa.png");
     background-size: cover;
   }
   .field {
     transition: all 400ms ease;
-    overflow: hidden;
+    overflow-y: auto;
   }
-  .row {
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
-  .row label {
-    width: 30%;
-  }
-  .row input, select {
-    width: 70%;
-  }
-  .register .row label {
-    width: 40%;
-  }
-  .register .row input, select {
-    width: 60%;
+  label{
+    margin: auto;
   }
   input, select {
-    @apply border-2;
+    @apply border-2 p-0.5;
+  }
+  .register label{
+    width: 35%;
+  }
+  .register input, .register select{
+    width: 65%;
   }
 </style>

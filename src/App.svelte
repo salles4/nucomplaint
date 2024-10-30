@@ -1,33 +1,36 @@
 <script>
+// @ts-nocheck
+
   import Routes, { location, replace } from "svelte-spa-router";
   import Sidebar from "./lib/Sidebar.svelte";
   import Header from "./lib/Header.svelte";
-  import Dashboard from "./staff/Dashboard.svelte";
-  import Profile from "./staff/Profile.svelte";
-  import Complaints from "./staff/Complaints.svelte";
+  import Dashboard from "./staff/Dashboard/Dashboard.svelte";
+  import Profile from "./staff/Profile/Profile.svelte";
+  import Complaints from "./staff/Complaints/Complaints.svelte";
   import Offenses from "./staff/Offenses.svelte";
-  import Appointments from "./staff/Appointments.svelte";
+  import Appointments from "./staff/Appointments/Appointments.svelte";
   import Reports from "./staff/Reports.svelte";
   import Surveys from "./staff/Surveys.svelte";
   import Error from "./pages/Error.svelte";
   import Entry from "./pages/Entry.svelte";
   
   import StudentDashboard from "./student/Dashboard.svelte";
-  import StudentProfile from "./student/Profile.svelte";
-  import StudentComplaints from "./student/Complaints.svelte";
+  import StudentProfile from "./student/Profile/Profile.svelte";
+  import StudentComplaints from "./student/Complaints/Complaints.svelte";
   import StudentOffenses from "./student/Offenses.svelte";
   
   import Offense from "./guard/Offense.svelte";
   import Record from "./guard/Record.svelte";
 
   import { auth } from "./store";
-  import StudentList from "./staff/Dashboard/StudentList.svelte";
+  import UserList from "./staff/Dashboard/UserList.svelte";
   import GuardsList from "./staff/Dashboard/GuardsList.svelte";
+  import AddComplaint from "./student/Complaints/AddComplaint.svelte";
 </script>
 
 <div class="flex">
   {#if $auth == "staff"}
-    <Sidebar name="Francis James Salles" id="2022-153827" img="https://ctwbdevl.vercel.app/lab/img/Salles.jpg" />
+    <Sidebar />
     <main>
       {#if !["/dashboard", "/profile"].includes($location)}
         <Header />
@@ -36,7 +39,7 @@
         routes={{
           "/": Dashboard,
           "/dashboard": Dashboard,
-            "/students": StudentList,
+            "/dashboard/:type": UserList,
             "/guards": GuardsList,
           "/profile": Profile,
           "/complaints": Complaints,
@@ -49,19 +52,22 @@
       />
     </main>
   {:else if $auth == "student"}
-  <Sidebar name="Francis James Salles" id="2022-153827" img="https://ctwbdevl.vercel.app/lab/img/Salles.jpg" />
+  <Sidebar />
   <main>
-    <Header />
+    {#if !["/profile"].includes($location)}
+        <Header />
+      {/if}
     <Routes routes={{
       "/": Dashboard,
       "/dashboard": StudentDashboard,
       "/profile": StudentProfile,
       "/complaints": StudentComplaints,
+      "/addComplaint": AddComplaint,
       "/offenses": StudentOffenses,
     }} />
   </main>
   {:else if $auth == "guard"}
-  <Sidebar name="Francis James Salles" id="2022-153827" img="https://ctwbdevl.vercel.app/lab/img/Salles.jpg" />
+  <Sidebar />
   <main>
     <Header />
     <Routes routes={{

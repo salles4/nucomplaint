@@ -28,3 +28,16 @@
   </div>
 
 </div>
+
+<datalist>
+  <option>No Uniform</option>
+  <option>No ID</option>
+  <option>Using property without authority</option>
+  <option>Loitering</option>
+  <option>Eating in classroom</option>
+  <option>Wrong use of lockers</option>
+  <option>Hiding library materials</option>
+  <option>Dyeing hair inappropriately</option>
+  <option>Presence of opposite sex in designated sex's room</option>
+  <option>Bringing phobited item</option>
+</datalist>

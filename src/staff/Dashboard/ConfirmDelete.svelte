@@ -1,6 +1,6 @@
 <script>
   import { fly } from "svelte/transition";
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   import { supabase } from "../../supabase";
   import {replace} from "svelte-spa-router"
   export let userEmail;
@@ -11,6 +11,9 @@
 
   let passwordValue;
   let emailValue;
+
+  let emailInput;
+  onMount(() => {emailInput.focus()})
 
   async function deleteUser(){
     const {data, error} = await supabase
@@ -38,10 +41,10 @@
 <div
   class="fixed top-0 left-0 z-2"
   style="background-color: white; width:100vw; height:100vh; padding:0;"
-  transition:fly={{ duration: 600, y: -900 }}
+  transition:fly={{ duration: 400, y: -500 }}
 >
   <div
-    class="flex flex-col items-center justify-center gap-2"
+    class="flex flex-col items-center justify-center gap-2 container mx-auto px-4"
     style="height: 90vh"
   >
     <h1 class="text-red-600 text-5xl font-bold">User Deletion</h1>
@@ -51,18 +54,18 @@
       </p>
       <div class="text-gray-600">This action is not highly recommended to prevent having missing records.</div>
     </div>
-    <div class="mb-4">Please enter your password and email of the user <b>"{userEmail}"</b> to confirm deletion.</div>
+    <div class="mb-4 text-center">Please enter your password and email of the user <b>"{userEmail}"</b> to confirm deletion.</div>
 
     <div class="row">
       <label for="email">Email:</label>
-      <input type="text" id="email" bind:value={emailValue}>
+      <input bind:this={emailInput} type="text" id="email" bind:value={emailValue}>
     </div>
     <div class="row">
       <label for="password">Password:</label>
       <input type="password" id="password" bind:value={passwordValue}>
     </div>
     <div>
-      <button class="bg-red-600" on:click={deleteUser}>Confirm</button>
+      <button class="bg-red-600" on:click={deleteUser} >Confirm</button>
       <button class="bg-green-500" on:click={()=>dispatch('cancel')}>Cancel</button>
     </div>
   </div>

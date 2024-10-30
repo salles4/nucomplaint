@@ -1,9 +1,11 @@
 <script>
-  import { auth, sidebarLabel } from "../store";
+  import { auth, sidebarLabel, user_id } from "../store";
   import { ArrowLeftFromLine, ArrowRightFromLine, CalendarCheck, FileChartLine, Gavel, House, LogOut, MessageSquareWarning, Newspaper, User } from 'lucide-svelte';
   import NavbarItem from "./NavbarItem.svelte";
+  import { supabase } from "../supabase";
+  import { onMount } from "svelte";
 
-  export let name, img, id;
+  let name, id, img = "https://ctwbdevl.vercel.app/lab/img/Salles.jpg";
 
   const tabs = {
     staff: [
@@ -18,7 +20,7 @@
     student: [
       { icon: House, label: "Dashboard", to: "dashboard" },
       { icon: User, label: "Profile", to: "profile" },
-      { icon: MessageSquareWarning, label: "Complaints", to: "complaints" },
+      { icon: MessageSquareWarning, label: "Complaints", to: "complaints", routes: ["/addComplaint"] },
       { icon: Gavel, label: "Offenses", to: "offenses" },
     ],
     guard: [
@@ -26,6 +28,23 @@
       { icon: Newspaper, label: "Record", to: "record" },
     ]
   };
+  async function getDetails() {
+    const {data, error} = await supabase
+    .from("primary_details")
+    .select("*")
+    .eq("user_id", $user_id)
+    .single()
+    
+    if(error){
+      alert(error.message);
+      console.error(error)
+    }
+    const {first_name, last_name, user_id: loggedID} = data
+    name = `${first_name} ${last_name}`;
+    id = ` ${loggedID.toString().substring(0, 4)}-${loggedID.toString().slice(4)}`
+  }
+  onMount(getDetails)
+
   function toggleSidebar() {
     sidebarLabel.set(!$sidebarLabel);
   }
@@ -38,7 +57,7 @@
 <aside
   class="{$sidebarLabel
     ? 'min-w-[300px]'
-    : 'min-w-[70px]'} flex flex-col h-[100vh] overflow-y-auto w-fit shadow-xl bg-white sticky top-0"
+    : 'min-w-[70px]'} flex flex-col h-[100svh] overflow-y-auto w-fit shadow-xl bg-white sticky top-0"
 >
   <!-- Toggle Sidebar Button -->
   <button
@@ -58,7 +77,7 @@
   <div
     class="{$sidebarLabel
       ? 'px-14 pt-4'
-      : 'px-2'}  flex-shrink-0 flex flex-col pb-2 items-center"
+      : 'px-2'} flex flex-col pb-2 items-center"
   >
     <img
       class="{$sidebarLabel ? 'w-[120px]' : 'w-[48px]'} rounded-full"

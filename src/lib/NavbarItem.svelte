@@ -7,7 +7,7 @@
   export let to = null;
   export let onclick = null;
   export let routes = [];
-  $: isActive = $location == `/${to}` || routes.includes($location);
+  $: isActive = $location == `/${to}` || routes.includes($location) || $location.startsWith(`/${to}`)
 
   function clicked(e) {
     rippleEffect(e);
@@ -20,7 +20,7 @@
   let x = 0,
     y = 0;
   function rippleEffect(event) {
-    if (isActive) {
+    if ($location == `/${to}`) {
       return;
     }
     if (to) {
