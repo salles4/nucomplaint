@@ -7,7 +7,7 @@
   import Dashboard from "./staff/Dashboard/Dashboard.svelte";
   import Profile from "./staff/Profile/Profile.svelte";
   import Complaints from "./staff/Complaints/Complaints.svelte";
-  import Offenses from "./staff/Offenses.svelte";
+  import Offenses from "./staff/Offenses/Offenses.svelte";
   import Appointments from "./staff/Appointments/Appointments.svelte";
   import Reports from "./staff/Reports.svelte";
   import Surveys from "./staff/Surveys.svelte";
@@ -26,6 +26,7 @@
   import UserList from "./staff/Dashboard/UserList.svelte";
   import GuardsList from "./staff/Dashboard/GuardsList.svelte";
   import AddComplaint from "./student/Complaints/AddComplaint.svelte";
+  import AddOffense from "./staff/Offenses/AddOffense.svelte";
 </script>
 
 <div class="flex">
@@ -35,7 +36,7 @@
       {#if !["/dashboard", "/profile"].includes($location)}
         <Header />
       {/if}
-      <Routes
+        <Routes
         routes={{
           "/": Dashboard,
           "/dashboard": Dashboard,
@@ -44,6 +45,7 @@
           "/profile": Profile,
           "/complaints": Complaints,
           "/offenses": Offenses,
+          "/offense/add": AddOffense,
           "/appointments": Appointments,
           "/reports": Reports,
           "/surveys": Surveys,
@@ -73,6 +75,7 @@
     <Routes routes={{
       "/": Offense,
       "/offense": Offense,
+      "/offense/add": AddOffense,
       "/record": Record,
     }} />
   </main>

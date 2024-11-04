@@ -11,8 +11,9 @@
     Eye,
     Trash,
     Reply,
+    CirclePlus
   } from "lucide-svelte";
-  import Tab from "../lib/Tab.svelte";
+  import Tab from "../../lib/Tab.svelte";
 
   const data = [
     {
@@ -88,7 +89,14 @@
         />
       </div>
     </div>
-
+<div class="flex items-center justify-between mx-12">
+      <a
+      href="./#/offense/add"
+        class="btn btn-primary btn-sm"
+        on:click={() => {
+          
+        }}><CirclePlus class="text-yellow-300" /> Add Offense</a
+      >
     <div class="search flex justify-end items-center gap-2 text-blue-800 me-12 m-2">
       <label>
         <Search strokeWidth="3" class="inline" />
@@ -104,7 +112,7 @@
       <button><ArrowDownAZ /></button>
       <button><History /></button>
     </div>
-
+</div>
     <table class="table-fixed w-full text-center">
       <thead class="text-lg border-b-2">
         <tr>

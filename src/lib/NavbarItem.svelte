@@ -26,7 +26,9 @@
     if (to) {
       replace(`/${to}`);
     }
-
+    if(window.innerWidth <= 640){
+      sidebarLabel.set(false)
+    }
     x = event.clientX;
     y = event.clientY;
     span = true;
