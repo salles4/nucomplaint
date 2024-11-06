@@ -19,9 +19,6 @@
   import StudentComplaints from "./student/Complaints/Complaints.svelte";
   import StudentOffenses from "./student/Offenses.svelte";
   
-  import Offense from "./guard/Offense.svelte";
-  import Record from "./guard/Record.svelte";
-
   import { auth } from "./store";
   import UserList from "./staff/Dashboard/UserList.svelte";
   import GuardsList from "./staff/Dashboard/GuardsList.svelte";
