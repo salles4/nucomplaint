@@ -89,7 +89,7 @@
         <div class="content">
           {details.primary_details.first_name} {details.primary_details.last_name}
           <div class="text-sm text-gray-600">
-            {details.access_data.email}
+            {details.access_data.email} - {details.sender_id}
           </div>
         </div>
       </div>

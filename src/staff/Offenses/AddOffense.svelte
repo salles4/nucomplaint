@@ -1,8 +1,8 @@
 <script>
   import { supabase } from "../../supabase";
-  import { user_id } from "../../store";
+  import { auth, user_id } from "../../store";
   import { replace } from "svelte-spa-router";
-  import { QrCode } from "lucide-svelte";
+  import { CircleArrowRight, QrCode } from "lucide-svelte";
   import { createReader, stopScanner } from "../../scanner";
   import { onDestroy } from "svelte";
 
@@ -25,14 +25,14 @@
       alert(`${idInput} is invalid student_id`);
       return;
     }
-
+    idInput = idInput.join("-");
     const { error } = await supabase.from("offenses").insert({
       staff_id: $user_id,
       violation: violationInput,
       category: categoryInput,
       student_id: idInput,
       valid_until: timeInput,
-      note: noteInput,
+      notes: noteInput,
     });
 
     if (error) {
@@ -40,6 +40,9 @@
       return;
     }
     alert("Added Successfully");
+    if($auth == "guard"){
+      replace("/records")
+    }
     replace("/offenses");
   }
   function toggleQR() {
@@ -79,13 +82,18 @@
         <input
           bind:value={idInput}
           required
-          class="input-bordered !grow"
+          class="input-bordered !grow rounded-e-none"
           type="text"
           name="student_id"
           id="student_id"
         />
         <button
-          class="btn btn-sm btn-ghost"
+          class="btn btn-sm rounded-s-none rounded-e-none px-2 h-full"
+          type="button"
+          on:click={() => toggleQR()}><CircleArrowRight /></button
+        >
+        <button
+          class="btn btn-sm btn-neutral rounded-s-none px-2 h-full"
           type="button"
           on:click={() => toggleQR()}><QrCode /></button
         >

@@ -3,10 +3,9 @@
 
   export let icon, label, number, time;
 </script>
-<div class="bg-white shadow-xl p-4 mb-2 relative  min-w-[300px] w-[20%]">
-  <div class="text-4xl text-gray-800 bg-yellow-400 w-min p-3 shadow-lg absolute -top-6">
-    <!-- <i class="bi bi-bell-fill"></i> -->
-    <svelte:component this={icon} class="icon" size="36" />
+<div class="bg-white shadow-xl p-4 relative min-w-[300px] sm:w-[20%] w-full">
+  <div class="text-gray-800 bg-yellow-400 w-min p-3 shadow-lg absolute sm:-top-6">
+    <svelte:component this={icon} class="icon sm:size-[36px]" />
   </div>
   <div class="text-end pb-2">
     <span class="text-slate-400 block font-normal">

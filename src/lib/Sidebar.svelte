@@ -28,7 +28,7 @@
     ],
     guard: [
       { icon: Gavel, label: "Add Offense", to: "offense/add", routes: ["/offense/add"] },
-      { icon: Newspaper, label: "Record", to: "record" },
+      { icon: Newspaper, label: "Records", to: "records" },
     ]
   };
   async function getDetails() {

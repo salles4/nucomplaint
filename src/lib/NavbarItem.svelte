@@ -41,6 +41,7 @@
 </script>
 
 <button
+  title={label}
   on:click|preventDefault={clicked}
   class="navItem {isActive
     ? 'bg-yellow-500'

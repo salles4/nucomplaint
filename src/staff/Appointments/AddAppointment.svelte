@@ -24,7 +24,7 @@
       return;
     }
 
-    const { error } = await supabase.from("offenses").insert({
+    const { error } = await supabase.from("appointments").insert({
       staff_id: $user_id,
       reason: typeInput,
       message: messageInput,

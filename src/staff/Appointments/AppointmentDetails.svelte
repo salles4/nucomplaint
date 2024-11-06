@@ -13,9 +13,9 @@
   let newStatusSelected;
   async function getDetails(){
     const {data, error} = await supabase
-    .from("offenses")
+    .from("appointments")
     .select("*, primary_details!appointments_student_id_fkey(user_id, first_name, last_name)")
-    .eq("offense_id", appointment_id)
+    .eq("appointment_id", appointment_id)
     .single()
 
     if(error){
@@ -30,9 +30,9 @@
   async function updateStatus() {
     if(newStatusSelected && currentStatus != newStatusSelected){
       const {error} = await supabase
-      .from("offenses")
+      .from("appointments")
       .update({status: newStatusSelected})
-      .eq("offense_id", appointment_id)
+      .eq("appointment_id", appointment_id)
       
       if(error){
         alert(error.message)
@@ -43,9 +43,9 @@
   }
   async function deleteAppointment() {
     const {error} = await supabase
-    .from('offenses')
+    .from('appointments')
     .delete()
-    .eq('offense_id', appointment_id)
+    .eq('appointment_id', appointment_id)
 
     if(error){
       alert(error.message)

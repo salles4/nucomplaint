@@ -19,6 +19,8 @@
   import { supabase } from "../../supabase";
   import { badge } from "../../customCss";
   import OffenseDetails from "./OffenseDetails.svelte";
+  import { auth, user_id } from "../../store";
+  import Loader from "../../lib/Loader.svelte";
 
   let offenses;
   let active = "All";
@@ -35,7 +37,11 @@
       console.error(error);
       return;
     }
-    offenses = data;
+    if($auth == "guard"){
+      offenses = data.filter((offense) => offense.staff_id == $user_id)
+    }else{
+      offenses = data;
+    }
     console.log(data);
   }
   supabase
@@ -160,7 +166,7 @@
               <tr class="border-black/20 hover:bg-black/5 hover:cursor-pointer"
                 on:click={() => (selectedOffense = offense_id)}>
                 <td class="p-2"
-                  ><span class="badge {badge(status)}">{status}</span></td
+                  ><span class="badge text-nowrap {badge(status)}">{status}</span></td
                 >
                 <td>
                   {user_id}
@@ -189,6 +195,8 @@
             {/each}
           </tbody>
         </table>
+        {:else}
+        <Loader />
       {/if}
     </div>
   </div>

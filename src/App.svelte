@@ -73,9 +73,9 @@
   <main>
     <Header />
     <Routes routes={{
-      "/": Record,
+      "/": Offenses,
       "/offense/add": AddOffense,
-      "/record": Record,
+      "/records": Offenses,
     }} />
   </main>
   {:else}
