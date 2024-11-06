@@ -58,6 +58,7 @@
     }
   }
   function logout() {
+    sidebarLabel.set(false)
     auth.set(null);
     localStorage.removeItem("v0Auth");
   }
@@ -118,11 +119,13 @@
   </div>
   <div class="border self-center w-[75%] mb-2"></div>
   <!-- Sidebar Tabs -->
-  <div class="flex-grow">
-    {#each tabs[$auth] as { icon, label, to, routes = [] }}
-      <NavbarItem {icon} {label} {to} {routes} />
-    {/each}
-  </div>
+   {#if $auth}
+   <div class="flex-grow">
+     {#each tabs[$auth] as { icon, label, to, routes = [] }}
+       <NavbarItem {icon} {label} {to} {routes} />
+     {/each}
+   </div>
+   {/if}
   <div>
     <NavbarItem onclick={logout} icon={LogOut} label="Logout" />
   </div>
