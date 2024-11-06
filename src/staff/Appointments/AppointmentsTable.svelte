@@ -21,6 +21,7 @@
   import Loader from "../../lib/Loader.svelte";
   import { onMount } from "svelte";
   import AppointmentDetails from "./AppointmentDetails.svelte";
+  import { badge } from "../../customCss";
 
   export let changeMode;
 
@@ -170,7 +171,7 @@
                 class="border-black/20 hover:bg-black/5 hover:cursor-pointer"
                 on:click={() => (selectedAppointment = appointment_id)}
               >
-                <td class="p-2"><span class="badge">{status}</span></td>
+                <td class="p-2"><span class="badge {badge(status)}">{status}</span></td>
                 <!-- <td>{user_id}</td> -->
                 <td>{first_name} {last_name}</td>
                 <td>{reason}</td>

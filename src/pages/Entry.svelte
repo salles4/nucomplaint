@@ -6,6 +6,7 @@
   import { onMount } from "svelte";
   import Loader from "../lib/Loader.svelte";
   import numoa from '/img/numoa.png'
+  import { Eye, EyeOff } from "lucide-svelte";
   
   export let params = "";
   console.log(params)
@@ -15,6 +16,8 @@
 
   let emailInput, passwordInput;
   let studentID, regEmail, regPass, confirmPass, fName, lName, contact, address, gender;
+  
+  let showPass = false, showRegpass = false, showConfirmPass = false
 
   replace("/");
   let credentials;
@@ -61,6 +64,16 @@
       alert("Student ID already exists");
       return;
     }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRegex.test(regEmail)){
+      alert("Invalid email")
+      return;
+    }else if(!regEmail.endsWith("@nu-moa.edu.ph")){
+      alert("Email should end with '@nu-moa.edu.ph'")
+      return;
+    }
+
     const { data: email_data, error:email_error } = await supabase
       .from("access_data")
       .select()
@@ -91,6 +104,9 @@
     alert("Successfully created an account! Please Log in!")
     loginPage = true;
   }
+  function onInput(event) {
+  return event.target.value;
+  }
 </script>
 {#if credentials}
 <div class="absolute top-0 right-0 text-center h-[100px] overflow-auto">
@@ -111,7 +127,7 @@
 </div>
 {/if}
 <div class="entry flex justify-center items-center min-h-[100svh] min-w-full " style="background-image: url({numoa});">
-  <div class="field bg-white rounded-xl shadow-lg {loginPage ? "md:h-[320px] h-[380px] w-[400px] p-12" : "p-8 h-[620px] w-[550px]"}">
+  <div class="field bg-white rounded-xl shadow-lg {loginPage ? "md:h-[320px] h-[380px] w-[400px] p-12" : "p-8 h-[620px] md:w-[550px] max-w-svw"}">
     {#if loginPage}
       <form
         class="flex flex-col gap-2 my-auto"
@@ -124,7 +140,10 @@
         </div>
         <div class="row">
           <label for="password"> Password: </label>
-          <input required type="password" id="password" bind:value={passwordInput} />
+          <div class="md:w-[70%] flex">
+            <input class="!grow rounded-e-none border-e" required type={showPass ? "text" : "password"} id="password" on:input={(e) => passwordInput = onInput(e)} />
+            <button class="btn btn-sm rounded-s-none border-black/20 border-2 border-s px-1" type="button" on:click={() => showPass = !showPass}>{#if showPass}<EyeOff />{:else}<Eye />{/if}</button>
+          </div>
         </div>
         <button type="submit" class="btn btn-secondary" disabled={disableButton}
           >{#if disableButton}
@@ -155,15 +174,21 @@
         </div>
         <div class="row">
           <label for="email"> Email: </label>
-          <input required type="text" id="email" bind:value={regEmail} />
+          <input required type="email" id="email" bind:value={regEmail} />
         </div>
         <div class="row">
           <label for="password"> Password: </label>
-          <input required type="password" id="password" bind:value={regPass} />
+          <div class="md:w-[65%] flex">
+            <input class="!grow " required type={showRegpass ? "text" : "password"} id="password" on:input={(e) => regPass = onInput(e)} />
+            <button class="btn btn-sm btn-ghost" type="button" on:click={() => showRegpass = !showRegpass}>{#if showRegpass}<EyeOff />{:else}<Eye />{/if}</button>
+          </div>
         </div>
         <div class="row text-nowrap">
           <label for="confirmPassword"> Confirm Password: </label>
-          <input required type="password" id="confirmPassword" bind:value={confirmPass} />
+          <div class="md:w-[65%] flex">
+            <input class="!grow " required type={showConfirmPass ? "text" : "password"} id="confirmPassword" on:input={(e) => confirmPass = onInput(e)} />
+            <button class="btn btn-sm btn-ghost" type="button" on:click={() => showConfirmPass = !showConfirmPass}>{#if showConfirmPass}<EyeOff />{:else}<Eye />{/if}</button>
+          </div>
         </div>
         <div class="row">
           <label for="fName"> First Name: </label>
@@ -221,9 +246,9 @@
     @apply border-2 p-0.5;
   }
   .register label{
-    width: 35%;
+    @apply md:w-[35%]
   }
   .register input, .register select{
-    width: 65%;
+     @apply md:w-[65%]
   }
 </style>

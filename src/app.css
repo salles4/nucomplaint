@@ -21,6 +21,7 @@ a{
     flex-wrap: wrap;
     width: 100%;
     margin-bottom: 0.5rem;
+    position: relative;
   }
   .row > * {
     flex-shrink: 0;
@@ -44,4 +45,12 @@ a{
   }
   .row label{
     margin: auto;
+  }
+
+  /* Scanner */
+  #reader button{
+    @apply btn btn-sm my-2
+  }
+  #reader__scan_region{
+    @apply flex justify-center
   }

@@ -21,6 +21,14 @@
       alert("Password is not the same")
       return;
     }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRegex.test(emailVal)){
+      alert("Invalid email")
+      return;
+    }else if(!emailVal.endsWith("@nu-moa.edu.ph")){
+      alert("Email should end with '@nu-moa.edu.ph'")
+      return;
+    }
 
     const newData = {
       email: emailVal,

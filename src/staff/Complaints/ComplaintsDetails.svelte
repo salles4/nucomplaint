@@ -4,6 +4,7 @@
   import { supabase } from "../../supabase";
   import { onDestroy, onMount } from "svelte";
   import Loader from "../../lib/Loader.svelte";
+  import { badge } from "../../customCss";
 
   export let complaint_id, closeDetails;
   let details;
@@ -25,7 +26,7 @@
     if(data.status == "Unread"){
       const {error} = await supabase
       .from("complaints")
-      .update({status: "Read"})
+      .update({status: "Unsettled"})
       .eq("complaint_id", complaint_id)
       
       if(error){
@@ -107,7 +108,7 @@
       <div class="row">
         <div class="name">Status: </div>
         <div class="content">
-          <span class="badge {status == "Unread" ? "badge-neutral" : "badge-success badge-outline"}">{details.status}</span>
+          <span class="badge {badge(details.status)}">{details.status}</span>
         </div>
       </div>
       <div class="row">
@@ -133,14 +134,6 @@
           <option value="Settled">Settled</option>
           <option value="Archive">Archive</option>
         </select> 
-        <!-- <details class="dropdown dropdown-top dropdown-end ms-2">
-          <summary class="btn btn-sm btn-success btn-outline" >{newStatusSelected || details.status} <ChevronUp /> </summary>
-          <ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow-2xl text-black">
-            <li><button data-condition="Unsettled">Unsettled</button></li>
-            <li><button data-condition="Settled">Settled</button></li>
-            <li><button data-condition="Archive">Archive</button></li>
-          </ul>
-        </details> -->
       </div>
     </div>
     {:else}

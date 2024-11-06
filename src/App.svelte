@@ -73,8 +73,7 @@
   <main>
     <Header />
     <Routes routes={{
-      "/": Offense,
-      "/offense": Offense,
+      "/": Record,
       "/offense/add": AddOffense,
       "/record": Record,
     }} />

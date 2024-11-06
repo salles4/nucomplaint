@@ -6,16 +6,15 @@
   import Loader from "../../lib/Loader.svelte";
   import { badge } from "../../customCss";
 
-  export let appointment_id, closeDetails;
+  export let offense_id, closeDetails;
   let details;
-
   let currentStatus;
   let newStatusSelected;
   async function getDetails(){
     const {data, error} = await supabase
     .from("offenses")
-    .select("*, primary_details!appointments_student_id_fkey(user_id, first_name, last_name)")
-    .eq("offense_id", appointment_id)
+    .select("*, student_id(user_id, first_name, last_name)")
+    .eq("offense_id", offense_id)
     .single()
 
     if(error){
@@ -32,7 +31,7 @@
       const {error} = await supabase
       .from("offenses")
       .update({status: newStatusSelected})
-      .eq("offense_id", appointment_id)
+      .eq("offense_id", offense_id)
       
       if(error){
         alert(error.message)
@@ -45,7 +44,7 @@
     const {error} = await supabase
     .from('offenses')
     .delete()
-    .eq('offense_id', appointment_id)
+    .eq('offense_id', offense_id)
 
     if(error){
       alert(error.message)
@@ -68,27 +67,16 @@
       </button>  
     </div>
     <hr>
+
     {#if details}
     <div class="px-6 flex-grow">
       <div class="row">
-        <div class="name">Sender: </div>
+        <div class="name">Student Name: </div>
         <div class="content">
-          {details.primary_details.first_name} {details.primary_details.last_name}
+          {details.student_id.first_name} {details.student_id.last_name}
           <div class="text-sm text-gray-600">
             <!-- {details.access_data.email} -->
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="name">Scheduled: </div>
-        <div class="content">
-          {new Date(details.time).toDateString()} - {new Date(details.time).toLocaleTimeString()}
-        </div>
-      </div>
-      <div class="row">
-        <div class="name">Reason: </div>
-        <div class="content">
-          {details.reason}
         </div>
       </div>
       <div class="row">
@@ -98,11 +86,37 @@
         </div>
       </div>
       <div class="row">
-        <div class="name">Message: </div>
+        <div class="name">Category: </div>
         <div class="content">
-          {details.message}
+          {details.category}
         </div>
       </div>
+      <div class="row">
+        <div class="name">Violation: </div>
+        <div class="content">
+          {details.violation}
+        </div>
+      </div>
+      <div class="row">
+        <div class="name">Time Reported: </div>
+        <div class="content">
+          {new Date(details.time_created).toDateString()} - {new Date(details.time_created).toLocaleTimeString()}
+        </div>
+      </div>
+      <div class="row">
+        <div class="name">Valid Until: </div>
+        <div class="content">
+          {new Date(details.valid_until).toDateString()} - {new Date(details.valid_until).toLocaleTimeString()}
+        </div>
+      </div>
+      {#if details.note}
+      <div class="row">
+        <div class="name">Note: </div>
+        <div class="content">
+          {details.note}
+        </div>
+      </div>
+      {/if}
     </div>
     <div class="sticky bottom-0 px-6 py-4 bg-white border-t-2 flex gap-2">
       <button class="btn btn-sm btn-primary">
@@ -114,9 +128,10 @@
       <div class="ms-auto">
         Status:
         <select class="select-success px-2 min-w-fit max-w-xs select-sm" name="status" id="status" bind:value={newStatusSelected}>
-          <option value="Scheduled">Scheduled</option>
-          <option value="Cancelled">Cancelled</option>
-          <option value="Done">Done</option>
+          <option value="Reported">Reported</option>
+          <option value="On Investigation">On Investigation</option>
+          <option value="Guilty">Guilty</option>
+          <option value="Dismissed">Dismissed</option>
           <option value="Archive">Archive</option>
         </select> 
       </div>

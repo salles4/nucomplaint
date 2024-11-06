@@ -14,7 +14,7 @@
 
   async function checkAppointment() {
     const {data, error} = await supabase
-    .from("appointments")
+    .from("offenses")
     .select("*, staff_id(first_name, last_name)")
     .eq("student_id", $user_id)
 

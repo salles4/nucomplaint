@@ -18,6 +18,7 @@
   import { onMount } from "svelte";
   import Loader from "../../lib/Loader.svelte";
   import ComplaintsDetails from "./ComplaintsDetails.svelte";
+  import { badge } from "../../customCss";
 
   let active = "All";
   let complaints;
@@ -156,7 +157,7 @@
       <tbody class="text-center">
         {#each filterComplaints as { complaint_id, status, type, message, sent_date, primary_details:{first_name, last_name}}}
           <tr class="border-black/20 hover:bg-black/5 hover:cursor-pointer" on:click={() => viewDetails(complaint_id)}>
-            <td><span class="badge {status == "Unread" ? "badge-neutral" : "badge-success badge-outline"}">{status}</span></td>
+            <td><span class="badge {badge(status)}">{status}</span></td>
             <td>{first_name} {last_name}</td>
             <td class="truncate text-start max-w-[300px]">{message}</td>
             <td>{type}</td>

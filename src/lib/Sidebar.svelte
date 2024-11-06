@@ -1,12 +1,14 @@
 <script>
   import { auth, sidebarLabel, user_id } from "../store";
-  import { ArrowLeftFromLine, ArrowRightFromLine, CalendarCheck, FileChartLine, Gavel, House, LogOut, MessageSquareWarning, Newspaper, User } from 'lucide-svelte';
+  import { ArrowLeftFromLine, ArrowRightFromLine, CalendarCheck, FileChartLine, Gavel, House, Image, LogOut, MessageSquareWarning, Newspaper, QrCode, User } from 'lucide-svelte';
   import NavbarItem from "./NavbarItem.svelte";
   import { supabase } from "../supabase";
   import { onMount } from "svelte";
   import Loader from "./Loader.svelte";
+  import { generateQR } from "../scanner";
 
   let name, id, img = "https://ctwbdevl.vercel.app/lab/img/Salles.jpg";
+  let showQR = false;
 
   const tabs = {
     staff: [
@@ -25,7 +27,7 @@
       { icon: Gavel, label: "Offenses", to: "offenses" },
     ],
     guard: [
-      { icon: Gavel, label: "Add Offense", to: "offense", routes: ["/offense/add"] },
+      { icon: Gavel, label: "Add Offense", to: "offense/add", routes: ["/offense/add"] },
       { icon: Newspaper, label: "Record", to: "record" },
     ]
   };
@@ -48,6 +50,12 @@
 
   function toggleSidebar() {
     sidebarLabel.set(!$sidebarLabel);
+  }
+  function toggleQR(){
+    showQR = !showQR;
+    if(showQR){
+      generateQR(id)
+    }
   }
   function logout() {
     auth.set(null);
@@ -81,17 +89,31 @@
       : 'px-2'} flex flex-col pb-2 items-center"
   >
   {#if img && id}
+  <button on:click={()=> toggleQR()}>
     <img
-      class="{$sidebarLabel ? 'w-[120px]' : 'w-[48px]'} rounded-full"
+      class="{$sidebarLabel ? 'w-[120px]' : 'w-[48px]'} {!showQR || !$sidebarLabel ? "block" : "hidden"} rounded-full"
       src={img}
       alt=""
     />
+  </button>
+  <button on:click={()=> toggleQR()}>
+    <canvas id="IDQR" class="{$sidebarLabel ? 'w-[120px]' : 'w-[48px]'} {showQR && $sidebarLabel ? "block" : "hidden"}"></canvas>
+  </button>
     <div class="{$sidebarLabel ? 'block' : 'hidden'} text-center">
       <div class="pt-2 text-nowrap">{name}</div>
-      <div>{id}</div>
+      <button class="" on:click={()=> toggleQR()}>
+        {id}
+        {#if showQR}
+        <Image class="mx-auto" />
+        {:else}
+        <QrCode class="mx-auto" />
+        {/if}
+      </button>
     </div>
-  {:else}
-  <Loader />
+    {:else}
+    <div class="min-h-[150px] flex">
+      <Loader />
+    </div>
   {/if}
   </div>
   <div class="border self-center w-[75%] mb-2"></div>
