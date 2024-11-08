@@ -25,7 +25,9 @@
   import AddComplaint from "./student/Complaints/AddComplaint.svelte";
   import AddOffense from "./staff/Offenses/AddOffense.svelte";
 </script>
-
+<div class="absolute bottom-0 w-full text-center bg-white overflow-auto">
+  This is a school project. This website is used for educational purposes only
+</div>
 <div class="flex">
   {#if $auth == "staff"}
     <Sidebar />

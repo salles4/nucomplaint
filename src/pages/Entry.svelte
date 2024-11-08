@@ -28,7 +28,7 @@
 
       credentials = data
   }
-  onMount(() => {getAccessData()})
+  // onMount(() => {getAccessData()})
   async function login() {
     disableButton = true
     emailInput = emailInput.trim();
@@ -55,6 +55,7 @@
     user_id.set(data.user_id);
   }
   async function register() {
+    return;
     const { data: id_data, error: id_error } = await supabase
       .from("access_data")
       .select()
