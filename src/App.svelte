@@ -24,6 +24,7 @@
   import GuardsList from "./staff/Dashboard/GuardsList.svelte";
   import AddComplaint from "./student/Complaints/AddComplaint.svelte";
   import AddOffense from "./staff/Offenses/AddOffense.svelte";
+  import ResetPass from "./pages/ResetPass.svelte";
 </script>
 
 <div class="flex">
@@ -78,6 +79,7 @@
   {:else}
     <Routes
       routes={{
+        "/reset": ResetPass,
         "*": Entry,
       }}
     />
