@@ -16,8 +16,7 @@
 
   let emailInput, passwordInput;
   let studentID, regEmail, regPass, confirmPass, fName, lName, contact, address, gender;
-  let resetEmail;
-
+  
   let showPass = false, showRegpass = false, showConfirmPass = false
 
   replace("/");
@@ -29,69 +28,81 @@
 
       credentials = data
   }
-  // onMount(() => {getAccessData()})
+  onMount(() => {getAccessData()})
   async function login() {
     disableButton = true
     emailInput = emailInput.trim();
-    const {data, error} = await supabase.auth.signInWithPassword({
-      email: emailInput,
-      password: passwordInput
-    })
+    const { data, error } = await supabase
+      .from("access_data")
+      .select("account_type, user_id")
+      .eq("email", emailInput)
+      .eq("password", passwordInput)
+      .maybeSingle();
 
     if (error) {
-      alert(error.message);
       console.error(error);
-      disableButton = false
       return;
     }
-    disableButton = false
-    // if (!data) {
-    //   disableButton = false
-    //   alert("Wrong Credentials.");
-    //   return;
-    // }
-    console.log(data);
-    
-    // localStorage.setItem("v0Auth", data.account_type);
-    // localStorage.setItem("user_id", data.user_id);
-    // auth.set(data.account_type);
-    // user_id.set(data.user_id);
+    if (!data) {
+      disableButton = false
+      alert("Wrong Credentials.");
+      return;
+    }
+
+    localStorage.setItem("v0Auth", data.account_type);
+    localStorage.setItem("user_id", data.user_id);
+    auth.set(data.account_type);
+    user_id.set(data.user_id);
   }
   async function register() {
+    const { data: id_data, error: id_error } = await supabase
+      .from("access_data")
+      .select()
+      .eq("user_id", studentID);
+
+    if (id_data.length != 0) {
+      alert("Student ID already exists");
+      return;
+    }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(!emailRegex.test(regEmail)){
       alert("Invalid email")
       return;
+    }else if(!regEmail.endsWith("@nu-moa.edu.ph")){
+      alert("Email should end with '@nu-moa.edu.ph'")
+      return;
     }
-    // else if(!regEmail.endsWith("@nu-moa.edu.ph")){
-    //   alert("Email should end with '@nu-moa.edu.ph'")
-    //   return;
-    // }
 
+    const { data: email_data, error:email_error } = await supabase
+      .from("access_data")
+      .select()
+      .eq("email", regEmail);
+    if (email_data.length != 0) {
+      alert("Email already exists");
+      return;
+    }
     if(regPass != confirmPass){
       alert("Password does not match.")
       return;
     }
 
-    const { data, error:registerError } = await supabase.auth.signUp({
-      email: regEmail,
-      password: regPass
-    })
-    console.log(data);
-
-    
+    const { error: registerError } = await supabase.rpc("register_student", {
+      emailinput: regEmail,
+      passwordinput: regPass,
+      idinput: studentID,
+      fnameinput: fName,
+      lnameinput: lName,
+      addressinput: address,
+      contactinput: contact,
+      genderinput: gender
+    });
     if (registerError){
       console.error(registerError);
       return;
     }
     alert("Successfully created an account! Please Log in!")
     loginPage = true;
-  }
-  async function resetPass(){
-    await supabase.auth.resetPasswordForEmail(resetEmail, {
-      redirectTo: 'http://localhost:5173/#/reset',
-    })
   }
   function onInput(event) {
   return event.target.value;
@@ -157,10 +168,10 @@
       >
         <div class="text-2xl text-center">Register</div>
         
-        <!-- <div class="row">
+        <div class="row">
           <label for="studID"> Student ID: </label>
           <input required type="number" id="studID" bind:value={studentID} />
-        </div> -->
+        </div>
         <div class="row">
           <label for="email"> Email: </label>
           <input required type="email" id="email" bind:value={regEmail} />
@@ -179,15 +190,31 @@
             <button class="btn btn-sm btn-ghost" type="button" on:click={() => showConfirmPass = !showConfirmPass}>{#if showConfirmPass}<EyeOff />{:else}<Eye />{/if}</button>
           </div>
         </div>
-        <!-- <div class="row">
+        <div class="row">
           <label for="fName"> First Name: </label>
           <input required type="text" id="fName" bind:value={fName} />
         </div>
         <div class="row">
           <label for="lName"> Last Name: </label>
           <input required type="text" id="lName" bind:value={lName} />
-        </div> -->
-
+        </div>
+        <div class="row">
+          <label for="contact"> Contact: </label>
+          <input required type="text" id="contact" bind:value={contact} />
+        </div>
+        <div class="row">
+          <label for="address"> Address: </label>
+          <input required type="text" id="address" bind:value={address} />
+        </div>
+        <div class="row">
+          <label for="gender"> Gender: </label>
+          <select name="gender" id="gender" required bind:value={gender}>
+            <option value="" selected disabled>Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
         <button type="submit" class="btn btn-secondary" disabled={disableButton}
           >Register</button
         >
@@ -201,11 +228,6 @@
         </div>
       </form>
     {/if}
-    <div class="flex flex-col justify-center items-center">
-      <h1>Reset password</h1>
-      <input type="text" name="resetEmail" id="resetEmail" bind:value={resetEmail} placeholder="Email">
-      <button class="btn" on:click={resetPass}>Reset Password</button>
-    </div>
   </div>
 </div>
 
