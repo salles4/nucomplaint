@@ -6,6 +6,8 @@
   import { onMount } from "svelte";
   import Loader from "./Loader.svelte";
   import { generateQR } from "../scanner";
+  import { signOut } from "firebase/auth";
+  import { firebaseAuth } from "../firebase";
 
   let name, id, img = "https://ctwbdevl.vercel.app/lab/img/Salles.jpg";
   let showQR = false;
@@ -61,6 +63,7 @@
     sidebarLabel.set(false)
     auth.set(null);
     localStorage.removeItem("v0Auth");
+    signOut(firebaseAuth)
   }
 </script>
 

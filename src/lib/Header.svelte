@@ -2,10 +2,13 @@
   import { auth} from "../store";
   import logo from '../assets/NU_shield.svg'
   import { Bell, Power } from "lucide-svelte";
+  import { signOut } from "firebase/auth";
+  import { firebaseAuth } from "../firebase";
 
   function logout() {
     auth.set(null);
     localStorage.removeItem("v0Auth");
+    signOut(firebaseAuth)
   }
 </script>
 
