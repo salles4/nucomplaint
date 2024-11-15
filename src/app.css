@@ -47,6 +47,29 @@ a{
     margin: auto;
   }
 
+  /* Entry Page */
+  .entry {
+    background-size: cover;
+  }
+  .field {
+    transition: all 400ms ease;
+    overflow-y: auto;
+  }
+  label {
+    margin: auto;
+  }
+  .entry input,
+  .entry select {
+    @apply border-2 p-0.5;
+  }
+  .entry .register label {
+    @apply md:w-[35%];
+  }
+  .entry .register input,
+  .entry .register select {
+    @apply md:w-[65%];
+  }
+
   /* Scanner */
   #reader button{
     @apply btn btn-sm my-2
