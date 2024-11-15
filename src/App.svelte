@@ -83,8 +83,12 @@
       localStorage.setItem("v0auth", data.account_type);
     }
   }
+  let warning = true;
 </script>
-
+<div class="{warning ? "block" : "hidden"} absolute bottom-0 w-full p-2 text-center bg-white overflow-auto">
+  This is for a student's school project. This website is used for educational purposes only.
+  <button class="btn btn-primary btn-outline btn-sm ms-2" on:click={() => warning = false}>Close</button>
+</div>
 <div class="flex">
   {#if $auth == "staff"}
     <Sidebar />
