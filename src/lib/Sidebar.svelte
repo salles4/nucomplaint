@@ -35,7 +35,7 @@
   };
   async function getDetails() {
     const {data, error} = await supabase
-    .from("primary_details")
+    .from("users")
     .select("*")
     .eq("user_id", $user_id)
     .single()
