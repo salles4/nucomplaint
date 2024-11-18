@@ -11,8 +11,9 @@
   let scannerDiv = false;
 
   async function submit() {
+    idInput = idInput.split("-").join("");
     const { data, error: checkingIDError } = await supabase
-      .from("access_data")
+      .from("users")
       .select("*")
       .eq("user_id", idInput)
       .eq("account_type", "student");
@@ -25,7 +26,6 @@
       alert(`${idInput} is invalid student_id`);
       return;
     }
-    idInput = idInput.join("-");
     const { error } = await supabase.from("offenses").insert({
       staff_id: $user_id,
       violation: violationInput,

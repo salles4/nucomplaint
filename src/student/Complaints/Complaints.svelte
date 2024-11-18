@@ -14,7 +14,7 @@
     const {data, error} = await supabase
     .from("complaints")
     .select("*")
-    .eq("sender_id", localStorage.getItem("user_id"));
+    .eq("sender_id", $user_id);
 
     if(error){
       alert(error.message);

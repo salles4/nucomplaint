@@ -13,8 +13,8 @@
   let userList;
   async function getList() {
     const { data, error } = await supabase
-      .from("access_data")
-      .select("email, primary_details(*), secondary_details(*)")
+      .from("users")
+      .select("*, secondary_details(*)")
       .eq("account_type", params.type);
 
     if (error) {
@@ -59,12 +59,12 @@
           </tr>
         </thead>
         <tbody>
-          {#each userList as { email, primary_details: details, secondary_details: sDetails }}
+          {#each userList as { email, first_name, user_id, last_name, secondary_details: others }}
             <tr class="hover:bg-black/10 hover:cursor-pointer">
-              <td>{details.user_id}</td>
-              <td>{details.last_name}, {details.first_name}</td>
+              <td>{user_id}</td>
+              <td>{last_name}, {first_name}</td>
               <td>{email}</td>
-              <td>{sDetails.contact}</td>
+              <td>{others.contact}</td>
               <td class="align-middle self-center">
                 <span class="dropdown dropdown-left">
                   <div tabindex="0" role="button" class="m-auto">
@@ -79,8 +79,8 @@
                         href="./"
                         on:click|preventDefault={() => {
                           deleteUser(
-                            details.user_id,
-                            `${details.first_name} ${details.last_name}`,
+                            user_id,
+                            `${first_name} ${last_name}`,
                             email
                           );
                         }}><Trash /> Delete</a

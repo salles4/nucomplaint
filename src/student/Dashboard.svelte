@@ -48,14 +48,16 @@
 </div>
 {/each}
 {/if}
-<div class="flex h-full">
-  <div class="w-1/2 flex flex-col justify-center items-center gap-12">
-    <Stat icon={MessageSquareWarning} label="Complaints" number={0} time="Last 24 Hours" />
-    <Stat icon={Gavel} label="Offenses" number={0} time="Last 24 Hours" />
+<div class="flex h-full justify-around items-center">
+  <div class="w-1/4 flex flex-col justify-center items-center gap-12">
+    <Stat icon={MessageSquareWarning} label="Your Complaints" number={0} time="" />
+    <Stat icon={Gavel} label="Offenses" number={0} time="" />
   </div>
-  <div class="bg-white m-12 w-1/2">
-    Survey
+  <div class="flex justify-around items-center gap-8">
+    <iframe title="facebook" src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FNUMOAph%2Fposts%2Fpfbid0renaZ3WfrFB6LfrWcuKLaPNpryjUvhmBxFzjSYLtVEUZa7683nXnHN2DS9676WD3l&width=750&show_text=false&height=660&appId" width="400" height="420" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+    <iframe title="fbpost" src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FNUMOAph%2Fposts%2Fpfbid0278cUKZRZ1evkqtikcDAzvRX68G8uh4tvGPMJe5cUrSUijh4VqJ4X1UcRX1ojXpQxl&show_text=false&width=500" width="400" height="420" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
   </div>
+    
 </div>
 
 <div></div>

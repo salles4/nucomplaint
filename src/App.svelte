@@ -36,10 +36,8 @@
       const uid = user.uid;
       console.log(user);
       firebase_uid.set(uid);
-      auth.set(null);
 
       if (user.emailVerified) {
-        let missingDetails = false;
         //checks if user's details is complete
         supabase
           .from("secondary_details")
@@ -59,6 +57,8 @@
             }
             console.log(data);
           });
+      }else{
+        auth.set(null)
       }
     } else {
       auth.set(null);

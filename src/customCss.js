@@ -8,6 +8,8 @@ const badgeDesign = {
   Cancelled: "badge-error",
   
   Investigating: "badge-error",
+
+  Unread:"badge-neutral"
 }
 
 /**

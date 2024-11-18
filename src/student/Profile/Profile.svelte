@@ -11,9 +11,9 @@
   let userData
   async function getData() {
     const {data, error} = await supabase
-    .from("primary_details")
-    .select("*, access_data(email), secondary_details(*)")
-    .eq("user_id", localStorage.getItem("user_id"))
+    .from("users")
+    .select("*, secondary_details(*), user_address(*)")
+    .eq("user_id", $user_id)
     .single()
 
     if(error){

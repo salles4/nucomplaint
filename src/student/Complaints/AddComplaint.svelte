@@ -1,6 +1,7 @@
 <script>
   import { pop } from "svelte-spa-router";
   import { supabase } from "../../supabase";
+  import { user_id } from "../../store";
 
   let typeInput, messageInput;
 
@@ -8,7 +9,7 @@
     const {error} = await supabase
     .from("complaints")
     .insert({
-      sender_id: localStorage.getItem("user_id"),
+      sender_id: $user_id,
       type: typeInput,
       message: messageInput
     })

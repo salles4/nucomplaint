@@ -3,14 +3,17 @@
   import { user_id } from "../../store";
   import { onDestroy } from "svelte";
   import { createReader, stopScanner } from "../../scanner";
-  import { QrCode } from "lucide-svelte";
+  import { List, QrCode } from "lucide-svelte";
+  import StudentLookup from "../../lib/StudentLookup.svelte";
   export let changeMode;
 
   let idInput, timeInput, typeInput, messageInput;
+  let scannerDiv, lookUpStudent = false;
 
   async function submit() {
+    idInput = idInput.split("-").join("");
     const { data, error: checkingIDError } = await supabase
-      .from("access_data")
+      .from("users")
       .select("*")
       .eq("user_id", idInput)
       .eq("account_type", "student");
@@ -39,21 +42,7 @@
     alert("Added Successfully");
     changeMode("display");
   }
-  let scannerDiv;
-  function toggleQR() {
-    scannerDiv = !scannerDiv;
-    if (scannerDiv) {
-      createReader(onScan);
-    } else {
-      stopScanner();
-    }
-  }
-  function onScan(id) {
-    let scannedID = id;
-    idInput = scannedID;
-    toggleQR();
-  }
-  onDestroy(() => scannerDiv && stopScanner());
+  
 </script>
 
 <div class="h-full flex">
@@ -78,7 +67,7 @@
         <button
           class="btn btn-sm btn-ghost"
           type="button"
-          on:click={() => toggleQR()}><QrCode /></button
+          on:click={() => lookUpStudent = true}><List /></button
         >
       </div>
     </div>
@@ -126,14 +115,11 @@
     </div>
   </form>
 
-  <div
-    id="reader"
-    class="flex-col items-center justify-center min-w-[400px] m-auto ms-0 h-fit {scannerDiv
-      ? 'flex'
-      : 'hidden'}"
-  ></div>
+  
 </div>
-
+{#if lookUpStudent}
+  <StudentLookup closeModal={(student_id = "") => {lookUpStudent = false; idInput = student_id}} />
+{/if}
 <datalist id="categories">
   <option value="Complaint"> </option>
   <option value="Violation"> </option>

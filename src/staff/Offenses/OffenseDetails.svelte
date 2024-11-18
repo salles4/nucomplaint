@@ -5,6 +5,7 @@
   import { onDestroy, onMount } from "svelte";
   import Loader from "../../lib/Loader.svelte";
   import { badge } from "../../customCss";
+  import moment from "moment";
 
   export let offense_id, closeDetails;
   let details;
@@ -61,7 +62,7 @@
   </button>
   <div transition:fly={{ duration: 500, x: 1000 }} class="absolute h-[100svh] right-0 top-0 bg-white w-full md:w-[550px] rounded-s-2xl z-20 overflow-y-auto flex flex-col">
     <div class="p-6 pb-2 flex items-center justify-between">
-      <h1 class="text-2xl font-bold">Complaint</h1>
+      <h1 class="text-2xl font-bold">Offense Details</h1>
       <button class="btn btn-ghost" on:click={closeDetails}>
         <X />
       </button>  
@@ -100,13 +101,13 @@
       <div class="row">
         <div class="name">Time Reported: </div>
         <div class="content">
-          {new Date(details.time_created).toDateString()} - {new Date(details.time_created).toLocaleTimeString()}
+          {moment(details.time_created).format("ddd - MMM DD, YYYY - hh:mm a")}
         </div>
       </div>
       <div class="row">
         <div class="name">Valid Until: </div>
         <div class="content">
-          {new Date(details.valid_until).toDateString()} - {new Date(details.valid_until).toLocaleTimeString()}
+          {moment(details.valid_until).format("ddd - MMM DD, YYYY - hh:mm a")}
         </div>
       </div>
       {#if details.note}
@@ -129,7 +130,7 @@
         Status:
         <select class="select-success px-2 min-w-fit max-w-xs select-sm" name="status" id="status" bind:value={newStatusSelected}>
           <option value="Reported">Reported</option>
-          <option value="On Investigation">On Investigation</option>
+          <option value="Investigating">Investigating</option>
           <option value="Guilty">Guilty</option>
           <option value="Dismissed">Dismissed</option>
           <option value="Archive">Archive</option>

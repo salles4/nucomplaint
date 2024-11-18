@@ -39,7 +39,7 @@
 
 </script>
 <div
-  class="fixed top-0 left-0 z-2"
+  class="fixed top-0 left-0 z-[99]"
   style="background-color: white; width:100vw; height:100vh; padding:0;"
   transition:fly={{ duration: 400, y: -500 }}
 >

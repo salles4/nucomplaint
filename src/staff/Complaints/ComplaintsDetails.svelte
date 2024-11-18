@@ -14,7 +14,7 @@
   async function getDetails(){
     const {data, error} = await supabase
     .from("complaints")
-    .select("*, primary_details(first_name, last_name), access_data(email)")
+    .select("*, sender_id(*)")
     .eq("complaint_id", complaint_id)
     .single()
 
@@ -87,9 +87,9 @@
       <div class="row">
         <div class="name">Sender: </div>
         <div class="content">
-          {details.primary_details.first_name} {details.primary_details.last_name}
+          {details.sender_id.first_name} {details.sender_id.last_name}
           <div class="text-sm text-gray-600">
-            {details.access_data.email} - {details.sender_id}
+            {details.sender_id.email} - {details.sender_id.user_id}
           </div>
         </div>
       </div>

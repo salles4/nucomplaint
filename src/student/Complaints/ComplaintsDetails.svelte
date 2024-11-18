@@ -4,13 +4,14 @@
   import { supabase } from "../../supabase";
   import { onMount } from "svelte";
   import Loader from "../../lib/Loader.svelte";
+  import {badge} from "../../customCss"
 
   export let complaint_id;
   let details;
   async function getDetails(){
     const {data, error} = await supabase
     .from("complaints")
-    .select("*, primary_details(first_name, last_name), access_data(email)")
+    .select("*, sender_id(*)")
     .eq("complaint_id", complaint_id)
     .single()
 
@@ -38,9 +39,9 @@
       <div class="row">
         <div class="name">Sender: </div>
         <div class="content">
-          {details.primary_details.first_name} {details.primary_details.last_name}
+          {details.sender_id.first_name} {details.sender_id.last_name}
           <div class="text-sm text-gray-600">
-            {details.access_data.email}
+            {details.sender_id.email}
           </div>
         </div>
       </div>
@@ -59,7 +60,7 @@
       <div class="row">
         <div class="name">Status: </div>
         <div class="content">
-          <span class="badge {status == "Unread" ? "badge-neutral" : "badge-success badge-outline"}">{details.status}</span>
+          <span class="badge {badge(details.status)}">{details.status}</span>
         </div>
       </div>
       <div class="row">
