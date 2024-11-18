@@ -33,19 +33,15 @@
     const { data, error } = await supabase
       .from("offenses")
       .select("*, student_id(*)")
-      .order("time_created", { ascending: false });
+      .eq("student_id", $user_id)
+      .order("time_created", { ascending: false })
 
     if (error) {
       alert(error.message);
       console.error(error);
       return;
     }
-    if ($auth == "guard") {
-      offenses = data.filter((offense) => offense.staff_id == $user_id);
-    } else {
-      offenses = data;
-    }
-    console.log(data);
+    offenses = data;
     filterList()
   }
   function filterList(activeFilter = "All"){
@@ -81,37 +77,8 @@
       }
     )
     .subscribe();
-
-  const filters = [
-    {
-      name: "All",
-      icon: FileClock,
-    },
-    {
-      name: "Investigating",
-      icon: Search,
-    },
-    {
-      name: "Reported",
-      icon: MailWarning,
-    },
-    {
-      name: "Guilty",
-      icon: MailCheck,
-    },
-    {
-      name: "Dismissed",
-      icon: MailCheck,
-    },
-    {
-      name: "Archive",
-      icon: Archive,
-    },
-  ];
   const columns = [
     { name: "Status" },
-    { name: "Student ID", value: "user_id" },
-    { name: "Full Name", value: "name" },
     { name: "Violation", value: "violation" },
     { name: "Category", value: "category" },
     { name: "Valid To", value: "valid_until" },
@@ -121,10 +88,8 @@
 </script>
 
 <Table
-  title="Student Offenses"
-  addText="Add Offense"
-  addLink="./#/offense/add"
-  {filters}
+  title="Your Offenses"
+  filters = {[]}
   {columns}
   {onSearch}
   {filterList}
@@ -132,7 +97,7 @@
   list={offenses}
   filteredList={filteredOffenses}
 >
-  {#each filteredOffenses as { offense_id, status, student_id: { first_name, last_name, user_id }, violation, category, valid_until, time_created }}
+  {#each filteredOffenses as { offense_id, status, violation, category, valid_until, time_created }}
     <tr
       class="border-black/20 hover:bg-black/5 hover:cursor-pointer"
       on:click={() => (selectedOffense = offense_id)}
@@ -140,13 +105,6 @@
       <td class="p-2"
         ><span class="badge text-nowrap {badge(status)}">{status}</span></td
       >
-      <td>
-        {user_id}
-      </td>
-      <td>
-        {first_name}
-        {last_name}
-      </td>
       <td class="truncate">
         {violation}
       </td>

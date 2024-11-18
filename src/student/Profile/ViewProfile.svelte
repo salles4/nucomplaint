@@ -4,9 +4,12 @@
   import { onMount } from "svelte";
   import { replace } from "svelte-spa-router";
   import moment from "moment";
+  import ChangeProfilePic from "../../lib/ChangeProfilePic.svelte";
+  import { user_id } from "../../store";
 
   export let data;
-  let studentID = localStorage.getItem("user_id"),
+  let changeProfile = false;
+  let studentID = $user_id,
     emailVal,
     nameVal,
     lNameVal,
@@ -178,16 +181,19 @@
     <div class="flex items-center">
       <!-- <div class="link link-secondary">Change Password</div> -->
       <div class="ms-auto gap-4">
-        <button class="btn btn-secondary" on:click>Edit Profile</button>
+        <!-- <button class="btn btn-secondary" on:click>Edit Profile</button> -->
+         <button class="btn btn-secondary btn-sm" on:click={()=>changeProfile = true}>Change Picture</button>
         <button
-          class="btn btn-secondary btn-outline"
+          class="btn btn-secondary btn-outline btn-sm"
           on:click={() => replace("/")}>Back</button
         >
       </div>
     </div>
   </div>
 </div>
-
+{#if changeProfile}
+<ChangeProfilePic closeModal={()=>changeProfile = false} />
+{/if}
 <style>
   input {
     width: 60% !important;

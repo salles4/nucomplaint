@@ -13,7 +13,9 @@
 
 
   async function submit() {
-    idInput = idInput.split("-").join("");
+    if(`${idInput}`.includes("-")){
+      idInput = idInput.split("-").join("");
+    }
     const { data, error: checkingIDError } = await supabase
       .from("users")
       .select("*")

@@ -17,7 +17,7 @@
   import StudentDashboard from "./student/Dashboard.svelte";
   import StudentProfile from "./student/Profile/Profile.svelte";
   import StudentComplaints from "./student/Complaints/Complaints.svelte";
-  import StudentOffenses from "./student/Offenses.svelte";
+  import StudentOffenses from "./student/Offenses/Offenses.svelte";
 
   import { auth, user_id, firebase_uid, user_details } from "./store";
   import UserList from "./staff/Dashboard/UserList.svelte";
