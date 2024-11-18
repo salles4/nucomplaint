@@ -5,7 +5,7 @@
   import Sidebar from "./lib/Sidebar.svelte";
   import Header from "./lib/Header.svelte";
   import Dashboard from "./staff/Dashboard/Dashboard.svelte";
-  import Profile from "./staff/Profile/Profile.svelte";
+  import Profile from "./lib/Profile/Profile.svelte";
   import Complaints from "./staff/Complaints/Complaints.svelte";
   import Offenses from "./staff/Offenses/Offenses.svelte";
   import Appointments from "./staff/Appointments/Appointments.svelte";
@@ -15,7 +15,7 @@
   import Entry from "./pages/Entry.svelte";
 
   import StudentDashboard from "./student/Dashboard.svelte";
-  import StudentProfile from "./student/Profile/Profile.svelte";
+  // import StudentProfile from "./student/Profile/Profile.svelte";
   import StudentComplaints from "./student/Complaints/Complaints.svelte";
   import StudentOffenses from "./student/Offenses/Offenses.svelte";
 
@@ -118,7 +118,7 @@
         routes={{
           "/": Dashboard,
           "/dashboard": StudentDashboard,
-          "/profile": StudentProfile,
+          "/profile": Profile,
           "/complaints": StudentComplaints,
           "/addComplaint": AddComplaint,
           "/offenses": StudentOffenses,
@@ -132,6 +132,7 @@
       <Routes
         routes={{
           "/": Offenses,
+          "/profile": Profile,
           "/offense/add": AddOffense,
           "/records": Offenses,
         }}

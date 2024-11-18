@@ -2,16 +2,12 @@
   import { fade } from "svelte/transition";
   import { supabase } from "../../supabase";
   import { onMount } from "svelte";
-  import { replace } from "svelte-spa-router";
-  import moment from "moment";
-  import ChangeProfilePic from "../../lib/ChangeProfilePic.svelte";
   import { user_id } from "../../store";
-
   export let data;
-  let changeProfile = false;
+  export let updateFunction;
   let studentID = $user_id,
     emailVal,
-    nameVal,
+    fNameVal,
     lNameVal,
     contactVal,
     birthdateVal,
@@ -23,7 +19,7 @@
     houseNumVal,
     postalVal;
 
-  function getData() {
+  async function getData() {
     const {
       first_name,
       last_name,
@@ -40,28 +36,40 @@
       },
     } = data;
     emailVal = email;
-    nameVal = `${first_name} ${middle_initial}${!middle_initial.endsWith(".") ? "." : ""} ${last_name}`;
+    fNameVal = first_name;
+    lNameVal = last_name;
     contactVal = contact;
-    birthdateVal = moment(birth_date).format("MMMM DD, YYYY");
     genderVal = gender;
-    provinceVal = province_code;
-    cityVal = city_code;
-    regionVal = region_code;
-    barangayVal = barangay_code;
-    houseNumVal = house_number;
-    postalVal = postal_code;
+  }
+  function updateClicked() {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailVal)) {
+      alert("Invalid email");
+      return;
+    } else if (!emailVal.endsWith("@nu-moa.edu.ph")) {
+      alert("Email should end with '@nu-moa.edu.ph'");
+      return;
+    }
+
+    const newData = {
+      email: emailVal,
+      studentID: studentID,
+      fName: fNameVal,
+      lName: lNameVal,
+      contact: contactVal,
+      gender: genderVal,
+    };
+    updateFunction(newData);
   }
   onMount(getData);
 </script>
 
 <div class="h-full flex" in:fade>
   <div
-    class="bg-white min-w-[300px] w-full lg:max-w-[900px] max-w-[500px] p-4 py-6 h-fit m-auto flex flex-col gap-3"
+    class="bg-white min-w-[200px] max-w-[900px] p-4 md:p-12 py-6 h-fit m-auto flex flex-col gap-3"
   >
-    <h2 class="text-center text-2xl font-bold">Your Profile</h2>
+    <h2 class="text-center text-2xl font-bold">Update Profile</h2>
     <hr class="py-1" />
-    
-    <hr class="py-1">
     <div class="row">
       <div class="sect">
         <div class="row">
@@ -92,7 +100,7 @@
             required
             type="text"
             id="fName"
-            bind:value={nameVal}
+            bind:value={fNameVal}
           />
         </div>
         <div class="row">
@@ -177,23 +185,16 @@
         </div>
       </div>
     </div>
+
     <hr />
-    <div class="flex items-center">
-      <!-- <div class="link link-secondary">Change Password</div> -->
-      <div class="ms-auto gap-4">
-        <!-- <button class="btn btn-secondary" on:click>Edit Profile</button> -->
-         <button class="btn btn-secondary btn-sm" on:click={()=>changeProfile = true}>Change Picture</button>
-        <button
-          class="btn btn-secondary btn-outline btn-sm"
-          on:click={() => replace("/")}>Back</button
-        >
-      </div>
+
+    <div class="ms-auto gap-4">
+      <button class="btn btn-secondary" on:click={updateClicked}>Update</button>
+      <button class="btn btn-secondary btn-outline" on:click>Cancel</button>
     </div>
   </div>
 </div>
-{#if changeProfile}
-<ChangeProfilePic closeModal={()=>changeProfile = false} />
-{/if}
+
 <style>
   input {
     width: 60% !important;
