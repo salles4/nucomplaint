@@ -59,13 +59,13 @@
         <input
           bind:value={idInput}
           required
-          class="input-bordered !grow"
+          class="input-bordered !grow rounded-e-none"
           type="text"
           name="student_id"
           id="student_id"
         />
         <button
-          class="btn btn-sm btn-ghost"
+          class="btn btn-sm btn-primary rounded-s-none h-full"
           type="button"
           on:click={() => lookUpStudent = true}><List /></button
         >

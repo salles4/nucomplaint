@@ -2,13 +2,15 @@
   import { supabase } from "../../supabase";
   import { auth, user_id } from "../../store";
   import { replace } from "svelte-spa-router";
-  import { CircleArrowRight, QrCode } from "lucide-svelte";
+  import { CircleArrowRight, List, QrCode } from "lucide-svelte";
   import { createReader, stopScanner } from "../../scanner";
   import { onDestroy } from "svelte";
+  import StudentLookup from "../../lib/StudentLookup.svelte";
 
   let idInput, timeInput, violationInput, categoryInput, noteInput;
   let scannedID;
-  let scannerDiv = false;
+  let lookUpStudent = false;
+
 
   async function submit() {
     idInput = idInput.split("-").join("");
@@ -45,30 +47,9 @@
     }
     replace("/offenses");
   }
-  function toggleQR() {
-    scannerDiv = !scannerDiv;
-    if (scannerDiv) {
-      createReader(onScan);
-    } else {
-      stopScanner();
-    }
-  }
-  function onScan(id) {
-    scannedID = id;
-    idInput = scannedID;
-    toggleQR();
-  }
-  onDestroy(() => scannerDiv && stopScanner());
 </script>
 
 <div class="h-full flex justify-center items-center flex-wrap">
-  <div
-    id="reader"
-    class="flex-col items-center justify-center md:min-w-[400px] min-w-[200px] m-auto ms-0 md:ms-auto h-fit {scannerDiv
-      ? 'flex'
-      : 'hidden'}"
-  ></div>
-
   <form
     on:submit|preventDefault={submit}
     class="max-w-[600px] min-w-[256px] w-full bg-white px-12 pb-8 p-4 m-auto h-fit flex flex-col justify-center items-center gap-4"
@@ -88,14 +69,9 @@
           id="student_id"
         />
         <button
-          class="btn btn-sm rounded-s-none rounded-e-none px-2 h-full"
+          class="btn btn-sm btn-primary rounded-s-none h-full"
           type="button"
-          on:click={() => toggleQR()}><CircleArrowRight /></button
-        >
-        <button
-          class="btn btn-sm btn-neutral rounded-s-none px-2 h-full"
-          type="button"
-          on:click={() => toggleQR()}><QrCode /></button
+          on:click={() => lookUpStudent = true}><List /></button
         >
       </div>
     </div>
@@ -152,7 +128,9 @@
     </div>
   </form>
 </div>
-
+{#if lookUpStudent}
+  <StudentLookup closeModal={(student_id = "") => {lookUpStudent = false; idInput = student_id}} />
+{/if}
 <datalist id="categories">
   <option value="Minor Offense"> </option>
   <option value="Category 1 - Probation"> </option>
