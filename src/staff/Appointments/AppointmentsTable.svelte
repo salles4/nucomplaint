@@ -132,10 +132,10 @@
   >
     <td class="p-2"><span class="badge {badge(status)}">{status}</span></td>
     <!-- <td>{user_id}</td> -->
-    <td>{first_name} {last_name}</td>
+    <td class="text-nowrap">{first_name} {last_name}</td>
     <td>{reason}</td>
     <td class="truncate text-start max-w-[300px]">{message}</td>
-    <td>{moment(time).format("MMM DD, YYYY - hh:mm a")}</td>
+    <td class="text-nowrap">{moment(time).format("MMM DD, YYYY - hh:mm a")}</td>
     <td>
       <div>
         <Ellipsis class="mx-auto" />

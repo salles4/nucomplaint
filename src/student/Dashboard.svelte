@@ -11,7 +11,19 @@
   }
 
   let appointment;
+  let dashboard;
 
+  async function getCounts(){
+    const {data, error} = await supabase.rpc("get_student_count", {id:$user_id})
+    if(error){
+      alert(error.message);
+      console.error(error);
+      return;
+      
+    }
+    console.log(data);
+    dashboard = data[0]
+  }
   async function checkAppointment() {
     const {data, error} = await supabase
     .from("appointments")
@@ -25,6 +37,7 @@
     }
     appointment = data;
   }
+  onMount(getCounts)
   onMount(checkAppointment)
 </script>
 {#if appointment}
@@ -50,8 +63,10 @@
 {/if}
 <div class="flex h-full justify-around items-center">
   <div class="w-1/4 flex flex-col justify-center items-center gap-12">
-    <Stat icon={MessageSquareWarning} label="Your Complaints" number={0} time="" />
-    <Stat icon={Gavel} label="Offenses" number={0} time="" />
+    {#if dashboard}
+    <Stat icon={MessageSquareWarning} label="Your Complaints" number={dashboard.complaints} time="" />
+    <Stat icon={Gavel} label="Offenses" number={dashboard.offenses} time="" />
+    {/if}
   </div>
   <div class="flex justify-around items-center gap-8">
     <iframe title="facebook" src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FNUMOAph%2Fposts%2Fpfbid0renaZ3WfrFB6LfrWcuKLaPNpryjUvhmBxFzjSYLtVEUZa7683nXnHN2DS9676WD3l&width=750&show_text=false&height=660&appId" width="400" height="420" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>

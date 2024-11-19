@@ -53,7 +53,7 @@
       </div>
       <div class="block lg:hidden">
         <details class="dropdown dropdown-end">
-          <summary class="btn m-1 flex-nowrap"><svelte:component this={getIconByText(filters, activeFilter)} class=" text-white" /> {activeFilter}</summary>
+          <summary class="btn btn-sm m-1 flex-nowrap"><svelte:component this={getIconByText(filters, activeFilter)} class=" text-white" /> {activeFilter}</summary>
           <ul
             class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow text-black"
           >

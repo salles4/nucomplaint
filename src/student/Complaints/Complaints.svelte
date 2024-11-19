@@ -6,6 +6,7 @@
   import Loader from "../../lib/Loader.svelte";
   import { user_id } from "../../store";
   import ComplaintsDetails from "./ComplaintsDetails.svelte";
+  import { badge } from "../../customCss";
 
   let complaints;
   let selectedComplaint;
@@ -60,7 +61,7 @@
       {#each complaints as {status, sent_date, type, message, complaint_id}}
         <tr class="hover:bg-black/10 hover:cursor-pointer" on:click={() => selectedComplaint = complaint_id}>
           <td>
-            <span class="badge {status == "Unread" ? "badge-neutral" : "badge-success badge-outline"}">{status}</span>
+            <span class="badge {badge(status)}">{status}</span>
           </td>
           <td class="truncate max-w-[300px]">{message}</td>
           <td>{new Date(sent_date).toDateString()} - {new Date(sent_date).toLocaleTimeString()}</td>
