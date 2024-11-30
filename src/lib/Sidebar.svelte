@@ -8,11 +8,13 @@
     Gavel,
     House,
     Image,
+    List,
     LogOut,
     MessageSquareWarning,
     Newspaper,
     QrCode,
     User,
+    X,
   } from "lucide-svelte";
   import NavbarItem from "./NavbarItem.svelte";
   import { supabase } from "../supabase";
@@ -112,13 +114,15 @@
   <button
     on:click={toggleSidebar}
     class="{$sidebarLabel
-      ? 'absolute self-end sm:top-0 top-6'
-      : 'self-center sm:static fixed top-6 left-0'} p-2 px-3 text-lg m-2 rounded-lg border hover:cursor-pointer bg-white"
+      ? 'absolute self-end sm:top-0 top-1'
+      : 'self-center sm:static fixed top-1 left-0'} p-2 px-3 text-lg m-2 rounded-lg border hover:cursor-pointer bg-white"
   >
     {#if $sidebarLabel}
-      <ArrowLeftFromLine size="20" />
+    <X size="20" class="sm:hidden" />
+    <ArrowLeftFromLine size="20" class="hidden sm:block" />
     {:else}
-      <ArrowRightFromLine size="20" />
+    <List size="20" class="sm:hidden" />
+    <ArrowRightFromLine size="20" class="hidden sm:block" />
     {/if}
   </button>
 

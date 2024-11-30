@@ -65,14 +65,17 @@
       );
       const user = userCredential.user;
       console.log(user);
-
+      let user_type = "student"
+      if(!regEmail.includes("@students") && regEmail.endsWith("@nu-moa.edu.ph")){
+        user_type = "guard"
+      }
       const { data, error } = await supabase
         .from("users")
         .insert({
           firebase_uid: user.uid,
           user_id: intStudentID,
           email: regEmail,
-          account_type: "student",
+          account_type: user_type,
           first_name: fName,
           last_name: lName,
           middle_initial: middleInitial,

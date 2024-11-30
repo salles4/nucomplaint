@@ -10,8 +10,11 @@
   let idInput, timeInput, typeInput, messageInput;
   let scannerDiv, lookUpStudent = false;
 
-  async function submit() {
-    idInput = idInput.split("-").join("");
+  async function submit() { 
+    idInput = idInput.toString()
+    if(idInput.includes("-")){
+      idInput = idInput.split("-").join("");
+    }
     const { data, error: checkingIDError } = await supabase
       .from("users")
       .select("*")
