@@ -6,13 +6,15 @@
   import { createReader, stopScanner } from "../../scanner";
   import { onDestroy } from "svelte";
   import StudentLookup from "../../lib/StudentLookup.svelte";
+  import moment from "moment";
 
   let idInput, timeInput, violationInput, categoryInput, noteInput;
-  let scannedID;
   let lookUpStudent = false;
+  let buttonDisabled = false;
 
 
   async function submit() {
+    buttonDisabled = true;
     if(`${idInput}`.includes("-")){
       idInput = idInput.split("-").join("");
     }
@@ -23,11 +25,13 @@
       .eq("account_type", "student");
     if (checkingIDError) {
       console.error(checkingIDError);
+      buttonDisabled = false;
       return;
     }
 
     if (data.length == 0) {
       alert(`${idInput} is invalid student_id`);
+      buttonDisabled = false;
       return;
     }
     const { error } = await supabase.from("offenses").insert({
@@ -41,6 +45,7 @@
 
     if (error) {
       alert(error.message);
+      buttonDisabled = false;
       return;
     }
     alert("Added Successfully");
@@ -108,6 +113,8 @@
         required
         class="input-bordered"
         type="datetime-local"
+        min="{moment().add(1, "d").format("YYYY-MM-DDT12:00")}"
+        max={moment().add(3, "M").format("YYYY-MM-DDT12:00")}
         name="validDate"
         id="validDate"
       />
@@ -123,7 +130,7 @@
       ></textarea>
     </div>
     <div class="flex gap-4">
-      <button class="btn btn-secondary w-[128px]" type="submit">Submit</button>
+      <button class="btn btn-secondary w-[128px]" type="submit" disabled={buttonDisabled}>Submit</button>
       <a class="btn btn-primary w-[128px]" type="button" href="./#/offenses"
         >Cancel</a
       >
@@ -131,7 +138,7 @@
   </form>
 </div>
 {#if lookUpStudent}
-  <StudentLookup closeModal={(student_id = "") => {lookUpStudent = false; idInput = student_id}} />
+  <StudentLookup closeModal={(student_id = idInput) => {lookUpStudent = false; idInput = student_id}} />
 {/if}
 <datalist id="categories">
   <option value="Minor Offense"> </option>

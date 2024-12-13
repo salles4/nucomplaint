@@ -9,7 +9,7 @@
   import Complaints from "./staff/Complaints/Complaints.svelte";
   import Offenses from "./staff/Offenses/Offenses.svelte";
   import Appointments from "./staff/Appointments/Appointments.svelte";
-  import Reports from "./staff/Reports.svelte";
+  import Reports from "./staff/Reports/Reports.svelte";
   import Surveys from "./staff/Surveys.svelte";
   import Error from "./pages/Error.svelte";
   import Entry from "./pages/Entry.svelte";

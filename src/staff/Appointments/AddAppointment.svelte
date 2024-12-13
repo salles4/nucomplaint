@@ -5,28 +5,56 @@
   import { createReader, stopScanner } from "../../scanner";
   import { List, QrCode } from "lucide-svelte";
   import StudentLookup from "../../lib/StudentLookup.svelte";
+  import moment from "moment";
   export let changeMode;
 
   let idInput, timeInput, typeInput, messageInput;
   let scannerDiv, lookUpStudent = false;
+  let buttonDisabled = false;
 
   async function submit() { 
+    buttonDisabled = true
     idInput = idInput.toString()
     if(idInput.includes("-")){
       idInput = idInput.split("-").join("");
     }
+
+    
     const { data, error: checkingIDError } = await supabase
-      .from("users")
+    .from("users")
       .select("*")
       .eq("user_id", idInput)
       .eq("account_type", "student");
     if (checkingIDError) {
       console.error(checkingIDError);
+      buttonDisabled = false;
       return;
     }
 
     if (data.length == 0) {
       alert(`${idInput} is invalid student_id`);
+      buttonDisabled = false;
+      return;
+    }
+    
+    
+    const {data: schedCheck, error: schedCheckError} = await supabase
+    .from("appointments")
+    .select("*, student_id(*)")
+    .eq("student_id", idInput)
+    .eq("status", "Scheduled")
+    .gt("time", "now()")
+    if (schedCheckError) {
+      console.error(checkingIDError);
+      buttonDisabled = false;
+      return;
+    }
+
+    if (schedCheck.length != 0) {
+      console.log(schedCheck);
+      
+      alert(`${schedCheck[0].student_id.first_name} ${schedCheck[0].student_id.last_name} already has a scheduled appoinemnt`);
+      buttonDisabled = false;
       return;
     }
 
@@ -40,11 +68,13 @@
 
     if (error) {
       alert(error.message);
+      buttonDisabled = false;
       return;
     }
     alert("Added Successfully");
     changeMode("display");
   }
+  console.log(moment().add(3, 'M').toISOString());
   
 </script>
 
@@ -75,14 +105,16 @@
       </div>
     </div>
     <div class="row">
-      <label for="student_id">Time: </label>
+      <label for="appointment_time">Time: </label>
       <input
         bind:value={timeInput}
         required
         class="input-bordered"
         type="datetime-local"
-        name="student_id"
-        id="student_id"
+        name="appointment_time"
+        min="{moment().add(1, "d").format("YYYY-MM-DDT12:00")}"
+        max={moment().add(3, "M").format("YYYY-MM-DDT12:00")}
+        id="appointment_time"
       />
     </div>
     <div class="row">
@@ -109,7 +141,7 @@
       ></textarea>
     </div>
     <div class="flex flex-wrap justify-center gap-4">
-      <button class="btn btn-secondary w-[120px]" type="submit">Submit</button>
+      <button class="btn btn-secondary w-[120px]" type="submit" disabled={buttonDisabled}>Submit</button>
       <button
         class="btn btn-primary w-[120px]"
         type="button"

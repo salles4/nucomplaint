@@ -4,8 +4,10 @@
   import { user_id } from "../../store";
 
   let typeInput, messageInput;
+  let buttonDisabled = false
 
   async function submit(){
+    buttonDisabled = true
     const {error} = await supabase
     .from("complaints")
     .insert({
@@ -16,6 +18,8 @@
 
     if(error){
       alert(error.message)
+      buttonDisabled = false;
+      return;
     }
 
     pop()
@@ -55,7 +59,7 @@
       ></textarea>
     </div>
     <div class="flex gap-4">
-      <button class="btn btn-secondary w-[128px]" type="submit">Submit</button>
+      <button class="btn btn-secondary w-[128px]" type="submit" disabled={buttonDisabled}>Submit</button>
       <button class="btn btn-primary w-[128px]" on:click={() => pop()}
         >Cancel</button
       >

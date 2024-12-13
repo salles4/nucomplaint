@@ -1,7 +1,10 @@
 <script>
+  import { onMount } from "svelte";
+
   export let user_id;
   export let style = "size-[72px]";
   let placeholderImg = false;
+  onMount(()=> placeholderImg = false)
 </script>
 
 {#if !placeholderImg}
