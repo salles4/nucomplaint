@@ -84,3 +84,7 @@ label {
   @apply !list-disc list-inside;
   transition: all 0.2s ease-in-out;
 }
+
+td{
+  @apply border-x-2;
+}

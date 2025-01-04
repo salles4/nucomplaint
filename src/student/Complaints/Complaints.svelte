@@ -1,5 +1,5 @@
 <script>
-  import { Ellipsis, Eye, PlusCircle, Trash } from "lucide-svelte";
+  import { Archive, Ellipsis, Eye, List, MailCheck, MailWarning, PlusCircle, Trash } from "lucide-svelte";
   import { supabase } from "../../supabase";
   import { pop } from "svelte-spa-router";
   import { onMount } from "svelte";
@@ -7,9 +7,12 @@
   import { user_id } from "../../store";
   import ComplaintsDetails from "./ComplaintsDetails.svelte";
   import { badge } from "../../customCss";
+  import Table from "../../lib/Table.svelte";
 
+  let active = "All";
   let complaints;
   let selectedComplaint;
+  let filterComplaints = [];
 
   async function getComplaints() {
     const {data, error} = await supabase
@@ -22,8 +25,33 @@
       return
     }
     complaints = data;
-    console.log(complaints)
+    filterList()
   }
+
+  function filterList(activeFilter = "All"){
+    active = activeFilter;
+    filterComplaints = complaints.filter((complaint) => (complaint.status == active || active == "All"));
+    console.log(filterComplaints);
+  }
+
+  function onSearch(col, text){
+    filterList(active)
+    console.log(col, text);
+    if(!text){
+      return;
+    }
+
+    const searchedComplaints = filterComplaints.filter((data) => {
+      //TODO: accomodate other cols
+      if(col == 'name'){
+        const {student_id: {first_name, last_name}} = data
+        return `${first_name} ${last_name}`.toLowerCase().includes(text.toLowerCase())  
+      }
+      return data[col].toLowerCase().includes(text.toLowerCase())
+    })
+    filterComplaints = searchedComplaints;
+  }
+
   supabase
       .channel("complaints")
       .on(
@@ -35,75 +63,58 @@
       )
       .subscribe();
   onMount(()=>{getComplaints()})
+  const filters = [
+    {
+      name: "All",
+      icon: List,
+    },
+    {
+      name: "Unsettled",
+      icon: MailWarning,
+    },
+    {
+      name: "Settled",
+      icon: MailCheck,
+    },
+    {
+      name: "Archive",
+      icon: Archive,
+    }
+  ];
+  const columns = [
+    { name: "Status" },
+    { name: "Message", value: "message" },
+    { name: "Type", value: "type" },
+    { name: "Date Sent", value: "sent_date" },
+  ];
 </script>
+<Table
+  title="Your Complaints"
+  addText="New Complaint"
+  addLink="./#/addComplaint"
+  {columns}
+  {onSearch}
+  {filterList}
+  {filters}
+  activeFilter={active}
+  list={complaints}
+  filteredList={filterComplaints}
+>
+{#each filterComplaints as { complaint_id, status, type, message, sent_date, sender_id:{first_name, last_name}}}
+  <tr class="border-black/20 hover:bg-black/5 hover:cursor-pointer" on:click={() => selectedComplaint = complaint_id}>
+    <td><span class="badge {badge(status)}">{status}</span></td>
+    <td class="truncate text-start max-w-[300px]">{message}</td>
+    <td>{type}</td>
+    <td class="text-nowrap">{new Date(sent_date).toDateString()}</td>
+    <td>
+      <div>
+        <Ellipsis class="mx-auto" />
+      </div>
+    </td>
+  </tr>
+{/each}
+</Table>
 
-<div>
-  <div class="text-center relative p-4 z-0">
-    <span class="text-3xl font-bold">
-      Complaints
-    </span>
-    <a
-      class="btn btn-primary absolute py-2 h-auto btn-sm right-4 top-4"
-      href="./#/addComplaint"> <PlusCircle /> Add New</a
-    >
-  </div>
-  {#if complaints && complaints.length > 0}
-  <table class="table table-lg">
-    <thead class="text-lg">
-      <tr>
-        <th>Status</th>
-        <th>Message</th>
-        <th>Date Sent</th>
-        <th>Type</th>
-      </tr>
-    </thead>
-    <tbody>
-      {#each complaints as {status, sent_date, type, message, complaint_id}}
-        <tr class="hover:bg-black/10 hover:cursor-pointer" on:click={() => selectedComplaint = complaint_id}>
-          <td>
-            <span class="badge {badge(status)}">{status}</span>
-          </td>
-          <td class="truncate max-w-[300px]">{message}</td>
-          <td>{new Date(sent_date).toDateString()} - {new Date(sent_date).toLocaleTimeString()}</td>
-          <td>{type}</td>
-          <td class="align-middle self-center">
-              <span class="dropdown dropdown-left ">
-                <div tabindex="0" role="button" class="m-auto">
-                  <Ellipsis />
-                </div>
-                <ul
-                  class="dropdown-content menu menu-xs bg-base-100 absolute rounded-box border w-52 p-2 shadow"
-                >
-                  <li><button><Eye /> View Profile</button></li>
-                  <li>
-                    <button><Trash /> Delete</button
-                    >
-                  </li>
-                </ul>
-              </span>
-            </td>
-        </tr>
-        {/each}
-      </tbody>
-    </table>
-    {:else if complaints && complaints.length == 0}
-    <table class="table table-lg">
-    <thead class="text-lg">
-      <tr>
-        <th>Status</th>
-        <th>Message</th>
-        <th>Date Sent</th>
-        <th>Type</th>
-      </tr>
-    </thead>
-    <tbody>
-    <div class="text-center w-full my-4 absolute text-xl">Nothing to show here...</div>
-  </tbody>
-</table>
-      {:else}
-      <Loader />
-      {/if}
-</div>
 {#if selectedComplaint}
   <ComplaintsDetails complaint_id={selectedComplaint} on:click={() => selectedComplaint = null} />
 {/if}

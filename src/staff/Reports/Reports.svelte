@@ -2,7 +2,6 @@
   import Chart from "chart.js/auto";
   import { onMount } from "svelte";
   import { supabase } from "../../supabase";
-  import { Stars } from "lucide-svelte";
   import AiReport from "./AIReport..svelte";
   import moment from "moment";
   import 'chartjs-adapter-moment';
@@ -41,7 +40,7 @@
     complaintData = "";
     Object.entries(complaintMap).forEach(([type, amt]) => {
       data.push({type, amt})
-      complaintData += `${amt} ${type},`
+      complaintData += `${type}:${amt}, `
     })
     dataContext = complaintData;
     
@@ -81,6 +80,8 @@
         }
       },
     });
+    console.log(data.map((row) => row.type));
+    console.log(data.map((row) => row.amt));
     new Chart(chart2, {
       type: "line",
       data: {
@@ -109,7 +110,7 @@
           },
           y:{
             suggestedMin: 0,
-            suggestedMax: 10,
+            suggestedMax: 5,
             min:0
           }
         },
@@ -130,13 +131,12 @@
   onMount(get_complaints_30d);
 </script>
 
-<div class="flex flex-wrap justify-center items-center">
-  {#if dataContext && dataContext != ""}
-    <AiReport {dataContext} />
-  {/if}
-  
-  <div class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 p-4 m-4 mx-2 bg-white shadow-lg">
-    <canvas bind:this={chart1} class="sm:max-h-[300px]"> </canvas>
+{#if dataContext && dataContext != ""}
+  <AiReport {dataContext} />
+{/if}
+<div class="flex flex-wrap justify-around items-center">
+  <div class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 p-4 mx-2 bg-white shadow-lg">
+    <canvas bind:this={chart1} class="max-h-[250px] 2xl:max-h-[400px]"> </canvas>
     <div class="font-semibold text-xl pt-5">Complaints Report <span class="text-gray-400 text-sm">Last 30 Days</span></div>
     {#if data.length > 0}
     <div>
@@ -150,7 +150,7 @@
     {/if}
   </div>
   <div class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 p-4 m-4 mx-2 bg-white shadow-lg">
-    <canvas bind:this={chart2} class="max-h-[400px]"> </canvas>
+    <canvas bind:this={chart2} class="max-h-[500px]"> </canvas>
 
     <div class="font-semibold text-xl pt-5">Monthly Complaints</div>
     <div>0 increase in today's complaints</div>

@@ -1,5 +1,5 @@
 const badgeDesign = {
-  Unsettled: "badge-neutral",
+  Unsettled: "badge-neutral badge-outline",
   Settled: "badge-success badge-outline",
   Archive: "badge-error badge-outline",
 

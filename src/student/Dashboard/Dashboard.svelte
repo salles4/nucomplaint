@@ -1,10 +1,12 @@
 <script>
   import { location, replace } from 'svelte-spa-router'
-  import Stat from '../lib/Stat.svelte';
+  import Stat from '../../lib/Stat.svelte';
   import {MessageSquareWarning, Gavel, Info} from 'lucide-svelte'
-  import { supabase } from '../supabase';
-  import { user_id } from '../store';
+  import { supabase } from '../../supabase';
+  import { user_id } from '../../store';
   import { onMount } from 'svelte';
+  import moment from 'moment';
+  import Survey from './Survey.svelte';
 
   if($location == "/"){
     replace("/dashboard")
@@ -48,7 +50,7 @@
     <Info />
     <div>
       You have scheduled meeting at 
-      <span class="text-primary font-bold">{new Date(time).toDateString()} - {new Date(time).toLocaleTimeString()}</span>
+      <span class="text-primary font-bold">{moment(time).format("dddd, MMM DD, YYYY - hh:mma")}</span>
       with 
       <span class="font-bold">
         {first_name} {last_name}
@@ -62,17 +64,16 @@
 </div>
 {/each}
 {/if}
-<div class="flex h-full justify-around items-center lg:flex-row flex-col">
-  <div class="w-1/4 flex flex-col justify-center items-center gap-12">
+<div class="flex h-full justify-evenly items-center lg:flex-row flex-col">
+  <div class=" flex lg:flex-col justify-center items-center gap-12 mt-4">
     {#if dashboard}
     <Stat icon={MessageSquareWarning} label="Your Complaints" number={dashboard.complaints} time="" />
     <Stat icon={Gavel} label="Offenses" number={dashboard.offenses} time="" />
     {/if}
   </div>
-  <div class="flex justify-around items-center flex-wrap gap-8">
-    <iframe title="facebook" src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FNUMOAph%2Fposts%2Fpfbid0renaZ3WfrFB6LfrWcuKLaPNpryjUvhmBxFzjSYLtVEUZa7683nXnHN2DS9676WD3l&width=750&show_text=false&height=660&appId" width="400" height="420" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-    <iframe title="fbpost" src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FNUMOAph%2Fposts%2Fpfbid0278cUKZRZ1evkqtikcDAzvRX68G8uh4tvGPMJe5cUrSUijh4VqJ4X1UcRX1ojXpQxl&show_text=false&width=500" width="400" height="420" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-  </div>
+  
+    <Survey />
+  
     
 </div>
 

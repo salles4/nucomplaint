@@ -10,11 +10,11 @@
   import Offenses from "./staff/Offenses/Offenses.svelte";
   import Appointments from "./staff/Appointments/Appointments.svelte";
   import Reports from "./staff/Reports/Reports.svelte";
-  import Surveys from "./staff/Surveys.svelte";
+  import Surveys from "./staff/Surveys/Surveys.svelte";
   import Error from "./pages/Error.svelte";
   import Entry from "./pages/Entry.svelte";
 
-  import StudentDashboard from "./student/Dashboard.svelte";
+  import StudentDashboard from "./student/Dashboard/Dashboard.svelte";
   // import StudentProfile from "./student/Profile/Profile.svelte";
   import StudentComplaints from "./student/Complaints/Complaints.svelte";
   import StudentOffenses from "./student/Offenses/Offenses.svelte";
@@ -88,7 +88,7 @@
   {#if $auth == "staff"}
     <Sidebar />
     <main>
-      {#if !["/dashboard", "/profile"].includes($location)}
+      {#if !["/dashboard", "/profile", "/surveys"].includes($location)}
         <Header />
       {/if}
       <Routes
