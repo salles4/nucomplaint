@@ -5,8 +5,9 @@
   import { onMount } from "svelte";
   import Loader from "../../lib/Loader.svelte";
   import {badge} from "../../customCss"
+  import RightModal from "../../lib/RightModal.svelte";
 
-  export let complaint_id;
+  export let complaint_id, closeDetails;
   let details;
   async function getDetails(){
     const {data, error} = await supabase
@@ -23,19 +24,10 @@
   }
   onMount(getDetails)
 </script>
-<div class="overflow-hidden absolute w-[100svw] h-[100svh] top-0 left-0">
-  <button transition:fade class="bg-black/20 absolute w-[100svw] h-[100svh] top-0 left-0 cursor-default z-10" on:click>
-  </button>
-  <div transition:fly={{ duration: 500, x: 1000 }} class="absolute h-[100svh] right-0 top-0 bg-white w-full md:w-[550px] rounded-s-2xl z-20 overflow-y-auto flex flex-col">
-    <div class="p-6 pb-2 flex items-center justify-between">
-      <h1 class="text-2xl font-bold">Complaint</h1>
-      <button class="btn btn-ghost" on:click>
-        <X />
-      </button>  
-    </div>
-    <hr>
+<RightModal title="Complaint Details" {closeDetails}>
+
+    {#if details}
     <div class="px-6 flex-grow">
-      {#if details}
       <div class="row">
         <div class="name">Sender: </div>
         <div class="content">
@@ -69,21 +61,19 @@
           {details.message}
         </div>
       </div>
-      {:else}
-      <Loader />
-      {/if}
     </div>
     <div class="sticky bottom-0 p-4 bg-white border-t-2">
-      <button class="btn btn-sm btn-primary">
+      <a href="./#/complaint/{complaint_id}" class="btn btn-sm btn-primary">
         Reply
-      </button>
+      </a>
       <button class="btn btn-sm btn-error">
         Delete
       </button>
     </div>
-    
-  </div>  
-</div>
+      {:else}
+      <Loader />
+      {/if}
+</RightModal>
 
 <style>
   @media (min-width: 768px) {

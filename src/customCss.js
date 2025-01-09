@@ -1,7 +1,7 @@
 const badgeDesign = {
-  Unsettled: "badge-neutral badge-outline",
-  Settled: "badge-success badge-outline",
-  Archive: "badge-error badge-outline",
+  Unsettled: "badge-neutral text-white",
+  Settled: "badge-success text-white",
+  Archive: "badge-error",
 
   Scheduled: "badge-warning",
   Done: "badge-success",

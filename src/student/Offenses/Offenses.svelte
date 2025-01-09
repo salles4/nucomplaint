@@ -18,10 +18,11 @@
   import { onMount } from "svelte";
   import { supabase } from "../../supabase";
   import { badge } from "../../customCss";
-  import OffenseDetails from "./OffenseDetails.svelte";
+  import OffenseSummary from "./OffenseSummary.svelte";
   import { auth, user_id } from "../../store";
   import Loader from "../../lib/Loader.svelte";
   import Table from "../../lib/Table.svelte";
+  import {replace} from 'svelte-spa-router';
 
   let offenses;
   let active = "All";
@@ -29,6 +30,13 @@
   let searchText;
   let filteredOffenses = [];
   
+  export let params;
+  if(params && params.id && params.id != "-"){
+    selectedOffense = params.id
+  }else{
+    replace("/offenses/-")
+  }
+
   async function getOffenses() {
     const { data, error } = await supabase
       .from("offenses")
@@ -127,7 +135,7 @@
 </Table>
 
 {#if selectedOffense}
-  <OffenseDetails
+  <OffenseSummary
     offense_id={selectedOffense}
     closeDetails={() => (selectedOffense = null)}
   />

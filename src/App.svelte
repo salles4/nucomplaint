@@ -1,23 +1,24 @@
-<script>
-  
-
+<script>  
   import Routes, { location, replace } from "svelte-spa-router";
   import Sidebar from "./lib/Sidebar.svelte";
   import Header from "./lib/Header.svelte";
   import Dashboard from "./staff/Dashboard/Dashboard.svelte";
   import Profile from "./lib/Profile/Profile.svelte";
   import Complaints from "./staff/Complaints/Complaints.svelte";
+  import ComplaintPage from "./staff/Complaints/ComplaintPage.svelte"; 
   import Offenses from "./staff/Offenses/Offenses.svelte";
   import Appointments from "./staff/Appointments/Appointments.svelte";
   import Reports from "./staff/Reports/Reports.svelte";
   import Surveys from "./staff/Surveys/Surveys.svelte";
   import Error from "./pages/Error.svelte";
   import Entry from "./pages/Entry.svelte";
-
+  
   import StudentDashboard from "./student/Dashboard/Dashboard.svelte";
   // import StudentProfile from "./student/Profile/Profile.svelte";
   import StudentComplaints from "./student/Complaints/Complaints.svelte";
+  import StudentComplaintPage from "./student/Complaints/ComplaintPage.svelte"; 
   import StudentOffenses from "./student/Offenses/Offenses.svelte";
+  import StudentOffensePage from "./student/Offenses/OffensePage.svelte";
 
   import { auth, user_id, firebase_uid, user_details } from "./store";
   import UserList from "./staff/Dashboard/UserList.svelte";
@@ -29,6 +30,8 @@
   import { firebaseAuth } from "./firebase";
   import { supabase } from "./supabase";
   import Loader from "./lib/Loader.svelte";
+  import OffensePage from "./staff/Offenses/OffensePage.svelte";
+  
 
   // Detects if there's changes on auth
   onAuthStateChanged(firebaseAuth, (user) => {
@@ -98,8 +101,12 @@
           "/dashboard/:type": UserList,
           "/guards": GuardsList,
           "/profile": Profile,
-          "/complaints": Complaints,
+          "/complaints/": Complaints,
+          "/complaints/:id": Complaints,
+          "/complaint/:id": ComplaintPage,
           "/offenses": Offenses,
+          "/offenses/:id": Offenses,
+          "/offense/:id": OffensePage,
           "/offense/add": AddOffense,
           "/appointments": Appointments,
           "/reports": Reports,
@@ -120,8 +127,12 @@
           "/dashboard": StudentDashboard,
           "/profile": Profile,
           "/complaints": StudentComplaints,
+          "/complaints/:id": StudentComplaints,
+          "/complaint/:id": StudentComplaintPage,
           "/addComplaint": AddComplaint,
           "/offenses": StudentOffenses,
+          "/offenses/:id": StudentOffenses,
+          "/offense/:id": StudentOffensePage,
         }}
       />
     </main>

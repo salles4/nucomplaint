@@ -38,12 +38,12 @@
         routes: ["/students", "/guards"],
       },
       { icon: User, label: "Profile", to: "profile" },
-      { icon: MessageSquareWarning, label: "Complaints", to: "complaints" },
+      { icon: MessageSquareWarning, label: "Complaints", to: "complaints/", routes: ["/complaint/"], },
       {
         icon: Gavel,
         label: "Offenses",
         to: "offenses",
-        routes: ["/offense/add"],
+        routes: ["/offense/add", "/offense/"],
       },
       { icon: CalendarCheck, label: "Appointments", to: "appointments" },
       { icon: FileChartLine, label: "Reports", to: "reports" },
@@ -56,9 +56,9 @@
         icon: MessageSquareWarning,
         label: "Complaints",
         to: "complaints",
-        routes: ["/addComplaint"],
+        routes: ["/addComplaint", "/complaint/"],
       },
-      { icon: Gavel, label: "Offenses", to: "offenses" },
+      { icon: Gavel, label: "Offenses", to: "offenses" , routes: ["/offense/"],},
     ],
     guard: [
       {
@@ -108,7 +108,7 @@
 <aside
   class="{$sidebarLabel
     ? 'sm:min-w-[300px] min-w-full'
-    : 'sm:min-w-[70px] min-w-0 max-w-0 sm:max-w-[70px]'} flex flex-col h-[100svh] overflow-y-auto w-fit shadow-xl bg-white absolute z-[9] sm:sticky top-0"
+    : 'sm:min-w-[70px] min-w-0 max-w-0 sm:max-w-[70px]'} flex flex-col h-[100svh] overflow-y-auto w-fit shadow-xl bg-white absolute z-50 sm:sticky top-0"
 >
   <!-- Toggle Sidebar Button -->
   <button

@@ -14,10 +14,10 @@
   </button>
   <div
     transition:fly={{ duration: 500, x: 1000 }}
-    class="absolute h-[100svh] right-0 top-0 bg-white w-full md:w-[550px] rounded-s-2xl z-20 overflow-y-auto flex flex-col"
+    class="absolute h-[100svh] right-0 top-0 bg-white w-full sm:w-[550px] rounded-s-2xl z-20 overflow-y-auto flex flex-col"
   >
-    <div class="p-6 pb-2 flex items-center justify-between">
-      <h1 class="text-2xl font-bold">{title}</h1>
+    <div class="sm:p-6 pb-2 pt-2 flex items-center justify-between">
+      <h1 class="text-2xl font-bold ps-16 sm:p-0">{title}</h1>
       <button class="btn btn-ghost" on:click={() => closeDetails()}>
         <X />
       </button>

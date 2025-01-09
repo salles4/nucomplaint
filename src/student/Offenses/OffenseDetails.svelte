@@ -6,8 +6,9 @@
   import Loader from "../../lib/Loader.svelte";
   import { badge } from "../../customCss";
   import moment from "moment";
+  import {pop} from 'svelte-spa-router';
 
-  export let offense_id, closeDetails;
+  export let offense_id
   let details;
   let currentStatus;
   let newStatusSelected;
@@ -52,94 +53,83 @@
       console.error(error);
       return;
     }
-    closeDetails();
+    pop()
   }
   onMount(getDetails)
   onDestroy(updateStatus)
 </script>
-<div class="overflow-hidden absolute w-[100svw] h-[100svh] top-0 left-0">
-  <button transition:fade class="bg-black/20 absolute w-[100svw] h-[100svh] top-0 left-0 cursor-default z-10" on:click={closeDetails}>
-  </button>
-  <div transition:fly={{ duration: 500, x: 1000 }} class="absolute h-[100svh] right-0 top-0 bg-white w-full md:w-[550px] rounded-s-2xl z-20 overflow-y-auto flex flex-col">
-    <div class="p-6 pb-2 flex items-center justify-between">
-      <h1 class="text-2xl font-bold">Offense Details</h1>
-      <button class="btn btn-ghost" on:click={closeDetails}>
-        <X />
-      </button>  
-    </div>
-    <hr>
-
-    {#if details}
-    <div class="px-6 flex-grow">
-      <div class="row">
-        <div class="name">Student Name: </div>
-        <div class="content">
-          {details.student_id.first_name} {details.student_id.last_name}
-          <div class="text-sm text-gray-600">
-            <!-- {details.access_data.email} -->
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="name">Status: </div>
-        <div class="content">
-          <span class="badge {badge(details.status)}">{details.status}</span>
-        </div>
-      </div>
-      <div class="row">
-        <div class="name">Category: </div>
-        <div class="content">
-          {details.category}
-        </div>
-      </div>
-      <div class="row">
-        <div class="name">Violation: </div>
-        <div class="content">
-          {details.violation}
-        </div>
-      </div>
-      <div class="row">
-        <div class="name">Time Reported: </div>
-        <div class="content">
-          {moment(details.time_created).format("ddd - MMM DD, YYYY - hh:mm a")}
-        </div>
-      </div>
-      <div class="row">
-        <div class="name">Valid Until: </div>
-        <div class="content">
-          {moment(details.valid_until).format("ddd - MMM DD, YYYY - hh:mm a")}
-        </div>
-      </div>
-      {#if details.note}
-      <div class="row">
-        <div class="name">Note: </div>
-        <div class="content">
-          {details.note}
-        </div>
-      </div>
-      {/if}
-    </div>
-    <div class="sticky bottom-0 px-6 py-4 bg-white border-t-2 flex gap-2">
-      <button class="btn btn-sm btn-primary">
-        Reply
-      </button>
-    </div>
-    {:else}
-    <Loader />
-    {/if}
-    
-  </div>  
+<div class="p-6 pb-2 flex items-center justify-between">
+  <h1 class="text-2xl font-bold">Offense Details</h1>
 </div>
+<hr>
+
+{#if details}
+<div class="px-6 flex-grow">
+  <div class="row">
+    <div class="name">Student Name: </div>
+    <div class="content">
+      {details.student_id.first_name} {details.student_id.last_name}
+      <div class="text-sm text-gray-600">
+        <!-- {details.access_data.email} -->
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="name">Status: </div>
+    <div class="content">
+      <span class="badge {badge(details.status)}">{details.status}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="name">Category: </div>
+    <div class="content">
+      {details.category}
+    </div>
+  </div>
+  <div class="row">
+    <div class="name">Violation: </div>
+    <div class="content">
+      {details.violation}
+    </div>
+  </div>
+  <div class="row">
+    <div class="name">Time Reported: </div>
+    <div class="content">
+      {moment(details.time_created).format("ddd - MMM DD, YYYY - hh:mm a")}
+    </div>
+  </div>
+  <div class="row">
+    <div class="name">Valid Until: </div>
+    <div class="content">
+      {moment(details.valid_until).format("ddd - MMM DD, YYYY - hh:mm a")}
+    </div>
+  </div>
+  {#if details.note}
+  <div class="row">
+    <div class="name">Note: </div>
+    <div class="content">
+      {details.note}
+    </div>
+  </div>
+  {/if}
+</div>
+<div class="sticky bottom-0 px-6 py-4 bg-white border-t-2 flex gap-2">
+</div>
+{:else}
+<Loader />
+{/if}
+
+
 
 <style>
-    .row .name {
-      width: 30%;
-      flex: 0 0 auto;
-    }
-    .row .content {
-      width: 70%;
-      flex: 0 0 auto;
-    }
+  .row .name {
+    width: 30%;
+    flex: 0 0 auto;
+  }
+  .row .content {
+    width: 70%;
+    flex: 0 0 auto;
+  }
  
   .row{
     margin: 0.5rem 0;
@@ -147,7 +137,4 @@
   .row .name{
     font-weight: 600;
   }
-  /* li button:hover{
-    background-color: rgba(0, 0, 0, 0.123);
-  } */
 </style>

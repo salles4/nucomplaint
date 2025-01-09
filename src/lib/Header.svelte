@@ -4,6 +4,9 @@
   import { Bell, Power } from "lucide-svelte";
   import { signOut } from "firebase/auth";
   import { firebaseAuth } from "../firebase";
+  import RightModal from "./RightModal.svelte";
+
+  let notificationOpen = false;
 
   function logout() {
     auth.set(null);
@@ -21,7 +24,7 @@
     class="h-12 ms-10 sm:m-0"
   />
   <div class="flex gap-2">
-    <button>
+    <button on:click={() => {notificationOpen = true}}>
       <Bell />
     </button>
     <button on:click={logout}>
@@ -29,3 +32,9 @@
     </button>
   </div>
 </div>
+
+{#if notificationOpen}
+  <RightModal title="Notifications" closeDetails={() => notificationOpen = false}>
+  
+  </RightModal>
+{/if}

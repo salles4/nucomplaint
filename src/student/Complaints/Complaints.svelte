@@ -1,18 +1,26 @@
 <script>
   import { Archive, Ellipsis, Eye, List, MailCheck, MailWarning, PlusCircle, Trash } from "lucide-svelte";
   import { supabase } from "../../supabase";
-  import { pop } from "svelte-spa-router";
+  import { replace } from "svelte-spa-router";
   import { onMount } from "svelte";
   import Loader from "../../lib/Loader.svelte";
   import { user_id } from "../../store";
-  import ComplaintsDetails from "./ComplaintsDetails.svelte";
+  import ComplaintsDetails from "./ComplaintsSummary.svelte";
   import { badge } from "../../customCss";
   import Table from "../../lib/Table.svelte";
-
+  
+  
   let active = "All";
   let complaints;
   let selectedComplaint;
   let filterComplaints = [];
+  
+  export let params;
+  if(params && params.id && params.id != "-"){
+    selectedComplaint = params.id
+  }else{
+    replace("/complaints/-")
+  }
 
   async function getComplaints() {
     const {data, error} = await supabase
@@ -101,7 +109,7 @@
   filteredList={filterComplaints}
 >
 {#each filterComplaints as { complaint_id, status, type, message, sent_date, sender_id:{first_name, last_name}}}
-  <tr class="border-black/20 hover:bg-black/5 hover:cursor-pointer" on:click={() => selectedComplaint = complaint_id}>
+  <tr class="border-black/20 hover:bg-black/5 hover:cursor-pointer" on:click={() => {replace(`/complaints/${complaint_id}`); selectedComplaint=complaint_id }}>
     <td><span class="badge {badge(status)}">{status}</span></td>
     <td class="truncate text-start max-w-[300px]">{message}</td>
     <td>{type}</td>
@@ -116,5 +124,5 @@
 </Table>
 
 {#if selectedComplaint}
-  <ComplaintsDetails complaint_id={selectedComplaint} on:click={() => selectedComplaint = null} />
+  <ComplaintsDetails complaint_id={selectedComplaint} closeDetails={() => {selectedComplaint = null }} />
 {/if}

@@ -102,13 +102,7 @@
   label{
     margin: auto;
   }
-  input, select {
+  input {
     @apply border-2 p-0.5;
-  }
-  .register label{
-    @apply md:w-[35%]
-  }
-  .register input, .register select{
-     @apply md:w-[65%]
   }
 </style>

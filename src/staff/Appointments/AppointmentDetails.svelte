@@ -86,7 +86,7 @@
     </div>
     <!-- Buttons -->
     <div class="sticky bottom-0 px-6 py-4 bg-white border-t-2 flex gap-2">
-      <button class="btn btn-sm btn-primary"> Reply </button>
+      <!-- <button class="btn btn-sm btn-primary"> Reply </button> -->
       <button
         class="btn btn-sm btn-error btn-outline"
         on:click={() => deleteAppointment()}

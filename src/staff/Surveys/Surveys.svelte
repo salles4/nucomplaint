@@ -66,10 +66,12 @@
     {/if}
   </div>
   <div class="bg-white flex-[2] overflow-y-auto">
-    {#if selected == "create" || selected == null}
+    {#if selected == "create"}
       <CreateSurvey />
-    {:else}
+      {:else if selected}
       <SurveyDetails {selected} />
+      {:else}
+      <div class="text-center m-12 p-4 border-b-2 border-primary w-fit mx-auto">Select a survey on the left or create one.</div>
     {/if}
   </div>
 </div>

@@ -18,16 +18,24 @@
   import { onMount } from "svelte";
   import { supabase } from "../../supabase";
   import { badge } from "../../customCss";
-  import OffenseDetails from "./OffenseDetails.svelte";
+  import OffenseSummary from "./OffenseSummary.svelte";
   import { auth, user_id } from "../../store";
   import Loader from "../../lib/Loader.svelte";
   import Table from "../../lib/Table.svelte";
+  import { replace } from 'svelte-spa-router';
 
   let offenses;
   let active = "All";
   let selectedOffense;
   let searchText;
   let filteredOffenses = [];
+
+  export let params;
+  if(params && params.id && params.id != "-"){
+    selectedOffense = params.id
+  }else{
+    replace("/offenses/-")
+  }
   
   async function getOffenses() {
     const { data, error } = await supabase
@@ -135,7 +143,7 @@
   {#each filteredOffenses as { offense_id, status, student_id: { first_name, last_name, user_id }, violation, category, valid_until, time_created }}
     <tr
       class="border-black/20 hover:bg-black/5 hover:cursor-pointer"
-      on:click={() => (selectedOffense = offense_id)}
+      on:click={() => {replace(`/offenses/${offense_id}`); selectedOffense = offense_id}}
     >
       <td class="p-2"
         ><span class="badge text-nowrap {badge(status)}">{status}</span></td
@@ -169,7 +177,7 @@
 </Table>
 
 {#if selectedOffense}
-  <OffenseDetails
+  <OffenseSummary
     offense_id={selectedOffense}
     closeDetails={() => (selectedOffense = null)}
   />
