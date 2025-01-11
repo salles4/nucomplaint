@@ -165,6 +165,6 @@
 
 <style>
   main {
-    @apply flex-grow min-h-[100svh] max-h-[100svh] overflow-y-auto flex flex-col;
+    @apply flex-grow min-h-[100svh] max-h-[100svh] print:max-h-fit print:overflow-visible overflow-y-auto flex flex-col;
   }
 </style>

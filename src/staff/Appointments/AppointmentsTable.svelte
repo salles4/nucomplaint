@@ -47,6 +47,18 @@
     console.log(data);
     filterList(active)
   }
+  async function missed() {
+    const {data, error} = await supabase
+    .from("appointments")
+    .update({
+      status: "Missed"
+    })
+    .eq("status", "Scheduled")
+    .lt("time", "now()")
+    if(error){
+      console.error(error);
+    }
+  }
   function filterList(activeFilter = "All"){
     active = activeFilter;
     filteredAppointments = appointments.filter((offense) => (offense.status == active || active == "All"));
@@ -110,6 +122,7 @@
     { name: "Message", value: "message" },
     { name: "Time", value: "time_created" },
   ];
+  onMount(missed);
   onMount(getAppointments);
 </script>
 

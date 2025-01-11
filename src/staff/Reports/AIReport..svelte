@@ -143,16 +143,16 @@
 </script>
 
 <div
-  class="ai bg-white w-[95%] sm:max-w-[60rem] m-4 mx-auto p-4 rounded-lg border-2 border-primary"
+  class="ai bg-white w-[95%] sm:max-w-[50rem] m-4 print:m-0 mx-auto p-4 rounded-lg border-2 border-primary"
 >
   <div class="flex items-center gap-2">
     <Stars class="inline-block" />
     <span class="text-lg font-semibold flex items-center gap-2"> Suggestions 
-      <span class="tooltip tooltip-right" data-tip="This is AI-Generated content. It can provide inaccurate information.">
+      <span class="tooltip tooltip-right print:hidden" data-tip="This is AI-Generated content. It can provide inaccurate information.">
         <Info size="18" />
       </span>
     </span>
-    <div class="text-xs text-gray-400 ms-auto mt-auto align-middle">
+    <div class="text-xs text-gray-400 ms-auto mt-auto align-middle print:hidden">
       Powered By:<img
         src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg"
         alt="Gemini"
@@ -160,11 +160,11 @@
       />
     </div>
   </div>
-  <div class="sm:ps-8 p-2 text-justify sm:text-base text-sm">
+  <div class="sm:ps-8 p-2 text-justify sm:text-base text-sm print:text-sm">
     {#if complaintReport}
       {@html complaintReport}
       <div
-        class="border-t border-black p-4 pb-0 px-0 mt-2 flex flex-wrap justify-between items-center gap-2"
+        class="border-t border-black p-4 pb-0 px-0 mt-2 flex flex-wrap justify-between items-center gap-2 print:hidden"
       >
         <div class="text-gray-500 sm:text-sm text-xs flex flex-wrap flex-grow">
           <!-- <span>Generated at: </span>  -->
@@ -200,3 +200,9 @@
     {/if}
   </div>
 </div>
+
+<style>
+  .ai{
+    @apply print:border-0 print:!text-[8px]
+  }
+</style>

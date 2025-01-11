@@ -108,7 +108,7 @@
 <aside
   class="{$sidebarLabel
     ? 'sm:min-w-[300px] min-w-full'
-    : 'sm:min-w-[70px] min-w-0 max-w-0 sm:max-w-[70px]'} flex flex-col h-[100svh] overflow-y-auto w-fit shadow-xl bg-white absolute z-50 sm:sticky top-0"
+    : 'sm:min-w-[70px] min-w-0 max-w-0 sm:max-w-[70px]'} flex flex-col h-[100svh] overflow-y-auto w-fit shadow-xl bg-white absolute z-50 sm:sticky top-0 print:hidden"
 >
   <!-- Toggle Sidebar Button -->
   <button
