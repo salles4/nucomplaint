@@ -3,9 +3,10 @@
   import { user_id } from "../../store";
   import { onDestroy } from "svelte";
   import { createReader, stopScanner } from "../../scanner";
-  import { List, QrCode } from "lucide-svelte";
+  import { Info, List, QrCode } from "lucide-svelte";
   import StudentLookup from "../../lib/StudentLookup.svelte";
   import moment from "moment";
+
   export let changeMode;
 
   let idInput, timeInput, typeInput, messageInput;
@@ -71,10 +72,43 @@
       buttonDisabled = false;
       return;
     }
+
+    const {data: student_num, error: numError} = await supabase
+    .from("secondary_details")
+    .select("contact")
+    .eq("user_id", idInput)
+    console.log(student_num);
+    const num = student_num[0].contact
+
+    const {data: staffName, error: nameError} = await supabase
+    .from("users")
+    .select("first_name, last_name")
+    .eq("user_id", $user_id)
+    console.log(staffName);
+    const {first_name, last_name} = staffName[0];
+    
+    const response = await fetch(
+      "https://api.semaphore.co/api/v4/messages",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          apikey: import.meta.env.MESSENGER,
+          number: num,
+          sendername:"CODEVERSE",
+          message: `You have a scheduled appoinemnt with ${first_name} ${last_name} at ${moment(timeInput).format("MM/DD/YY hh:mma")} because of "${typeInput}" \n -SDAO, NU Complaint`
+        }),
+      }
+    );
+    const json = response.json()
+    console.log(json); 
+    
+
     alert("Added Successfully");
     changeMode("display");
   }
-  console.log(moment().add(3, 'M').toISOString());
   
 </script>
 
@@ -140,7 +174,8 @@
         rows="4"
       ></textarea>
     </div>
-    <div class="flex flex-wrap justify-center gap-4">
+    <div class="flex flex-wrap justify-end items-center gap-4 w-full">
+      <span class="text-gray-400 text-xs text-wrap w-[8rem] me-auto"><Info class="inline" size="12" /> This will notify the student through SMS</span>
       <button class="btn btn-secondary w-[120px]" type="submit" disabled={buttonDisabled}>Submit</button>
       <button
         class="btn btn-primary w-[120px]"
