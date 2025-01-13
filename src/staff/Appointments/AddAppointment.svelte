@@ -95,10 +95,10 @@
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({
-          apikey: import.meta.env.MESSENGER,
+          apikey: import.meta.env.VITE_MESSENGER,
           number: num,
           sendername:"CODEVERSE",
-          message: `You have a scheduled appoinemnt with ${first_name} ${last_name} at ${moment(timeInput).format("MM/DD/YY hh:mma")} because of "${typeInput}" \n -SDAO, NU Complaint`
+          message: `You have a scheduled appoinemnt with ${first_name} ${last_name} at ${moment(timeInput).format("MM/DD/YY hh:mma")} because of "${typeInput}" \n\n-SDAO, NU Complaint`
         }),
       }
     );

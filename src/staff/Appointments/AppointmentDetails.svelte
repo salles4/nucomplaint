@@ -8,6 +8,7 @@
   import moment from "moment";
   import RightModal from "../../lib/RightModal.svelte";
   import RowData from "../../lib/RowData.svelte";
+  import { modal } from "../../store";
 
   export let appointment_id, closeDetails;
   let details;
@@ -51,11 +52,19 @@
       .eq("appointment_id", appointment_id);
 
     if (error) {
-      alert(error.message);
+      alert("Error while deleting, Please try again.");
       console.error(error);
-      return;
     }
     closeDetails();
+  }
+  function openDeleteModal(){
+    modal.set({
+      title: "Delete?",
+      description: "Are you sure you want to delete this?",
+      pOption: "Confirm",
+      sOption: "Cancel",
+      primaryFn: () => {deleteAppointment(); modal.set(null);}
+    })
   }
   onMount(getDetails);
   onDestroy(updateStatus);
@@ -89,7 +98,7 @@
       <!-- <button class="btn btn-sm btn-primary"> Reply </button> -->
       <button
         class="btn btn-sm btn-error btn-outline"
-        on:click={() => deleteAppointment()}
+        on:click={() => openDeleteModal()}
       >
         Delete
       </button>

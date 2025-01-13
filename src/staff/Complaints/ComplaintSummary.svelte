@@ -6,6 +6,7 @@
   import Loader from "../../lib/Loader.svelte";
   import { badge } from "../../customCss";
   import RightModal from "../../lib/RightModal.svelte";
+  import { modal } from "../../store";
 
   export let complaint_id, closeDetails = null;
   let details;
@@ -69,6 +70,15 @@
     }
     closeDetails();
   }
+  function openDeleteModal(){
+    modal.set({
+      title: "Delete?",
+      description: "Are you sure you want to delete this?",
+      pOption: "Confirm",
+      sOption: "Cancel",
+      primaryFn: () => {deleteComplaint(); modal.set(null);}
+    })
+  }
   onMount(getDetails)
   onDestroy(updateStatus)
 </script>
@@ -115,7 +125,7 @@
       <a href="./#/complaint/{complaint_id}" class="btn btn-sm btn-primary">
         Reply
       </a>
-      <button class="btn btn-sm btn-error btn-outline" on:click={() => deleteComplaint()}>
+      <button class="btn btn-sm btn-error btn-outline" on:click={() => openDeleteModal()}>
         Delete
       </button>
       <div class="ms-auto">

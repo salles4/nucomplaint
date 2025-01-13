@@ -31,6 +31,7 @@
   import { supabase } from "./supabase";
   import Loader from "./lib/Loader.svelte";
   import OffensePage from "./staff/Offenses/OffensePage.svelte";
+  import Modal from "./lib/Modal.svelte";
   
 
   // Detects if there's changes on auth
@@ -162,6 +163,10 @@
     </div>
   {/if}
 </div>
+
+
+<Modal />
+
 
 <style>
   main {

@@ -6,6 +6,7 @@
   import Loader from "../../lib/Loader.svelte";
   import { pop } from "svelte-spa-router";
   import { ArrowLeftCircle } from "lucide-svelte";
+  import { modal } from "../../store";
   export let complaint_id
   let details;
 
@@ -67,6 +68,15 @@
       return;
     }
   }
+  function openDeleteModal(){
+    modal.set({
+      title: "Delete?",
+      description: "Are you sure you want to delete this?",
+      pOption: "Confirm",
+      sOption: "Cancel",
+      primaryFn: () => {deleteComplaint(); modal.set(null);}
+    })
+  }
   onMount(getDetails)
   onDestroy(updateStatus)
 </script>
@@ -112,7 +122,7 @@
   </div>
 </div>
 <div class="sticky bottom-0 px-6 py-4 bg-white border-t-2 flex gap-2">
-  <button class="btn btn-sm btn-error btn-outline" on:click={() => deleteComplaint()}>
+  <button class="btn btn-sm btn-error btn-outline" on:click={() => openDeleteModal()}>
     Delete
   </button>
   <div class="ms-auto">
