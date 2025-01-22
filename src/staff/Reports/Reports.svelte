@@ -5,7 +5,7 @@
   import AiReport from "./AIReport..svelte";
   import moment from "moment";
   import "chartjs-adapter-moment";
-  import { Clock, Printer } from "lucide-svelte";
+  import { ArrowRight, Clock, Printer } from "lucide-svelte";
   let chart1, chart2;
   let data = [];
   let lineData = [];
@@ -13,24 +13,38 @@
   let dataContext;
   let timeRange;
   let pie, line;
+  let date1, date2
 
   async function get_complaints() {
     data = [];
     lineData = []
     complaintData = null;
     dataContext = null;
-
-    const { data: complaints, error } = await supabase.rpc(
-      "get_complaints_last_custom_days",
-      {
-        days: timeRange,
-      }
-    );
-
-    if (error) {
-      console.error(error);
+    if(timeRange == "Custom"){
       return;
     }
+    let complaints
+    let error;
+    if(timeRange != "Custom"){
+      const { data, error } = await supabase.rpc(
+        "get_complaints_last_custom_days",
+        {
+          days: timeRange,
+        }
+      );
+      if (error) {
+        console.error(error);
+        return;
+      }
+      complaints = data
+    }else if (date1 && date2){
+      
+    }else{
+      return;
+    }
+   
+
+    
     console.log(complaints);
 
     const complaintMap = {};
@@ -138,7 +152,7 @@
   onMount(get_complaints);
 </script>
 
-<div class="bg-white mx-4 my-8 rounded">
+<div class="bg-white h-full mx-4 my-8 rounded">
   <div class="bg-primary text-white h-fit relative -top-5 mx-6 p-4 rounded-lg print:hidden">
     Report
   </div>
@@ -146,13 +160,18 @@
     <div class="">
       <Clock />
     </div>
-    <select name="time" bind:value={timeRange} on:change={get_complaints}>
+    <select class="select select-sm py-0 select-bordered border-gray-200 h-fit" name="time" bind:value={timeRange} on:change={get_complaints}>
       <option value="30 days">Last 30 Days</option>
       <option selected value="60 days">Last 60 Days</option>
       <option value="90 days">Last 90 Days</option>
-      <!-- <option disabled>-----</option>
-      <option value="Custom">Custom</option> -->
+      <option disabled>-----</option>
+      <option value="Custom">Custom</option>
     </select>
+    {#if timeRange == "Custom"}
+    <input type="date" bind:value={date1}>
+    <ArrowRight />
+    <input type="date" bind:value={date2}>
+    {/if}
     <button class="btn btn-primary btn-sm" on:click={() => {window.print()}}><Printer /> Export</button>
   </div>
   <div
@@ -163,7 +182,7 @@
         <AiReport {dataContext} />
       {/if}
     </div>
-    <div class="flex-[2] flex flex-col !print:h-full print:items-center p-4">
+    <div class="flex-[2] flex-col !print:h-full print:items-center p-4 {data.length == 0 ? "hidden" : "flex"}">
       <div
         class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 p-4 mx-2 bg-white shadow-lg"
       >
@@ -205,11 +224,8 @@
       >
         <canvas bind:this={chart2} class="max-h-[500px]"> </canvas>
 
-        <div class="font-semibold text-xl pt-5">Monthly Complaints</div>
-        <div>0 increase in today's complaints</div>
-        <div>Because students have zero complaints for today</div>
-        <div>Most Complained Today: None</div>
-        <div>Least Complained Today: None</div>
+        <div class="font-semibold text-xl pt-5">Daily Complaint</div>
+        <div class="">Most </div>
       </div>
     </div>
   </div>
