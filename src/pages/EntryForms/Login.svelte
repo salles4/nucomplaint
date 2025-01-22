@@ -36,7 +36,10 @@
   class="flex flex-col gap-2 my-auto"
   on:submit|preventDefault={() => login()}
 >
-  <div class="text-2xl text-center">Log In</div>
+<div>
+  <img class="p-4" src="./img/nu_logo.png" alt="National University Logo">
+</div>
+  <!-- <div class="text-lg text-center">Log In</div> -->
   <div class="row">
     <label for="email"> Email: </label>
     <input required type="email" id="email" autocomplete="email" bind:value={emailInput} />
@@ -66,20 +69,20 @@
       Log In
     {/if}</button
   >
-  <div class="text-center">
+  <!-- <div class="text-center">
     Don't have an account yet? <a
       on:click|preventDefault={() => {
         changePage("register");
       }}
       href="./#/register">Register</a
     >
-  </div>
-  <div class="text-center">
+  </div> -->
+  <!-- <div class="text-center">
     <a
       on:click|preventDefault={() => {
         changePage("reset");
       }}
       href="./#/register">Forgot your password?</a
     >
-  </div>
+  </div> -->
 </form>

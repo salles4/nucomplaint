@@ -100,12 +100,12 @@
         description="Get an access to the student's profile."
         on:click={() => changePath("/dashboard/student")}
       />
-      <AccMng
+      <!-- <AccMng
         title="Guards"
         src="./img/guard.png"
         description="Get an access to the guard's profile."
         on:click={() => changePath("/dashboard/guard")}
-      />
+      /> -->
     </div>
   </div>
 </div>

@@ -2,9 +2,8 @@
   import { supabase } from "../../supabase";
   import { auth, user_id } from "../../store";
   import { replace } from "svelte-spa-router";
-  import { CircleArrowRight, List, QrCode } from "lucide-svelte";
-  import { createReader, stopScanner } from "../../scanner";
-  import { onDestroy } from "svelte";
+  import { List } from "lucide-svelte";
+  import {pop} from 'svelte-spa-router'
   import StudentLookup from "../../lib/StudentLookup.svelte";
   import moment from "moment";
 
@@ -131,8 +130,8 @@
     </div>
     <div class="flex gap-4">
       <button class="btn btn-secondary w-[128px]" type="submit" disabled={buttonDisabled}>Submit</button>
-      <a class="btn btn-primary w-[128px]" type="button" href="./#/offenses"
-        >Cancel</a
+      <button class="btn btn-primary w-[128px]" type="button" on:click={()=> pop()}
+        >Cancel</button
       >
     </div>
   </form>
