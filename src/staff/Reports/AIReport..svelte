@@ -1,9 +1,6 @@
 <script>
   import {
-    Download,
-    FileCheck,
     Info,
-    LucideFileCheck,
     RotateCcwIcon,
     Stars,
   } from "lucide-svelte";
@@ -12,16 +9,13 @@
   import { supabase } from "../../supabase";
   import moment from "moment";
 
-  export let dataContext;
-  export let complaintReport = "";
-  let report_id,
-    dateTimeGen,
-    isSaved = false;
+  export let dataContext; // context for ai
+  export let reportType; // complaint or offense
+  let generatedReport = ""; // ai-generated suggestions
+  let dateTimeGen; // time generated
 
   async function generateReport() {
-    isSaved = false;
-    console.log(dataContext);
-
+    // check if there's generated report already in db
     const { data: dataReport, error } = await supabase
       .from("ai_reports")
       .select("*")
@@ -32,32 +26,30 @@
       return;
     }
     if (dataReport.length != 0) {
-      const complaintData = dataReport[0];
-      complaintReport = formatAIText(complaintData.report);
-      console.log("FROM DB", complaintData);
+      const dbGeneratedReport = dataReport[0];
+      generatedReport = formatAIText(dbGeneratedReport.report);
+      console.log("FROM DB", dbGeneratedReport);
       dateTimeGen = {
-        date: moment(complaintData.time_generated).format("MMM DD, YYYY"),
-        time: moment(complaintData.time_generated).format("hh:mm:ss a"),
+        date: moment(dbGeneratedReport.time_generated).format("MMM DD, YYYY"),
+        time: moment(dbGeneratedReport.time_generated).format("hh:mm:ss a"),
       };
-      report_id = complaintData.report_id;
-      isSaved = complaintData.saved;
       return;
     }
-
+    // Otherwise, generate new report
     const response = await fetch(
-      "https://nucomplaint-api.vercel.app/api/complaint_report",
+      `https://nucomplaint-api.vercel.app/api/${reportType}_report`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          complaintData: dataContext,
+          dataContext: dataContext,
         }),
       }
     );
     const data = await response.json();
-    complaintReport = formatAIText(data.message);
+    generatedReport = formatAIText(data.message);
 
     pushReportToDB(data.message);
     console.log("FROM SERVER \n", data);
@@ -66,24 +58,24 @@
    * @param {String} report
    */
   async function pushReportToDB(report) {
-    const { data: deleteData, error: deleteError } = await supabase
-      .from("ai_reports")
-      .delete()
-      .eq("saved", false)
-      .eq("type", "complaints")
-      .select();
+    // Deletes other generated reports of same type
+    // const { data: deleteData, error: deleteError } = await supabase
+    //   .from("ai_reports")
+    //   .delete()
+    //   .eq("saved", false)
+    //   .eq("type", reportType)
+    //   .select();
 
-    if (deleteError) {
-      console.error(deleteError);
-      return;
-    }
-    console.log(deleteData);
-
+    // if (deleteError) {
+    //   console.error(deleteError);
+    //   return;
+    // }
+    // Inserts newly generated report to db
     const { data, error } = await supabase
       .from("ai_reports")
       .insert({
         report: report,
-        type: "complaint",
+        type: reportType,
         context_data: dataContext,
       })
       .select();
@@ -91,7 +83,6 @@
       console.error(error);
     }
 
-    report_id = data[0].report_id;
     dateTimeGen = {
       date: moment(data[0].time_generated).format("MMM DD, YYYY"),
       time: moment(data[0].time_generated).format("hh:mm:ss a"),
@@ -99,12 +90,12 @@
     console.log(data);
   }
   async function regenerate() {
-    complaintReport = "";
+    generatedReport = "";
     const { data, error } = await supabase
       .from("ai_reports")
       .delete()
       .eq("saved", false)
-      .eq("type", "complaint")
+      .eq("type", reportType)
       .select();
 
     if (error) {
@@ -114,21 +105,6 @@
     }
     console.log(data);
     generateReport();
-  }
-  async function saveReport() {
-    const { data, error } = await supabase
-      .from("ai_reports")
-      .update({ saved: true })
-      .eq("report_id", report_id)
-      .select();
-
-    if (error || !data) {
-      console.error(error);
-      alert("Failed to save");
-      return;
-    }
-    console.log(data);
-    isSaved = data[0].saved;
   }
   /**
    * @param {string} message
@@ -161,8 +137,8 @@
     </div>
   </div>
   <div class="sm:ps-8 p-2 text-justify sm:text-base text-sm print:text-sm">
-    {#if complaintReport}
-      {@html complaintReport}
+    {#if generatedReport}
+      {@html generatedReport}
       <div
         class="border-t border-black p-4 pb-0 px-0 mt-2 flex flex-wrap justify-between items-center gap-2 print:hidden"
       >

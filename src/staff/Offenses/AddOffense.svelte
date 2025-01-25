@@ -3,7 +3,7 @@
   import { auth, user_id } from "../../store";
   import { replace } from "svelte-spa-router";
   import { List } from "lucide-svelte";
-  import {pop} from 'svelte-spa-router'
+  import { pop } from "svelte-spa-router";
   import StudentLookup from "../../lib/StudentLookup.svelte";
   import moment from "moment";
 
@@ -11,10 +11,9 @@
   let lookUpStudent = false;
   let buttonDisabled = false;
 
-
   async function submit() {
     buttonDisabled = true;
-    if(`${idInput}`.includes("-")){
+    if (`${idInput}`.includes("-")) {
       idInput = idInput.split("-").join("");
     }
     const { data, error: checkingIDError } = await supabase
@@ -48,8 +47,8 @@
       return;
     }
     alert("Added Successfully");
-    if($auth == "guard"){
-      replace("/records")
+    if ($auth == "guard") {
+      replace("/records");
     }
     replace("/offenses");
   }
@@ -77,33 +76,49 @@
         <button
           class="btn btn-sm btn-primary rounded-s-none h-full"
           type="button"
-          on:click={() => lookUpStudent = true}><List /></button
+          on:click={() => (lookUpStudent = true)}><List /></button
         >
       </div>
     </div>
     <div class="row">
       <label for="violation">Violation: </label>
-      <input
+      <select
         bind:value={violationInput}
         required
         class=" input-bordered"
-        type="text"
         name="violation"
         id="violation"
-        list="violations"
-      />
+      >
+        <option disabled selected>--</option>
+        <option>Bullying</option>
+        <option>Fighting</option>
+        <option>Vandalism</option>
+        <option>Theft</option>
+        <option>Substance Abuse</option>
+        <option>Academic Dishonesty</option>
+        <option>Loitering</option>
+        <option>Faculty</option>
+        <option>Institution</option>
+        <option>Other</option>
+    </select>
     </div>
     <div class="row">
       <label for="category">Category: </label>
-      <input
+      <select
         bind:value={categoryInput}
         required
         class=" input-bordered"
-        type="text"
         name="category"
         id="category"
-        list="categories"
-      />
+      >
+      <option disabled selected>--</option>
+        <option>Minor Offense</option>
+        <option>Category 1 - Probation</option>
+        <option>Category 2 - Formative Intervention</option>
+        <option>Category 3 - Non-Readmission</option>
+        <option>Category 4 - Exclusion</option>
+        <option>Category 5 - Expulsion</option>
+      </select>
     </div>
     <div class="row">
       <label for="validDate">Valid Until: </label>
@@ -112,7 +127,7 @@
         required
         class="input-bordered"
         type="datetime-local"
-        min="{moment().add(1, "d").format("YYYY-MM-DDT12:00")}"
+        min={moment().add(1, "d").format("YYYY-MM-DDT12:00")}
         max={moment().add(3, "M").format("YYYY-MM-DDT12:00")}
         name="validDate"
         id="validDate"
@@ -129,26 +144,37 @@
       ></textarea>
     </div>
     <div class="flex gap-4">
-      <button class="btn btn-secondary w-[128px]" type="submit" disabled={buttonDisabled}>Submit</button>
-      <button class="btn btn-primary w-[128px]" type="button" on:click={()=> pop()}
-        >Cancel</button
+      <button
+        class="btn btn-secondary w-[128px]"
+        type="submit"
+        disabled={buttonDisabled}>Submit</button
+      >
+      <button
+        class="btn btn-primary w-[128px]"
+        type="button"
+        on:click={() => pop()}>Cancel</button
       >
     </div>
   </form>
 </div>
 {#if lookUpStudent}
-  <StudentLookup closeModal={(student_id = idInput) => {lookUpStudent = false; idInput = student_id}} />
+  <StudentLookup
+    closeModal={(student_id = idInput) => {
+      lookUpStudent = false;
+      idInput = student_id;
+    }}
+  />
 {/if}
-<datalist id="categories">
+<!-- <datalist id="categories">
   <option value="Minor Offense"> </option>
   <option value="Category 1 - Probation"> </option>
   <option value="Category 2 - Formative Intervention"> </option>
   <option value="Category 3 - Non-Readmission"> </option>
   <option value="Category 4 - Exclusion"> </option>
   <option value="Category 5 - Expulsion"> </option>
-</datalist>
+</datalist> -->
 
-<datalist id="violations">
+<!-- <datalist id="violations">
   <option value="Bullying"> </option>
   <option value="Fighting"> </option>
   <option value="Vandalism"> </option>
@@ -159,7 +185,7 @@
   <option value="Faculty"> </option>
   <option value="Institution"> </option>
   <option value="Other"> </option>
-</datalist>
+</datalist> -->
 
 <style>
 </style>

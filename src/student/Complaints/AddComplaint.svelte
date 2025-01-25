@@ -37,15 +37,24 @@
   >
     <div class="row">
       <label for="type">Category: </label>
-      <input
+      <select
         bind:value={typeInput}
         required
         class="input input-bordered"
-        type="text"
         name="type"
         id="type"
-        list="categories"
-      />
+      > 
+        <option>Bullying</option>
+        <option>Fighting</option>
+        <option>Vandalism</option>
+        <option>Theft</option>
+        <option>Substance Abuse</option>
+        <option>Academic Dishonesty</option>
+        <option>Loitering</option>
+        <option>Faculty</option>
+        <option>Institution</option>
+        <option>Other</option>
+    </select>
     </div>
     <div class="row">
       <label for="message">Message: </label>
@@ -67,17 +76,19 @@
   </form>
 </div>
 
-<datalist id="categories">
-  <option value="Bullying"> </option><option value="Fighting"> </option><option
-    value="Vandalism"
-  >
-  </option><option value="Theft"> </option><option value="Substance Abuse">
-  </option><option value="Academic Dishonesty"> </option><option
-    value="Loitering"
-  >
-  </option><option value="Faculty"> </option><option value="Institution">
-  </option><option value="Other"> </option></datalist
->
+<!-- <datalist id="categories">
+  <option>Bullying</option>
+  <option>Fighting</option>
+  <option>Vandalism</option>
+  <option>Theft</option>
+  <option>Substance Abuse</option>
+  <option>Academic Dishonesty</option>
+  <option>Loitering</option>
+  <option>Faculty</option>
+  <option>Institution</option>
+  <option>Other</option>
+  </datalist
+> -->
 
 <style>
 </style>

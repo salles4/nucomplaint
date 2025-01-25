@@ -153,15 +153,28 @@
     </div>
     <div class="row">
       <label for="type">Category: </label>
-      <input
+      <select
         bind:value={typeInput}
         required
         class=" input-bordered"
-        type="text"
         name="type"
         id="type"
-        list="categories"
-      />
+      >
+      <option selected disabled>--</option>
+      <option>Complaint</option>
+      <option>Violation</option>
+      <option>Offense</option>
+      <option>Bullying</option>
+      <option>Fighting</option>
+      <option>Vandalism</option>
+      <option>Theft</option>
+      <option>Substance Abuse</option>
+      <option>Academic Dishonesty</option>
+      <option>Loitering</option>
+      <option>Faculty</option>
+      <option>Institution</option>
+      <option>Other</option>
+      </select>
     </div>
     <div class="row">
       <label for="message">Message: </label>
@@ -190,7 +203,7 @@
 {#if lookUpStudent}
   <StudentLookup closeModal={(student_id = "") => {lookUpStudent = false; idInput = student_id}} />
 {/if}
-<datalist id="categories">
+<!-- <datalist id="categories">
   <option value="Complaint"> </option>
   <option value="Violation"> </option>
   <option value="Offense"> </option>
@@ -204,7 +217,7 @@
   <option value="Faculty"> </option>
   <option value="Institution"> </option>
   <option value="Other"> </option>
-</datalist>
+</datalist> -->
 
 <style>
 </style>
