@@ -20,6 +20,7 @@
     .from("users")
     .select("*")
     .eq("account_type", "student")
+    .order("first_name", {ascending:true})
     if(error){
       alert(error.message)
       console.error(error);
@@ -29,7 +30,8 @@
   }
   function updateList(){
     filteredStudentList = []
-    if(!searchInput){
+    if(searchInput == ""){
+      filteredStudentList = studentList;
       return;
     }
     filteredStudentList = studentList.filter(({user_id, first_name, last_name, email}) => (
@@ -66,9 +68,9 @@
   </div>
   <div class="px-4 overflow-y-auto">
 
-    {#if studentList && !scannerDiv && searchInput}
+    {#if studentList && !scannerDiv}
     {#each filteredStudentList as {user_id, first_name, last_name, email}}
-    <button on:click={() => closeModal(user_id)} class="flex w-full gap-4 mb-1 p-4 border justify-center items-center hover:bg-black/10 hover:cursor-pointer">
+    <button name={user_id} on:click={() => closeModal(user_id)} class="flex w-full gap-4 mb-1 p-4 border justify-center items-center hover:bg-black/10 hover:cursor-pointer">
       
       <ProfilePic {user_id} style="size-[60px]" />
       

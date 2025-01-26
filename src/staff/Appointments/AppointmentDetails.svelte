@@ -112,6 +112,7 @@
         >
           <option value="Scheduled">Scheduled</option>
           <option value="Cancelled">Cancelled</option>
+          <option value="Missed">Missed</option>
           <option value="Done">Done</option>
           <option value="Archive">Archive</option>
         </select>

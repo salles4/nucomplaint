@@ -15,6 +15,7 @@
     CirclePlus,
     Ellipsis,
     List,
+    CalendarOff,
   } from "lucide-svelte";
   import Tab from "../../lib/Tab.svelte";
   import { supabase } from "../../supabase";
@@ -105,6 +106,10 @@
     {
       name: "Cancelled",
       icon: CalendarX,
+    },
+    {
+      name: "Missed",
+      icon: CalendarOff,
     },
     {
       name: "Done",

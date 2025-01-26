@@ -32,6 +32,7 @@
   import Loader from "./lib/Loader.svelte";
   import OffensePage from "./staff/Offenses/OffensePage.svelte";
   import Modal from "./lib/Modal.svelte";
+  import UpdateProfile from "./lib/Profile/UpdateProfile.svelte";
   
 
   // Detects if there's changes on auth
@@ -102,6 +103,7 @@
           "/dashboard/:type": UserList,
           "/guards": GuardsList,
           "/profile": Profile,
+          "/update/:id": UpdateProfile,
           "/complaints/": Complaints,
           "/complaints/:id": Complaints,
           "/complaint/:id": ComplaintPage,

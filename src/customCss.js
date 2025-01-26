@@ -7,7 +7,10 @@ const badgeDesign = {
   Done: "badge-success",
   Cancelled: "badge-error",
   
-  Investigating: "badge-error",
+  Investigating: "badge-warning",
+  Reported: "badge-primary",
+  Guilty: "badge-error",
+  Dismissed: "badge-success",
 
   Unread:"badge-neutral"
 }

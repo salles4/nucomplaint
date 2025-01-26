@@ -123,12 +123,12 @@
   onMount(getSurvey);
 </script>
 
-<div class="bg-white w-full h-fit py-6 pt-0 mt-8 mb-8 max-w-[700px] rounded">
-  <div class="bg-primary text-white h-fit relative -top-5 mx-6 p-4 rounded-lg">
+<div class="bg-white w-full h-fit py-6 pt-0 mt-8 mb-8 max-w-[700px] rounded shadow-xl">
+  <div class="bg-primary text-white h-fit relative -top-5 mx-6 p-4 rounded-lg shadow-md">
     Survey Poll
   </div>
   <div
-    class="bg-primary rounded-lg text-white mx-16 text-center flex flex-col gap-2"
+    class="bg-primary rounded-lg text-white mx-16 text-center flex flex-col gap-2 shadow-lg"
   >
     {#if survey && isAnswering}
       <div class="font-bold mt-8">Question for Today</div>
@@ -194,8 +194,9 @@
                   {results[index]}%
                 </span>
               </div>
-            {/each}
-          </div>
+              {/each}
+            </div>
+            <div class="">Thank you for answering the survey!</div>
         </div>
       {:else if survey.type == "Survey"}
       <div class="py-12">

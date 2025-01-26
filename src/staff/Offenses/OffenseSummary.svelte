@@ -7,6 +7,7 @@
   import { badge } from "../../customCss";
   import moment from "moment";
   import RightModal from "../../lib/RightModal.svelte";
+  import { modal } from "../../store";
 
   export let offense_id, closeDetails;
   let details;
@@ -42,7 +43,7 @@
       }
     }
   }
-  async function deleteAppointment() {
+  async function deleteOffense() {
     const {error} = await supabase
     .from('offenses')
     .delete()
@@ -54,6 +55,15 @@
       return;
     }
     closeDetails();
+  }
+  function openDeleteModal(){
+    modal.set({
+      title: "Delete?",
+      description: "Are you sure you want to delete this?",
+      pOption: "Confirm",
+      sOption: "Cancel",
+      primaryFn: () => {deleteOffense(); modal.set(null);}
+    })
   }
   onMount(getDetails)
   onDestroy(updateStatus)
@@ -114,7 +124,7 @@
       <a href="./#/offense/{offense_id}" class="btn btn-sm btn-primary">
         Reply
       </a>
-      <button class="btn btn-sm btn-error btn-outline" on:click={() => deleteAppointment()}>
+      <button class="btn btn-sm btn-error btn-outline" on:click={() => openDeleteModal()}>
         Delete
       </button>
       <div class="ms-auto">

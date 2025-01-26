@@ -4,7 +4,7 @@
   import { onMount } from "svelte";
   import { replace } from "svelte-spa-router";
   import moment from "moment";
-  import { user_id } from "../../store";
+  import { auth, user_id } from "../../store";
   import ChangeProfilePic from "../../lib/ChangeProfilePic.svelte";
 
   export let data;
@@ -58,7 +58,6 @@
     class="bg-white min-w-[300px] w-full lg:max-w-[900px] max-w-[500px] p-4 py-6 h-fit m-auto flex flex-col gap-3"
   >
     <h2 class="text-center text-2xl font-bold">Your Profile</h2>
-    <hr class="py-1" />
     
     <hr class="py-1">
     <div class="row">
@@ -181,9 +180,14 @@
       <!-- <div class="link link-secondary">Change Password</div> -->
       <div class="ms-auto gap-4">
         <!-- <button class="btn btn-secondary" on:click>Edit Profile</button> -->
-         <button class="btn btn-secondary btn-sm" on:click={()=>changeProfile = true}>Change Picture</button>
+        {#if $auth == "staff"}
+        <button class="btn btn-ghost text-secondary underline btn-sm" on:click={()=>changeProfile = true}>Change Picture</button>
+        <a href="./#/update/{$user_id}" class="btn btn-secondary btn-sm" >Edit Profile</a>
+        {:else}
+        <button class="btn btn-secondary btn-sm" on:click={()=>changeProfile = true}>Change Picture</button>
+         {/if}
         <button
-          class="btn btn-secondary btn-outline btn-sm"
+          class="btn btn-primary btn-outline btn-sm"
           on:click={() => replace("/")}>Back</button
         >
       </div>

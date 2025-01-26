@@ -39,7 +39,6 @@ transition:scale={{ duration: 300 }}
 class="absolute h-fit left-1/2 -translate-x-1/2 top-[40%] bg-white w-3/4 sm:w-[550px] rounded-2xl z-[99] overflow-y-auto flex flex-col"
 >
 <div class="flex items-center justify-center">
-        {modalDetails.toString()}asdasd
         <h1 class="text-2xl font-bold p-4 pt-6">{modalDetails.title}</h1>
       </div>
       <hr />
