@@ -6,6 +6,7 @@
   import { pop } from 'svelte-spa-router'
   import moment from "moment";
   import { UserX } from "lucide-svelte";
+  import Loader from "../Loader.svelte";
 
   export let params;
   let error;
@@ -176,8 +177,13 @@
     </div>
     </div>
   {/if}
+  {#if barangays.length == 0}
+    <div class="bg-white min-w-[200px] max-w-[900px] p-4 md:p-12 py-6 h-fit m-auto flex flex-col gap-3 shadow-lg">
+      <Loader />
+    </div>
+  {/if}
   <form
-    class="bg-white min-w-[200px] max-w-[900px] p-4 md:p-12 py-6 h-fit m-auto flex-col gap-3 shadow-lg {error ? "hidden" : "flex"}"
+    class="bg-white min-w-[200px] max-w-[900px] p-4 md:p-12 py-6 h-fit m-auto flex-col gap-3 shadow-lg {error || barangays.length == 0 ? "hidden" : "flex"}"
     on:submit|preventDefault={updateClicked}
   >
     <h2 class="text-center text-2xl font-bold">Update Profile</h2>
