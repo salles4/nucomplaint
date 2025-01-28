@@ -34,6 +34,9 @@
       }
     )
     .subscribe();
+  function unselect(){
+    selected = null;
+  }
   onMount(getSurveys)
 </script>
 
@@ -69,7 +72,7 @@
     {#if selected == "create"}
       <CreateSurvey />
       {:else if selected}
-      <SurveyDetails {selected} />
+      <SurveyDetails {selected} {unselect}/>
       {:else}
       <div class="text-center m-12 p-4 border-b-2 border-primary w-fit mx-auto">Select a survey on the left or create one.</div>
     {/if}

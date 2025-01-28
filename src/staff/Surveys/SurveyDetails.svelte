@@ -4,8 +4,10 @@
   import { onMount } from "svelte";
   import Chart from "chart.js/auto";
   import Loader from "../../lib/Loader.svelte";
+  import { Trash2 } from "lucide-svelte";
+  import { modal } from "../../store";
 
-  export let selected;
+  export let selected, unselect;
 
   let answers;
   let votes;
@@ -83,30 +85,70 @@
     console.log(selected.options.map(option => option));
     console.log(selected.options.map((_, index) => votes[index]));
   }
+  async function deleteComplaint() {
+    const {error} = await supabase
+    .from('surveys')
+    .delete()
+    .eq('survey_id', selected.survey_id)
+
+    if(error){
+      alert(error.message)
+      console.error(error);
+      return;
+    }
+    unselect()
+  }
+  function openDeleteModal(){
+    modal.set({
+      title: "Delete?",
+      description: "Are you sure you want to delete this?",
+      pOption: "Confirm",
+      sOption: "Cancel",
+      primaryFn: () => {deleteComplaint(); modal.set(null);}
+    })
+  }
 </script>
 
 <div>
   <div class="flex items-center justify-between p-4 border-b">
     <div class="text-lg font-bold">{selected.type}</div>
-    <div class="text-gray-500 text-sm">{moment(selected.created_at).format("MM/DD/YYYY | hh:mm a")}</div>
+    <div class="text-gray-500 text-sm gap-2 flex items-center">
+      <div>
+        {moment(selected.created_at).format("MM/DD/YYYY | hh:mm a")}
+      </div>
+      <button class="btn btn-error btn-outline btn-sm" on:click={() => openDeleteModal()}><Trash2 /></button>
+    </div>
   </div>
   <div class="border-b text-center p-4 font-bold">
     {selected.question}
   </div>
   <canvas bind:this={chart} class="max-h-[250px] 2xl:max-h-[400px] {displayChart ? "!block" : "!hidden"}"> </canvas>
   {#if ["Poll", "Rating"].includes(selected.type) && votes}
-  {#if votes && !displayChart}
-  <div class="text-center py-6">
-    There are currently no votes in this {selected.type}
-  </div>  
-  {/if}
-  <div class="w-75% mx-auto">
-    {#each selected.options as option, index}
-    <div class="">
-      {option}: {votes[index]}
-    </div>
-    {/each}
-  </div>
+    {#if votes && !displayChart}
+    <div class="text-center py-6">
+      There are currently no votes in this {selected.type}
+    </div>  
+    {/if}
+      <table class="table table-fixed max-w-[500px] mx-auto">
+        <thead>
+          <tr>
+            <th>Option</th>
+            <th>Votes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each selected.options as option, index}
+          <tr>
+            <td>
+              {option}
+            </td>
+            <td>
+              {votes[index]}
+            </td>
+          </tr>  
+          {/each}
+        </tbody>
+  </table>
   {:else if selected.type == "Survey" && answers}
     <div class="max-w-[40rem] mx-auto px-6">
       <ul class="list-decimal list-outside">
@@ -119,3 +161,8 @@
   <Loader />
   {/if}
 </div>
+<style>
+  td, th{
+    @apply border;
+  }
+</style>
