@@ -23,6 +23,7 @@
   import { generateQR } from "../scanner";
   import { signOut } from "firebase/auth";
   import { firebaseAuth } from "../firebase";
+  import { initSession } from "../session-timeout";
 
   let name,
     id,
@@ -102,6 +103,7 @@
     localStorage.removeItem("v0Auth");
     signOut(firebaseAuth);
   }
+  initSession();
   let defaultImg;
 </script>
 

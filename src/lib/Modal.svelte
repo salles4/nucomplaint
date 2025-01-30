@@ -8,6 +8,7 @@
     description: null,
     primaryFn: null,
     secondaryFn: () => modal.set(null),
+    clickableBg: true,
   };
 
   modal.subscribe((details) => {
@@ -31,32 +32,38 @@
   <button
   transition:fade
   class="bg-black/20 absolute w-[100svw] h-[100svh] top-0 left-0 cursor-default z-[98]"
-  on:click={() => modalDetails.secondaryFn()}
+  on:click={() => {
+    if(modalDetails.clickableBg){
+      modalDetails.secondaryFn();
+    }
+  }}
   >
 </button>
 <div
 transition:scale={{ duration: 300 }}
-class="absolute h-fit left-1/2 -translate-x-1/2 top-[40%] bg-white w-3/4 sm:w-[550px] rounded-2xl z-[99] overflow-y-auto flex flex-col"
+class="absolute h-fit left-1/2 -translate-x-1/2 top-[20%] bg-white w-3/4 sm:w-[550px] rounded-2xl z-[99] overflow-y-auto flex flex-col"
 >
 <div class="flex items-center justify-center">
         <h1 class="text-2xl font-bold p-4 pt-6">{modalDetails.title}</h1>
       </div>
       <hr />
-      <div class="p-4 text-center">
+      <div class="p-14 text-center">
         {modalDetails.description}
       </div>
       <hr />
-      <div class="grid grid-cols-2 gap-2 p-2">
+      <div class="flex w-1/2 mx-auto gap-4 p-4">
         {#if modalDetails.pOption}
         <button
-        class="btn btn-primary btn-sm"
+        class="btn btn-primary btn-sm flex-1"
         on:click={modalDetails.primaryFn}>{modalDetails.pOption}</button
         >
         {/if}
+        {#if modalDetails.sOption}
         <button
-          class="btn btn-primary btn-outline btn-sm"
-          on:click={modalDetails.secondaryFn}>{modalDetails.sOption}</button
+        class="btn btn-primary btn-outline btn-sm flex-1"
+        on:click={modalDetails.secondaryFn}>{modalDetails.sOption}</button
         >
+        {/if}
       </div>
     </div>
   </div>

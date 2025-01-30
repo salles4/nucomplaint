@@ -97,10 +97,10 @@
   };
   let warning = true;
 </script>
-<div class="{warning ? "block" : "hidden"} absolute bottom-0 w-full p-1 text-sm text-center bg-white overflow-auto">
+<!-- <div class="{warning ? "block" : "hidden"} absolute bottom-0 w-full p-1 text-sm text-center bg-white overflow-auto">
   This is for a student's school project. This website is used for educational purposes only.
   <button class="btn btn-primary btn-outline btn-xs ms-2" on:click={() => warning = false}>Close</button>
-</div>
+</div> -->
 <div
   class="entry flex flex-col justify-center items-center min-h-[100svh] min-w-full"
   style="background-image: url({numoa});"
