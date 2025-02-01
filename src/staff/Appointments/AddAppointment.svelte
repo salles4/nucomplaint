@@ -86,24 +86,25 @@
     .eq("user_id", $user_id)
     console.log(staffName);
     const {first_name, last_name} = staffName[0];
-    
-    const response = await fetch(
-      "https://api.semaphore.co/api/v4/messages",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          apikey: import.meta.env.VITE_MESSENGER,
-          number: num,
-          sendername:"CODEVERSE",
-          message: `You have a scheduled appoinemnt with ${first_name} ${last_name} at ${moment(timeInput).format("MM/DD/YY hh:mma")} because of "${typeInput}" \n\n-SDAO, NU Complaint`
-        }),
-      }
-    );
-    const json = response.json()
-    console.log(json); 
+    try {
+      await fetch(
+        "https://api.semaphore.co/api/v4/messages",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            apikey: import.meta.env.VITE_MESSENGER,
+            number: num,
+            sendername:"CODEVERSE",
+            message: `You have a scheduled appoinemnt with ${first_name} ${last_name} at ${moment(timeInput).format("MM/DD/YY hh:mma")} because of "${typeInput}" \n\n-SDAO, NU Complaint`
+          }),
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
     
 
     alert("Added Successfully");

@@ -38,13 +38,13 @@
         icon={MessageSquareWarning}
         label="Complaints"
         number={countData.complaints}
-        time="Last 24 Hours"
+        time="Last 90 days"
       />
       <Stat
         icon={Gavel}
         label="Offenses"
         number={countData.offenses}
-        time="Last 24 Hours"
+        time="Last 90 days"
       />
       <Stat
         icon={CalendarCheck}

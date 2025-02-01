@@ -5,6 +5,7 @@
   import AiReport from "./AIReport..svelte";
   import moment from "moment";
   import "chartjs-adapter-moment";
+  import Loader from "../../lib/Loader.svelte";
 
   // Selected time data
   export let date1, date2, timeRange; 
@@ -19,7 +20,7 @@
   // Chart's document.getElementById()
   let chart1, chart2;
   let pie, line;
-
+  let loading = true;
   export let get_complaints = async () => {
 
     // Resets Data
@@ -27,6 +28,7 @@
     lineData = []
     sortedDate = [];
     dataContext = null;
+    loading = true;
 
     // Get data from DB depending on selected time
     let complaints;
@@ -95,6 +97,7 @@
     lineData = lineData;
 
     draw();
+    loading = false;
   }
 
   async function draw() {
@@ -165,12 +168,14 @@
   onMount(get_complaints);
   onMount(initCharts);
 </script>
-<div
-    class="flex justify-center flex-col lg:flex-row print:flex-col print:h-full"
-  >
+
     {#if timeRange == "Custom" && (!date1 || !date2)}  
     <div class="w-full text-center p-6">Select a date to generate a report between the time range..</div>
-    {:else if data.length == 0}
+    {:else if loading}
+    <div class="mx-auto w-full">
+      <Loader />
+    </div>
+    {:else if data.length == 0 && !loading}
     <div class="w-full text-center p-6">No data on the selected time range..</div>
     {/if}
     <div class="flex-[3]">
@@ -178,7 +183,7 @@
         <AiReport reportType={"complaint"} {dataContext} />
       {/if}
     </div>
-    <div class="flex-[2] flex-col !print:h-full print:items-center p-4 {data.length == 0 ? "hidden" : "flex"}">
+    <div class="flex-[2] flex-col !print:h-full print:items-center p-4 {data.length == 0 || loading ? "hidden" : "flex"}">
       <div
         class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 p-4 mx-2 bg-white shadow-lg"
       >
@@ -227,4 +232,4 @@
         {/if}
       </div>
     </div>
-  </div>
+  

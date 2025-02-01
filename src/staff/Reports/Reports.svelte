@@ -17,6 +17,7 @@
     if (e.target.closest(".dropdown")) {
       e.target.closest(".dropdown").removeAttribute("open");
     }
+    onTimeChange();
   }
   function onTimeChange(){
     if(activeReportType == "Complaints"){
@@ -90,10 +91,15 @@
     <button class="btn btn-primary btn-sm" on:click={() => {window.print()}}><Printer /> Export</button>
   </div>
   {#if timeRange}
-    {#if activeReportType == "Complaints"}
+    
+    <div class="justify-center flex-col lg:flex-row print:flex-col print:h-full {activeReportType == "Complaints" ? "flex" : "hidden"}">
       <ComplaintsReport {timeRange} {date1} {date2} bind:get_complaints={complaints} />
-    {:else}
+    </div>
+    
+    <div class="justify-center flex-col lg:flex-row print:flex-col print:h-full {activeReportType == "Offenses" ? "flex" : "hidden"}"> 
       <OffensesReport {timeRange} {date1} {date2} bind:get_offenses={offenses} />
-    {/if}
+    </div>
+
+  
   {/if}
 </div>
