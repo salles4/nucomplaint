@@ -3,6 +3,7 @@
   import Loader from "../../lib/Loader.svelte";
   import { signInWithEmailAndPassword } from "firebase/auth";
   import { firebaseAuth } from "../../firebase";
+  import { modal } from "../../store";
 
   export let changePage;
   let emailInput, passwordInput;
@@ -23,7 +24,14 @@
       changePage("")
     } catch (error) {
       console.error(error);
-      alert("Error signing in: "+error.code)
+      // alert("Invalid Credentials, please try again!")
+      modal.set({
+        title: "Invalid Credentials",
+        description: "Wrong Email or password, please try again.",
+        pOption: "Ok",
+        primaryFn: () => { modal.set(null); },
+        clickableBg: false,
+      })
     }
     disableButton = false;
   }

@@ -4,7 +4,7 @@ import { firebaseAuth } from "./firebase";
 import moment from "moment";
 
 // Minutes before timeout
-const MINUTES = 1
+const MINUTES = 10
 
 export function initSession(){  
   if((localStorage.getItem("timeout") || "0") == "1"){
@@ -31,7 +31,7 @@ export function initSession(){
       clearInterval(timer);
       modal.set({
         title: "Session Timeout",
-        description: "You've been inactive for 1 minute. You'll be logged out.",
+        description: `You've been inactive for ${MINUTES} minutes. You'll be logged out.`,
         pOption: "Ok",
         primaryFn: () => { signOut(firebaseAuth); localStorage.removeItem("timeout"); modal.set(null); },
         clickableBg: false,
