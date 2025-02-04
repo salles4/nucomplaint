@@ -2,7 +2,6 @@
   import moment from "moment";
   import { supabase } from "../../supabase";
   import { Chart } from "chart.js";
-  import ChartDataLabels from 'chartjs-plugin-datalabels';
   import { onMount } from "svelte";
 
   // sorted complaints objects
@@ -139,9 +138,6 @@
       data: null,
       options: {
         plugins: {
-          datalabels:{
-            display: false
-          },
           title: {
             display: true,
             padding: 24,
