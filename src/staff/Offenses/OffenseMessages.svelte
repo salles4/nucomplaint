@@ -43,6 +43,7 @@
 		if(messages) scrollToBottom();
   });
   async function sendMessage() {
+    if(!messageInput) return;
     const { data, error } = await supabase.from("messages").insert({
       type: "offense",
       message: messageInput,
@@ -125,7 +126,7 @@
     placeholder="Type your message here"
     bind:value={messageInput}
   ></textarea>
-  <button class="btn btn-primary" on:click={sendMessage}>
+  <button class="btn btn-primary" disabled={!messageInput} on:click={sendMessage}>
     <SendHorizontal />
   </button>
 </div>
