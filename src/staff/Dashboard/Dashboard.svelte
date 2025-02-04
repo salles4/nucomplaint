@@ -6,6 +6,8 @@
   import { onMount } from "svelte";
   import { supabase } from "../../supabase";
   import Loader from "../../lib/Loader.svelte";
+  import ComplaintsCharts from "./ComplaintsCharts.svelte";
+  import OffensesCharts from "./OffensesCharts.svelte";
   if ($location == "/") {
     replace("/dashboard");
   }
@@ -29,7 +31,7 @@
   onMount(getCounts);
 </script>
 
-<div class="flex flex-col justify-center h-full">
+<div class="flex flex-col justify-center">
   {#if countData}
     <div
       class="hidden lg:flex justify-center mt-12 gap-3 flex-wrap text-2xl font-bold"
@@ -90,22 +92,23 @@
   {/if}
 
   <div
-    class="m-4 flex-grow bg-white text-center flex flex-col h-full shadow-lg"
+    class="m-4 bg-white text-center flex flex-col shadow-lg"
   >
-    <div class="mt-4 text-2xl font-bold">Account Management</div>
-    <div class="flex-grow flex gap-4 justify-center items-center flex-wrap">
+    <!-- <div class="mt-4 text-2xl font-bold">Account Management</div> -->
+    <div class="flex gap-4 justify-center items-center flex-wrap">
       <AccMng
         title="Students"
         src="./img/student.png"
         description="Get an access to the student's profile."
         on:click={() => changePath("/dashboard/student")}
       />
-      <!-- <AccMng
-        title="Guards"
-        src="./img/guard.png"
-        description="Get an access to the guard's profile."
-        on:click={() => changePath("/dashboard/guard")}
-      /> -->
     </div>
+  </div>
+  <div class="h-fit bg-white m-4 mt-0 shadow-lg flex-col max-w-full">
+    <div class="font-bold text-center text-xl p-4">Complaints</div>
+    <ComplaintsCharts />
+    <hr class="p-2">
+    <div class="font-bold text-center text-xl my-4">Offenses</div>
+    <OffensesCharts />
   </div>
 </div>

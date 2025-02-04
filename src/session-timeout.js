@@ -43,6 +43,6 @@ export function initSession(){
 
 function onEvent(){
   sessionStorage.setItem("last-clicked", `${new Date()}`)
-  console.log("changed sessionStorage to", `${new Date()}`);
+  // console.log("changed sessionStorage to", `${new Date()}`);
   
 }
