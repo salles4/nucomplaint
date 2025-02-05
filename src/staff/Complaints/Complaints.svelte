@@ -18,7 +18,7 @@
   import { supabase } from "../../supabase";
   import { onMount } from "svelte";
   import Loader from "../../lib/Loader.svelte";
-  import ComplaintsDetails from "./ComplaintSummary.svelte";
+  import ComplaintSummary from "./ComplaintSummary.svelte";
   import { badge } from "../../customCss";
   import { replace } from "svelte-spa-router";
   import Table from "../../lib/Table.svelte";
@@ -148,6 +148,6 @@
 {/each}
 </Table>
 {#if selectedComplaint}
-  <ComplaintsDetails complaint_id={selectedComplaint} closeDetails={() => selectedComplaint = null}/>
+  <ComplaintSummary complaint_id={selectedComplaint} closeDetails={() => {selectedComplaint = null; replace("/complaints")}}/>
 {/if}
 

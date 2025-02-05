@@ -6,6 +6,7 @@
   import { Info, List, QrCode } from "lucide-svelte";
   import StudentLookup from "../../lib/StudentLookup.svelte";
   import moment from "moment";
+  import { addNotification } from "../../lib/addNotif";
 
   export let changeMode;
 
@@ -59,13 +60,13 @@
       return;
     }
 
-    const { error } = await supabase.from("appointments").insert({
+    const { data:insertedData, error } = await supabase.from("appointments").insert({
       staff_id: $user_id,
       reason: typeInput,
       message: messageInput,
       student_id: idInput,
       time: timeInput,
-    });
+    }).select()
 
     if (error) {
       alert(error.message);
@@ -106,7 +107,7 @@
       console.error(error);
     }
     
-
+    addNotification(idInput, "new appointment", `You have a new scheduled appointment about ${typeInput}`, insertedData[0].appointment_id)
     alert("Added Successfully");
     changeMode("display");
   }

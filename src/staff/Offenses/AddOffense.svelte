@@ -6,6 +6,7 @@
   import { pop } from "svelte-spa-router";
   import StudentLookup from "../../lib/StudentLookup.svelte";
   import moment from "moment";
+  import { addNotification } from "../../lib/addNotif";
 
   let idInput, timeInput, violationInput, categoryInput, noteInput;
   let lookUpStudent = false;
@@ -32,20 +33,21 @@
       buttonDisabled = false;
       return;
     }
-    const { error } = await supabase.from("offenses").insert({
+    const { data:insertedData, error } = await supabase.from("offenses").insert({
       staff_id: $user_id,
       violation: violationInput,
       category: categoryInput,
       student_id: idInput,
       valid_until: timeInput,
       notes: noteInput,
-    });
+    }).select("*");
 
     if (error) {
       alert(error.message);
       buttonDisabled = false;
       return;
     }
+    addNotification(idInput, "new offense", `You have been identified to violate the university's policy on ${violationInput}`, insertedData[0].offense_id)
     alert("Added Successfully");
     if ($auth == "guard") {
       replace("/records");
