@@ -11,7 +11,7 @@
   import { push } from 'svelte-spa-router'
   import { slide } from "svelte/transition";
 
-  let notificationOpen = true;
+  let notificationOpen = false;
   let notificationList = [];
   function logout() {
     auth.set(null);
