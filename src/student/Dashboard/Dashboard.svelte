@@ -65,7 +65,7 @@
 {/each}
 {/if}
 <div class="flex h-full justify-evenly items-center lg:flex-row flex-col">
-  <div class=" flex lg:flex-col justify-center items-center gap-12 mt-4">
+  <div class=" flex-wrap p-12 flex lg:flex-col justify-center items-center gap-12 mt-4">
     {#if dashboard}
     <Stat icon={MessageSquareWarning} label="Your Complaints" number={dashboard.complaints} time="" />
     <Stat icon={Gavel} label="Offenses" number={dashboard.offenses} time="" />

@@ -6,7 +6,9 @@
   import Loader from "../../lib/Loader.svelte";
   import { badge } from "../../customCss";
   import moment from "moment";
-  import {pop} from 'svelte-spa-router';
+  import {pop, replace} from 'svelte-spa-router';
+  import { user_id } from "../../store";
+  
 
   export let offense_id
   let details;
@@ -22,6 +24,10 @@
     if(error){
       alert(error.message)
       return;
+    }
+    if(data.student_id.user_id != $user_id){
+      replace("/offenses")
+      alert("No permission to access that.")
     }
     details = data
 
@@ -104,11 +110,11 @@
       {moment(details.valid_until).format("ddd - MMM DD, YYYY - hh:mm a")}
     </div>
   </div>
-  {#if details.note}
+  {#if details.notes}
   <div class="row">
     <div class="name">Note: </div>
     <div class="content">
-      {details.note}
+      {details.notes}
     </div>
   </div>
   {/if}

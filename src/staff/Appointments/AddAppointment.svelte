@@ -99,7 +99,7 @@
             apikey: import.meta.env.VITE_MESSENGER,
             number: num,
             sendername:"CODEVERSE",
-            message: `You have a scheduled appoinemnt with ${first_name} ${last_name} at ${moment(timeInput).format("MM/DD/YY hh:mma")} because of "${typeInput}" \n\n-SDAO, NU Complaint`
+            message: `You have a scheduled appointemnt with ${first_name} ${last_name} at ${moment(timeInput).format("MM/DD/YY hh:mma")} because of "${typeInput}" \n\n-SDAO, NU Complaint`
           }),
         }
       );
@@ -117,10 +117,10 @@
 <div class="h-full flex">
   <form
     on:submit|preventDefault={submit}
-    class="max-w-[600px] min-w-[256px] w-full h-fit m-auto px-12 p-4 flex flex-col justify-center items-center gap-4 bg-white rounded-lg"
+    class="max-w-[600px] min-w-[256px] w-full h-fit m-auto mt-12 px-12 p-4 flex flex-col justify-center items-center gap-4 bg-white rounded shadow-lg"
   >
     <div class="text-center p-4">
-      <span class="text-2xl"> Add Appointment </span>
+      <span class="text-2xl font-bold"> Add Appointment </span>
     </div>
     <div class="row">
       <label for="student_id">Student ID: </label>

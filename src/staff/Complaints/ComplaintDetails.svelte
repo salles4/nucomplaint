@@ -7,6 +7,7 @@
   import { pop } from "svelte-spa-router";
   import { ArrowLeftCircle } from "lucide-svelte";
   import { modal } from "../../store";
+  import { addNotification } from "../../lib/addNotif";
   export let complaint_id
   let details;
 
@@ -54,6 +55,12 @@
         console.error(error);
         return;
       }
+      addNotification(
+        details.sender_id.user_id,
+        "complaint status",
+        `The status of your complaint about ${details.type} has been updated from ${currentStatus} to ${newStatusSelected}`,
+        complaint_id
+      )
     }
   }
   async function deleteComplaint() {

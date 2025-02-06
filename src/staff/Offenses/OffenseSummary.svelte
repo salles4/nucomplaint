@@ -7,7 +7,9 @@
   import { badge } from "../../customCss";
   import moment from "moment";
   import RightModal from "../../lib/RightModal.svelte";
-  import { modal } from "../../store";
+  import { modal, user_id } from "../../store";
+  import { addNotification } from "../../lib/addNotif";
+  import { replace } from 'svelte-spa-router'
 
   export let offense_id, closeDetails;
   let details;
@@ -24,6 +26,7 @@
       alert(error.message)
       return;
     }
+    
     details = data
 
     currentStatus = data.status;
@@ -41,6 +44,12 @@
         console.error(error);
         return;
       }
+      addNotification(
+        details.sender_id.user_id,
+        "offense status",
+        `The status of your offense about ${details.violation} has been updated from ${currentStatus} to ${newStatusSelected}`,
+        offense_id
+      )
     }
   }
   async function deleteOffense() {
@@ -111,11 +120,11 @@
           {moment(details.valid_until).format("ddd - MMM DD, YYYY - hh:mm a")}
         </div>
       </div>
-      {#if details.note}
+      {#if details.notes}
       <div class="row">
         <div class="name">Note: </div>
         <div class="content">
-          {details.note}
+          {details.notes}
         </div>
       </div>
       {/if}

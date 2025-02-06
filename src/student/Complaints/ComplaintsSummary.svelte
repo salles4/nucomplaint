@@ -6,6 +6,8 @@
   import Loader from "../../lib/Loader.svelte";
   import {badge} from "../../customCss"
   import RightModal from "../../lib/RightModal.svelte";
+  import { replace } from 'svelte-spa-router'
+  import { user_id } from "../../store";
 
   export let complaint_id, closeDetails;
   let details;
@@ -19,6 +21,10 @@
     if(error){
       alert(error.message)
       return;
+    }
+    if(data.sender_id.user_id != $user_id){
+      replace("/complaints")
+      alert("No permission to access that")
     }
     details = data
   }

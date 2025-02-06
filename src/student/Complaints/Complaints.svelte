@@ -1,7 +1,7 @@
 <script>
   import { Archive, Ellipsis, Eye, List, MailCheck, MailWarning, PlusCircle, Trash } from "lucide-svelte";
   import { supabase } from "../../supabase";
-  import { replace } from "svelte-spa-router";
+  import { replace, querystring } from "svelte-spa-router";
   import { onMount } from "svelte";
   import Loader from "../../lib/Loader.svelte";
   import { user_id } from "../../store";
@@ -18,9 +18,11 @@
   export let params;
   if(params && params.id && params.id != "-"){
     selectedComplaint = params.id
-  }else{
-    replace("/complaints/-")
   }
+  querystring.subscribe((id)=> {
+    const searchparams = new URLSearchParams(id)
+    selectedComplaint = searchparams.get('id')
+  })
 
   async function getComplaints() {
     const {data, error} = await supabase
@@ -109,7 +111,7 @@
   filteredList={filterComplaints}
 >
 {#each filterComplaints as { complaint_id, status, type, message, sent_date, sender_id:{first_name, last_name}}}
-  <tr class="border-black/20 hover:bg-black/5 hover:cursor-pointer" on:click={() => {replace(`/complaints/${complaint_id}`); selectedComplaint=complaint_id }}>
+  <tr class="border-black/20 hover:bg-black/5 hover:cursor-pointer" on:click={() => {replace(`/complaints?id=${complaint_id}`); selectedComplaint=complaint_id }}>
     <td><span class="badge {badge(status)}">{status}</span></td>
     <td class="truncate text-start max-w-[300px]">{message}</td>
     <td>{type}</td>
@@ -124,5 +126,5 @@
 </Table>
 
 {#if selectedComplaint}
-  <ComplaintsDetails complaint_id={selectedComplaint} closeDetails={() => {selectedComplaint = null }} />
+  <ComplaintsDetails complaint_id={selectedComplaint} closeDetails={() => {replace('/complaints'); selectedComplaint = null }} />
 {/if}

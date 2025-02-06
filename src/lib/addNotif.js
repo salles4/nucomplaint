@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { supabase } from "../supabase"
 
 /**
@@ -16,9 +17,25 @@ export const addNotification = async (user_id, type, message, related_id) => {
     message: message,
     related_id: related_id,
   })
-
+  
   if(error){
     console.error(error);
     return;
   }
+  console.log('inserted Notif');
+}
+
+export const notifyStaff = async (type, message, related_id) => {
+  const {data: staff_ids, error: staff_idsError} = await supabase
+  .from("users")
+  .select("user_id")
+  .eq("account_type", 'staff')
+
+  if(staff_idsError){
+    console.error(staff_idsError);
+    return;
+  }
+  staff_ids.map(staff_id => {
+    addNotification(staff_id.user_id, type, message, related_id);
+  })
 }

@@ -25,6 +25,7 @@
   import { badge } from "../../customCss";
   import moment from "moment";
   import Table from "../../lib/Table.svelte";
+  import {querystring, replace} from 'svelte-spa-router'
 
   export let changeMode;
   
@@ -33,6 +34,11 @@
   let active = "All";
   let selectedAppointment;
   
+  querystring.subscribe((id)=> {
+    const searchparams = new URLSearchParams(id)
+    selectedAppointment = searchparams.get('id')
+  })
+
   async function getAppointments() {
     const { data, error } = await supabase
       .from("appointments")
@@ -154,7 +160,7 @@
     <td>{reason}</td>
     <td class="truncate text-start max-w-[300px]">{message}</td>
     <td class="text-nowrap">{moment(time).format("MMM DD, YYYY - hh:mm a")}</td>
-    <td>
+    <td class="">
       <div>
         <Ellipsis class="mx-auto" />
       </div>
@@ -165,7 +171,7 @@
 {#if selectedAppointment}
   <AppointmentDetails
     appointment_id={selectedAppointment}
-    closeDetails={() => (selectedAppointment = null)}
+    closeDetails={() => {replace("/appointments"); selectedAppointment = null}}
   />
 {/if}
 

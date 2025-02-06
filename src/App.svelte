@@ -20,7 +20,7 @@
   import StudentOffenses from "./student/Offenses/Offenses.svelte";
   import StudentOffensePage from "./student/Offenses/OffensePage.svelte";
 
-  import { auth, user_id, firebase_uid, user_details } from "./store";
+  import { auth, user_id, firebase_uid, user_details, user_name } from "./store";
   import UserList from "./staff/Dashboard/UserList.svelte";
   import GuardsList from "./staff/Dashboard/GuardsList.svelte";
   import AddComplaint from "./student/Complaints/AddComplaint.svelte";
@@ -81,6 +81,7 @@
       alert(error.message);
       console.error(error);
     } else {
+      user_name.set(`${data.first_name} ${data.last_name}`)
       user_id.set(data.user_id);
       auth.set(data.account_type);
       user_details.set(data);
@@ -114,7 +115,7 @@
           "/appointments": Appointments,
           "/reports": Reports,
           "/surveys": Surveys,
-          // "*": Error,
+          "*": Error,
         }}
       />
     </main>
@@ -136,6 +137,7 @@
           "/offenses": StudentOffenses,
           "/offenses/:id": StudentOffenses,
           "/offense/:id": StudentOffensePage,
+          "*": Error,
         }}
       />
     </main>

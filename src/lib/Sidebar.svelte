@@ -1,5 +1,5 @@
 <script>
-  import { auth, sidebarLabel, user_id } from "../store";
+  import { auth, sidebarLabel, user_id, user_name } from "../store";
   import {
     ArrowLeftFromLine,
     ArrowRightFromLine,
@@ -36,10 +36,10 @@
         icon: House,
         label: "Dashboard",
         to: "dashboard",
-        routes: ["/students", "/guards"],
+        routes: ["/students", "/update/"],
       },
       { icon: User, label: "Profile", to: "profile" },
-      { icon: MessageSquareWarning, label: "Complaints", to: "complaints/", routes: ["/complaint/"], },
+      { icon: MessageSquareWarning, label: "Complaints", to: "complaints/", routes: ["/complaint/", "/complaints"], },
       {
         icon: Gavel,
         label: "Offenses",
@@ -83,7 +83,8 @@
       console.error(error);
     }
     const { first_name, last_name, user_id: loggedID } = data;
-    name = `${first_name} ${last_name}`;
+    // name = `${first_name} ${last_name}`;
+    name = $user_name
     id = ` ${loggedID.toString().substring(0, 4)}-${loggedID.toString().slice(4)}`;
   }
   onMount(getDetails);
@@ -110,7 +111,7 @@
 <aside
   class="{$sidebarLabel
     ? 'sm:min-w-[300px] min-w-full'
-    : 'sm:min-w-[70px] min-w-0 max-w-0 sm:max-w-[70px]'} flex flex-col h-[100svh] overflow-y-auto w-fit shadow-xl bg-white absolute z-50 sm:sticky top-0 print:hidden"
+    : 'sm:min-w-[70px] min-w-0 max-w-0 sm:max-w-[70px]'} flex flex-col h-[100svh] overflow-y-auto w-fit shadow-xl bg-white absolute z-[20] sm:sticky top-0 print:hidden"
 >
   <!-- Toggle Sidebar Button -->
   <button

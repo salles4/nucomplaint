@@ -59,10 +59,10 @@
 <div class="h-full flex justify-center items-center flex-wrap">
   <form
     on:submit|preventDefault={submit}
-    class="max-w-[600px] min-w-[256px] w-full bg-white px-12 pb-8 p-4 m-auto h-fit flex flex-col justify-center items-center gap-4"
+    class="max-w-[600px] min-w-[256px] w-full bg-white px-12 pb-8 p-4 m-auto mt-12 h-fit shadow-lg rounded flex flex-col justify-center items-center gap-4"
   >
     <div class="text-center p-4">
-      <span class="text-2xl"> Add Offense </span>
+      <span class="text-2xl font-bold"> Add Offense </span>
     </div>
     <div class="row">
       <label for="student_id">Student ID: </label>

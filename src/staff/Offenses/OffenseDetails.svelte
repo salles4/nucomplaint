@@ -7,6 +7,7 @@
   import { badge } from "../../customCss";
   import moment from "moment";
   import {pop} from 'svelte-spa-router'
+  import { addNotification } from "../../lib/addNotif";
 
   export let offense_id;
   let details;
@@ -40,6 +41,12 @@
         console.error(error);
         return;
       }
+      addNotification(
+        details.sender_id.user_id,
+        "offense status",
+        `The status of your offense about ${details.violation} has been updated from ${currentStatus} to ${newStatusSelected}`,
+        offense_id
+      )
     }
   }
   async function deleteAppointment() {
@@ -105,11 +112,11 @@
       {moment(details.valid_until).format("ddd - MMM DD, YYYY - hh:mm a")}
     </div>
   </div>
-  {#if details.note}
+  {#if details.notes}
   <div class="row">
     <div class="name">Note: </div>
     <div class="content">
-      {details.note}
+      {details.notes}
     </div>
   </div>
   {/if}

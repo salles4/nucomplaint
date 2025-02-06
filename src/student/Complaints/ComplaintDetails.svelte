@@ -5,7 +5,8 @@
   import { onMount } from "svelte";
   import Loader from "../../lib/Loader.svelte";
   import {badge} from "../../customCss"
-  import {pop} from "svelte-spa-router";
+  import {pop, replace} from "svelte-spa-router";
+  import { user_id } from "../../store";
 
   export let complaint_id;
   let details;
@@ -19,6 +20,10 @@
     if(error){
       alert(error.message)
       return;
+    }
+    if(data.sender_id.user_id != $user_id){
+      replace("/complaints")
+      alert("No permission to access that")
     }
     details = data
   }

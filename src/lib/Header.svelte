@@ -8,8 +8,9 @@
   import {user_id} from '../store'
   import { supabase } from "../supabase";
   import { onMount } from "svelte";
-  import { push } from 'svelte-spa-router'
+  import { push, replace } from 'svelte-spa-router'
   import { slide } from "svelte/transition";
+  import NotificationItem from "./NotificationItem.svelte";
 
   let notificationOpen = false;
   let notificationList = [];
@@ -90,17 +91,11 @@
 
 {#if notificationOpen}
   <RightModal title="Notifications" closeDetails={() => notificationOpen = false}>
+    {#if notificationList.length == 0}
+      <div class="text-center p-4">You got zero notification</div>
+    {/if}
   {#each notificationList as notif}
-    <div class="flex m-4 p-2 border-2 rounded items-center" transition:slide>
-      <div class="px-4 h-full border-e flex items-center"><MessageSquareMore size=32 /></div>
-      <div class="flex-col flex-1 px-4">
-        <div class="">{notif.message}</div>
-        <button on:click={()=> {
-            push(`/complaints/${notif.related_id}`)
-          }}>View Details</button>
-      </div>
-      <button class="px-2 h-full border-s" on:click={() => deleteNotif(notif.notification_id)}><X /></button>
-    </div>
+    <NotificationItem {notif} {deleteNotif} />
   {/each}
   </RightModal>
 {/if}

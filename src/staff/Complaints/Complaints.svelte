@@ -20,7 +20,7 @@
   import Loader from "../../lib/Loader.svelte";
   import ComplaintSummary from "./ComplaintSummary.svelte";
   import { badge } from "../../customCss";
-  import { replace } from "svelte-spa-router";
+  import { replace, querystring } from "svelte-spa-router";
   import Table from "../../lib/Table.svelte";
 
   let active = "All";
@@ -31,9 +31,12 @@
   if(params && params.id && params.id != "-"){
     selectedComplaint = params.id
   }else{
-    replace("/complaints/-")
+    // replace("/complaints/-")
   }
-
+  querystring.subscribe((id)=> {
+    const searchparams = new URLSearchParams(id)
+    selectedComplaint = searchparams.get('id')
+  })
   async function getComplaints() {
     const {data, error} = await supabase
     .from("complaints")
@@ -133,7 +136,7 @@
   filteredList={filterComplaints}
 >
 {#each filterComplaints as { complaint_id, status, type, message, sent_date, sender_id:{first_name, last_name}}}
-  <tr class="border-black/20 hover:bg-black/5 hover:cursor-pointer" on:click={() => {replace(`/complaints/${complaint_id}`); selectedComplaint = complaint_id}}>
+  <tr class="border-black/20 hover:bg-black/5 hover:cursor-pointer" on:click={() => {replace(`/complaints?id=${complaint_id}`); selectedComplaint = complaint_id}}>
     <td><span class="badge {badge(status)}">{status}</span></td>
     <td>{first_name} {last_name}</td>
     <td class="truncate text-start max-w-[300px]">{message}</td>

@@ -7,6 +7,7 @@
   import { badge } from "../../customCss";
   import RightModal from "../../lib/RightModal.svelte";
   import { modal } from "../../store";
+  import { addNotification } from "../../lib/addNotif";
 
   export let complaint_id, closeDetails = null;
   let details;
@@ -55,6 +56,7 @@
         console.error(error);
         return;
       }
+      addNotification(details.sender_id.user_id,"complaint status",`The status of your complaint about ${details.type} has been updated from ${currentStatus} to ${newStatusSelected}`, complaint_id)
     }
   }
   async function deleteComplaint() {
@@ -131,8 +133,6 @@
       <div class="ms-auto">
         Status:
         <select class="select-success px-2 min-w-fit max-w-xs select-sm" name="status" id="status" bind:value={newStatusSelected}>
-          <option value="Read">Read</option>
-          <option value="Unread">Unread</option>
           <option value="Unsettled">Unsettled</option>
           <option value="Settled">Settled</option>
           <option value="Archive">Archive</option>

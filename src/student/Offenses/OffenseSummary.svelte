@@ -7,6 +7,8 @@
   import { badge } from "../../customCss";
   import moment from "moment";
   import RightModal from "../../lib/RightModal.svelte";
+  import { user_id } from "../../store";
+  import { replace } from 'svelte-spa-router'
 
   export let offense_id, closeDetails;
   let details;
@@ -23,6 +25,12 @@
       alert(error.message)
       return;
     }
+    
+    if(data.student_id.user_id != $user_id){
+      replace("/offenses")
+      alert("No permission to access that.")
+    }
+
     details = data
 
     currentStatus = data.status;
@@ -101,11 +109,11 @@
           {moment(details.valid_until).format("ddd - MMM DD, YYYY - hh:mm a")}
         </div>
       </div>
-      {#if details.note}
+      {#if details.notes}
       <div class="row">
         <div class="name">Note: </div>
         <div class="content">
-          {details.note}
+          {details.notes}
         </div>
       </div>
       {/if}

@@ -22,7 +22,7 @@
   import { auth, user_id } from "../../store";
   import Loader from "../../lib/Loader.svelte";
   import Table from "../../lib/Table.svelte";
-  import {replace} from 'svelte-spa-router';
+  import {replace, querystring} from 'svelte-spa-router';
 
   let offenses;
   let active = "All";
@@ -33,9 +33,11 @@
   export let params;
   if(params && params.id && params.id != "-"){
     selectedOffense = params.id
-  }else{
-    replace("/offenses/-")
   }
+  querystring.subscribe((id)=> {
+    const searchparams = new URLSearchParams(id)
+    selectedOffense = searchparams.get('id')
+  })
 
   async function getOffenses() {
     const { data, error } = await supabase
@@ -108,7 +110,7 @@
   {#each filteredOffenses as { offense_id, status, violation, category, valid_until, time_created }}
     <tr
       class="border-black/20 hover:bg-black/5 hover:cursor-pointer"
-      on:click={() => (selectedOffense = offense_id)}
+      on:click={() => {replace(`/offenses?id=${offense_id}`);selectedOffense = offense_id}}
     >
       <td class="p-2"
         ><span class="badge text-nowrap {badge(status)}">{status}</span></td
@@ -137,6 +139,6 @@
 {#if selectedOffense}
   <OffenseSummary
     offense_id={selectedOffense}
-    closeDetails={() => (selectedOffense = null)}
+    closeDetails={() => {replace('/offenses'); selectedOffense = null}}
   />
 {/if}
