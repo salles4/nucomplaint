@@ -44,7 +44,7 @@
       addNotification(
         details.sender_id.user_id,
         "offense status",
-        `The status of your offense about ${details.violation} has been updated from ${currentStatus} to ${newStatusSelected}`,
+        `The status of your offense about **${details.violation}** has been updated from <span class="badge ${badge(currentStatus)}">${currentStatus}</span> to <span class="badge ${badge(newStatusSelected)}">${newStatusSelected}</span>`,
         offense_id
       )
     }

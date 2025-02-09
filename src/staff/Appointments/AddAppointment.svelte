@@ -107,7 +107,7 @@
       console.error(error);
     }
     
-    addNotification(idInput, "new appointment", `You have a new scheduled appointment about ${typeInput}`, insertedData[0].appointment_id)
+    addNotification(idInput, "new appointment", `You have a new scheduled appointment about **${typeInput}**`, insertedData[0].appointment_id)
     alert("Added Successfully");
     changeMode("display");
   }

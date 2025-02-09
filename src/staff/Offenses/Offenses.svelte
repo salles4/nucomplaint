@@ -13,6 +13,9 @@
     Reply,
     CirclePlus,
     Ellipsis,
+    FileWarning,
+    UserRoundCheck,
+    UserRoundX,
   } from "lucide-svelte";
   import Tab from "../../lib/Tab.svelte";
   import { onMount } from "svelte";
@@ -103,15 +106,15 @@
     },
     {
       name: "Reported",
-      icon: MailWarning,
+      icon: FileWarning,
     },
     {
       name: "Guilty",
-      icon: MailCheck,
+      icon: UserRoundX,
     },
     {
       name: "Dismissed",
-      icon: MailCheck,
+      icon: UserRoundCheck,
     },
     {
       name: "Archive",

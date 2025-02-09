@@ -1,7 +1,7 @@
 <script>
   import { location, replace } from 'svelte-spa-router'
   import Stat from '../../lib/Stat.svelte';
-  import {MessageSquareWarning, Gavel, Info} from 'lucide-svelte'
+  import {MessageSquareWarning, Gavel, Info, AlertCircle} from 'lucide-svelte'
   import { supabase } from '../../supabase';
   import { user_id } from '../../store';
   import { onMount } from 'svelte';
@@ -31,6 +31,7 @@
     .from("appointments")
     .select("*, staff_id(first_name, last_name)")
     .eq("student_id", $user_id)
+    .in("status", ["Scheduled", "For Counseling"])
     .gt("time", "now()");
 
     if(error){
@@ -44,8 +45,9 @@
   onMount(checkAppointment)
 </script>
 {#if appointment}
-{#each appointment as {reason, time, staff_id:{first_name, last_name}}}
+{#each appointment as {status, reason, time, staff_id:{first_name, last_name}}}
 <div class="p-4 px-12">
+  {#if status == "Scheduled"}
   <div class="alert">
     <Info />
     <div>
@@ -61,6 +63,20 @@
       </span>
     </div>
   </div>
+  {:else if status == "For Counseling"}
+  <div class="alert bg-red-700 text-white">
+    <AlertCircle />
+    <div class="">
+      You have a scheduled appointment in the Guidance Office at <span class="text-secondary font-bold">{moment(time).format("dddd, MMM DD, YYYY - hh:mma")}</span> because of your multiple violation of offense. 
+      <br>
+      <br>
+      <b>
+        Please attend on time.
+      </b>
+
+    </div>
+  </div>
+  {/if}
 </div>
 {/each}
 {/if}

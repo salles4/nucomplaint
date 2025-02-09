@@ -16,6 +16,7 @@
     Ellipsis,
     List,
     CalendarOff,
+    MessagesSquare,
   } from "lucide-svelte";
   import Tab from "../../lib/Tab.svelte";
   import { supabase } from "../../supabase";
@@ -108,6 +109,10 @@
     {
       name: "Scheduled",
       icon: CalendarClock,
+    },
+    {
+      name: "For Counseling",
+      icon: MessagesSquare,
     },
     {
       name: "Cancelled",

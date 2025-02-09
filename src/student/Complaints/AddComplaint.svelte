@@ -2,7 +2,7 @@
   import { pop } from "svelte-spa-router";
   import { supabase } from "../../supabase";
   import { user_id, user_name } from "../../store";
-  import { addNotification, notifyStaff } from "../../lib/addNotif";
+  import { notifyStaff } from "../../lib/addNotif";
 
   let typeInput, messageInput;
   let buttonDisabled = false
@@ -23,7 +23,7 @@
       return;
     }
     
-    notifyStaff("new complaint", `${$user_name} issued a complaint about ${typeInput}`, data[0].complaint_id)
+    notifyStaff("new complaint", `**${$user_name}** issued a complaint about **${typeInput}**`, data[0].complaint_id)
 
     pop()
   }

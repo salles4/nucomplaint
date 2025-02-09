@@ -56,7 +56,7 @@
         console.error(error);
         return;
       }
-      addNotification(details.sender_id.user_id,"complaint status",`The status of your complaint about ${details.type} has been updated from ${currentStatus} to ${newStatusSelected}`, complaint_id)
+      addNotification(details.sender_id.user_id,"complaint status",`The status of your complaint about **${details.type}** has been updated from <span class="badge ${badge(currentStatus)}">${currentStatus}</span> to <span class="badge ${badge(newStatusSelected)}">${newStatusSelected}</span>`, complaint_id)
     }
   }
   async function deleteComplaint() {
