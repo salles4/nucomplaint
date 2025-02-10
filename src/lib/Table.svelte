@@ -34,7 +34,7 @@
 </script>
 
 
-<div class="bg-white m-8 mb-4 h-fit relative overflow-visible max-w-[1250px] 2xl:max-w-[1300px] w-full mx-auto shadow-lg">
+<div class="bg-white m-8 mb-4 h-fit relative overflow-visible max-w-[1250px] 2xl:max-w-[1300px] w-full mx-auto shadow-lg print:hidden">
   <div class="w-full relative -top-5">
     <div
       class="rounded-lg bg-nu-blue text-white text-xl sm:mx-8 py-6 sm:p-6 p-4 flex justify-between items-center"

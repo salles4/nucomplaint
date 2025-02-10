@@ -40,7 +40,7 @@
   class="flex flex-col gap-2 my-auto"
   on:submit|preventDefault={() => resetPass()}
 >
-  <div class="text-2xl text-center">Reset Password</div>
+  <div class="text-2xl text-center font-bold">Reset Password</div>
   <div class="text-center text-sm mb-2">We will send a reset password link to your email.</div>
   <div class="row">
     <label for="username"> Email: </label>

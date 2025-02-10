@@ -89,9 +89,9 @@
     activePage = page;
   }
   const formSize = {
-    login: "md:h-[350px] h-[410px] w-[400px] p-12 pt-10",
+    login: "md:h-[400px] h-[450px] w-[440px] p-12 pt-10",
     register: "p-8 h-full md:h-[520px] md:w-[500px] max-w-svw",
-    reset: "md:h-[320px] h-[350px] w-[400px] p-12 pt-10",
+    reset: "md:h-[320px] h-[350px] w-[440px] p-12 pt-10",
     verify: "md:h-[240px] h-[260px] w-[400px] p-12 pt-10",
     completeDetails: "p-8 h-fit md:w-[490px] max-w-svw",
   };

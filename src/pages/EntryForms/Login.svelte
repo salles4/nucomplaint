@@ -85,12 +85,12 @@
       href="./#/register">Register</a
     >
   </div> -->
-  <!-- <div class="text-center">
+  <div class="text-center">
     <a
       on:click|preventDefault={() => {
         changePage("reset");
       }}
       href="./#/register">Forgot your password?</a
     >
-  </div> -->
+  </div>
 </form>

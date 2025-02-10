@@ -40,3 +40,15 @@ export function generateQR(text){
     console.log('qr generated!');
   })
 }
+/**
+ * @param {string | QRCode.QRCodeSegment[]} text
+ * @param {string} text id of canvas
+ */
+export function generateQRByID(text, id) {
+  let canvas = document.getElementById(id)
+
+  QRCode.toCanvas(canvas, text, error => {
+    if (error) console.error(error)
+    console.log('qr generated!');
+  })
+}
