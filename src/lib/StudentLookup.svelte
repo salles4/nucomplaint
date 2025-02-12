@@ -30,6 +30,7 @@
   }
   function updateList(){
     filteredStudentList = []
+    searchInput = searchInput.trim()
     if(searchInput == ""){
       filteredStudentList = studentList;
       return;
