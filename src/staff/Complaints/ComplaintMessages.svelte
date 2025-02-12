@@ -1,13 +1,15 @@
 <script>
   import { ArrowLeftCircle, SendHorizontal, X } from "lucide-svelte";
   import { supabase } from "../../supabase";
-  import { user_id } from "../../store";
+  import { auth, user_id, user_name } from "../../store";
   import { afterUpdate, onMount } from "svelte";
   import { fade, slide } from "svelte/transition";
   import { pop } from "svelte-spa-router";
   import moment from "moment";
+  import { addNotification, customNotifyStaff, notifyStaff } from "../../lib/addNotif";
 
   export let complaint_id;
+  export let details;
 
   let messages;
   let messageInput;
@@ -57,7 +59,72 @@
       alert("Failed to send");
       console.error(error);
     }
+    
+    
+    if($auth == "staff"){
+      const {data:notifData, error:notifError} = await supabase
+      .from("notifications")
+      .select('*')
+      .eq('type',"complaint message")
+      .eq('related_id', complaint_id)
+      .eq("user_id", details.sender_id.user_id)
+      
+      if(notifError){
+        console.error(notifError);
+        messageInput = ""
+        return;
+      }
+      console.log(notifData);
+      
+      if(notifData.length == 0){
+        addNotification(details.sender_id.user_id,"complaint message", `New Message from **${$user_name}**:\n"${truncate(messageInput)}"`, complaint_id)
+        messageInput = ""
+        return;
+      }
+      const {error: updateError} = await supabase
+      .from("notifications")
+      .update({
+        message: `${notifData[0].message}\n"${truncate(messageInput)}"`,
+        time_created:"now()"
+      })
+      .eq('type',"complaint message")
+      .eq('related_id', complaint_id)
+      .eq("user_id", details.sender_id.user_id)
+    }else if($auth == "student"){
+      const message = messageInput;
+      await customNotifyStaff(async (id) => {
+        const staff_id = id.user_id
+        
+        const {data:notifData, error:notifError} = await supabase
+        .from("notifications")
+        .select('*')
+        .eq('type',"complaint message")
+        .eq('related_id', complaint_id)
+        .eq("user_id", staff_id)
+        if(notifError){
+          console.error(notifError);
+          return;
+        }
+
+        if(notifData.length == 0){
+          addNotification(staff_id,"complaint message", `New Message from **${$user_name}**:\n"${truncate(message)}"`, complaint_id)
+          return;
+        }
+        const {error: updateError} = await supabase
+        .from("notifications")
+        .update({
+          message: `${notifData[0].message}\n"${truncate(message)}"`,
+          time_created:"now()"
+        })
+        .eq('type',"complaint message")
+        .eq('related_id', complaint_id)
+        .eq("user_id", staff_id)
+      })
+    }
     messageInput = "";
+  }
+  function truncate(text){
+    return `${text.slice(0, 21)}${text.length > 20 ? "..." : ""}`
   }
   supabase
     .channel("messages")

@@ -1,5 +1,5 @@
 <script>
-  import { MessageSquareMore, X, Gavel, CalendarClockIcon } from "lucide-svelte";
+  import { MessageSquareMore, X, Gavel, CalendarClockIcon, MessageSquareDot } from "lucide-svelte";
   import { slide } from "svelte/transition";
   import { replace } from 'svelte-spa-router'
 
@@ -19,6 +19,10 @@
       case "appointment status":  
         replace(`/dashboard`)
         break;
+      case "complaint message":
+      case "offense status":  
+        replace(`/offense?id=${id}`)
+        break;
       default:
         break;
     }
@@ -30,7 +34,7 @@
     return message
       .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
       // .replace(/\*(.+?)/g, '<b class="pt-6">• </b>')
-      // .replace(/\n/g, "<br>");
+      .replace(/\n/g, "<br>");
   }
 </script>
 
@@ -42,6 +46,8 @@
       <Gavel size=32 />
     {:else if ["new appointment", "appointment status"].includes(notif.type)}
       <CalendarClockIcon size=32 />
+    {:else if ["complaint message", "offense message"].includes(notif.type)}
+      <MessageSquareDot size=32 />
     {/if}
   </div>
   <div class="flex-col flex-1 px-4">

@@ -39,3 +39,16 @@ export const notifyStaff = async (type, message, related_id) => {
     addNotification(staff_id.user_id, type, message, related_id);
   })
 }
+
+export const customNotifyStaff = async (custom_function) => {
+  const { data: staff_ids, error: staff_idsError } = await supabase
+    .from("users")
+    .select("user_id")
+    .eq("account_type", 'staff')
+
+  if (staff_idsError) {
+    console.error(staff_idsError);
+    return;
+  }
+  staff_ids.map(custom_function);
+}

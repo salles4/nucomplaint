@@ -8,26 +8,8 @@
   import {pop, replace} from "svelte-spa-router";
   import { user_id } from "../../store";
 
-  export let complaint_id;
-  let details;
-  async function getDetails(){
-    const {data, error} = await supabase
-    .from("complaints")
-    .select("*, sender_id(*)")
-    .eq("complaint_id", complaint_id)
-    .single()
+  export let details;
 
-    if(error){
-      alert(error.message)
-      return;
-    }
-    if(data.sender_id.user_id != $user_id){
-      replace("/complaints")
-      alert("No permission to access that")
-    }
-    details = data
-  }
-  onMount(getDetails)
 </script>
 
   <div  class="bg-white h-full w-full md:w-[550px] rounded-s-2xl overflow-y-auto flex flex-col">

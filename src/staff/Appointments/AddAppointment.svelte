@@ -99,7 +99,7 @@
             apikey: import.meta.env.VITE_MESSENGER,
             number: num,
             sendername:"CODEVERSE",
-            message: `You have a scheduled appointemnt with ${first_name} ${last_name} at ${moment(timeInput).format("MM/DD/YY hh:mma")} because of "${typeInput}" \n\n-SDAO, NU Complaint`
+            message: `You have a scheduled appointment with ${first_name} ${last_name} at ${moment(timeInput).format("MM/DD/YY hh:mma")} because of "${typeInput}." ${messageInput != "" ? `\n\n"${messageInput}"`: ""} \n\n-SDAO, NU Complaint`
           }),
         }
       );

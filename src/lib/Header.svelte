@@ -11,7 +11,7 @@
   import { push, replace } from 'svelte-spa-router'
   import { slide } from "svelte/transition";
   import NotificationItem from "./NotificationItem.svelte";
-
+  import notif from '../assets/notif.wav'
   let notificationOpen = false;
   let notificationList = [];
   function logout() {
@@ -48,6 +48,11 @@
     { event: "*", schema: "public", table: "notifications" },
     (payload) => {
       console.log("Realtime Update", payload);
+      if((payload.eventType == "INSERT" || payload.eventType == "UPDATE") && payload.new.user_id == $user_id){
+        let notifSound = new Audio(notif)
+        notifSound.volume = 0.8
+        notifSound.play();
+      }
       getNotifications();
     }
   )

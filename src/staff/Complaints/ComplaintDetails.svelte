@@ -9,23 +9,12 @@
   import { modal } from "../../store";
   import { addNotification } from "../../lib/addNotif";
   export let complaint_id
-  let details;
+  export let details;
 
   let currentStatus;
   let newStatusSelected;
   async function getDetails(){
-    const {data, error} = await supabase
-    .from("complaints")
-    .select("*, sender_id(*)")
-    .eq("complaint_id", complaint_id)
-    .single()
-
-    if(error){
-      alert(error.message)
-      return;
-    }
-    details = data
-    if(data.status == "Unread"){
+    if(details.status == "Unread"){
       const {error} = await supabase
       .from("complaints")
       .update({status: "Unsettled"})
@@ -39,8 +28,8 @@
       getDetails()
       return;
     }
-    currentStatus = data.status;
-    newStatusSelected = data.status;
+    currentStatus = details.status;
+    newStatusSelected = details.status;
   }
   async function updateStatus() {
     if(newStatusSelected && currentStatus != newStatusSelected){
@@ -135,8 +124,6 @@
   <div class="ms-auto">
     Status:
     <select class="select-success px-2 min-w-fit max-w-xs select-sm" name="status" id="status" bind:value={newStatusSelected}>
-      <option value="Read">Read</option>
-      <option value="Unread">Unread</option>
       <option value="Unsettled">Unsettled</option>
       <option value="Settled">Settled</option>
       <option value="Archive">Archive</option>
