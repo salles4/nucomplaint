@@ -11,29 +11,10 @@
   
 
   export let offense_id
-  let details;
-  let currentStatus;
-  let newStatusSelected;
-  async function getDetails(){
-    const {data, error} = await supabase
-    .from("offenses")
-    .select("*, student_id(user_id, first_name, last_name)")
-    .eq("offense_id", offense_id)
-    .single()
+  export let details;
+  let currentStatus = details.status;
+  let newStatusSelected= details.status;
 
-    if(error){
-      alert(error.message)
-      return;
-    }
-    if(data.student_id.user_id != $user_id){
-      replace("/offenses")
-      alert("No permission to access that.")
-    }
-    details = data
-
-    currentStatus = data.status;
-    newStatusSelected = data.status;
-  }
   async function updateStatus() {
     if(newStatusSelected && currentStatus != newStatusSelected){
       const {error} = await supabase
@@ -61,7 +42,6 @@
     }
     pop()
   }
-  onMount(getDetails)
   onDestroy(updateStatus)
 </script>
 <div class="p-6 pb-2 flex items-center justify-between">

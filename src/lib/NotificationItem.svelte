@@ -20,8 +20,10 @@
         replace(`/dashboard`)
         break;
       case "complaint message":
-      case "offense status":  
-        replace(`/offense?id=${id}`)
+        replace(`/complaint/${id}`)
+        break;
+      case "offense message":  
+        replace(`/offense/${id}`)
         break;
       default:
         break;

@@ -1,18 +1,20 @@
 <script>
   import { ArrowLeftCircle, SendHorizontal, X } from "lucide-svelte";
   import { supabase } from "../../supabase";
-  import { user_id } from "../../store";
+  import { auth, user_id, user_name } from "../../store";
   import { afterUpdate, onMount } from "svelte";
   import { fade, slide } from "svelte/transition";
   import { pop } from "svelte-spa-router";
   import moment from "moment";
+    import { addNotification, customNotifyStaff } from "../../lib/addNotif";
 
   export let offense_id;
-
+  export let details;
   let messages;
   let messageInput;
   let chatDiv
-
+  console.log(details);
+  
   async function getMessages() {
     const { data, error } = await supabase
       .from("messages")
@@ -55,7 +57,74 @@
       alert("Failed to send");
       console.error(error);
     }
+    
+    if($auth == "staff"){
+      const {data:notifData, error:notifError} = await supabase
+      .from("notifications")
+      .select('*')
+      .eq('type',"offense message")
+      .eq('related_id', offense_id)
+      .eq("user_id", details.student_id.user_id)
+      
+      if(notifError){
+        console.error(notifError);
+        messageInput = ""
+        return;
+      }
+      console.log(notifData);
+      
+      if(notifData.length == 0){
+        addNotification(details.student_id.user_id,"offense message", `New Message from **${$user_name}**:\n"${truncate(messageInput)}"`, offense_id)
+        messageInput = ""
+        return;
+      }
+      const {error: updateError} = await supabase
+      .from("notifications")
+      .update({
+        message: `${notifData[0].message}\n"${truncate(messageInput)}"`,
+        time_created:"now()"
+      })
+      .eq('type',"offense message")
+      .eq('related_id', offense_id)
+      .eq("user_id", details.student_id.user_id)
+
+
+
+    }else if($auth == "student"){
+      const message = messageInput;
+      await customNotifyStaff(async (id) => {
+        const staff_id = id.user_id
+        
+        const {data:notifData, error:notifError} = await supabase
+        .from("notifications")
+        .select('*')
+        .eq('type',"offense message")
+        .eq('related_id', offense_id)
+        .eq("user_id", staff_id)
+        if(notifError){
+          console.error(notifError);
+          return;
+        }
+
+        if(notifData.length == 0){
+          addNotification(staff_id,"offense message", `New Message on Offense from **${$user_name}**:\n"${truncate(message)}"`, offense_id)
+          return;
+        }
+        const {error: updateError} = await supabase
+        .from("notifications")
+        .update({
+          message: `${notifData[0].message}\n"${truncate(message)}"`,
+          time_created:"now()"
+        })
+        .eq('type',"offense message")
+        .eq('related_id', offense_id)
+        .eq("user_id", staff_id)
+      })
+    }
     messageInput = "";
+  }
+  function truncate(text){
+    return `${text.slice(0, 21)}${text.length > 20 ? "..." : ""}`
   }
   supabase
     .channel("messages")

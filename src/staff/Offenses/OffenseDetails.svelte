@@ -10,25 +10,10 @@
   import { addNotification } from "../../lib/addNotif";
 
   export let offense_id;
-  let details;
-  let currentStatus;
-  let newStatusSelected;
-  async function getDetails(){
-    const {data, error} = await supabase
-    .from("offenses")
-    .select("*, student_id(user_id, first_name, last_name)")
-    .eq("offense_id", offense_id)
-    .single()
+  export let details;
+  let currentStatus = details.status;
+  let newStatusSelected = details.status;
 
-    if(error){
-      alert(error.message)
-      return;
-    }
-    details = data
-
-    currentStatus = data.status;
-    newStatusSelected = data.status;
-  }
   async function updateStatus() {
     if(newStatusSelected && currentStatus != newStatusSelected){
       const {error} = await supabase
@@ -42,7 +27,7 @@
         return;
       }
       addNotification(
-        details.sender_id.user_id,
+        details.student_id.user_id,
         "offense status",
         `The status of your offense about **${details.violation}** has been updated from <span class="badge ${badge(currentStatus)}">${currentStatus}</span> to <span class="badge ${badge(newStatusSelected)}">${newStatusSelected}</span>`,
         offense_id
@@ -62,7 +47,7 @@
     }
     pop()
   }
-  onMount(getDetails)
+  
   onDestroy(updateStatus)
 </script>
 

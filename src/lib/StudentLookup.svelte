@@ -54,6 +54,7 @@
     let scannedID = id;
     searchInput = scannedID;
     toggleQR();
+    updateList();
   }
   onDestroy(() => scannerDiv && stopScanner());
   onMount(getStudentList)
