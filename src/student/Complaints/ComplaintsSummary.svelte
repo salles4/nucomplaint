@@ -72,9 +72,9 @@
       <a href="./#/complaint/{complaint_id}" class="btn btn-sm btn-primary">
         Reply
       </a>
-      <button class="btn btn-sm btn-error">
+      <!-- <button class="btn btn-sm btn-error">
         Delete
-      </button>
+      </button> -->
     </div>
       {:else}
       <Loader />

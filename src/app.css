@@ -86,5 +86,25 @@ label {
 }
 
 td{
-  @apply border-x-2;
+  @apply border-x-2
+}
+@media print{
+  .tablePrint{
+    @apply shadow-none m-0 py-4 border-0 block !min-w-[50%];
+  }
+  .rowPrint > td{
+    @apply text-xs py-2 border-black/20 
+  }
+  .chart{
+    @apply shadow-none !p-0 !max-w-[45%] !min-w-[45%]
+  }
+  .chart canvas{
+    @apply scale-[.50] -translate-x-20 translate-y-10
+  }
+  .chartTitle{
+    @apply text-base
+  }
+  .chartText{
+    @apply text-xs
+  }
 }

@@ -1,7 +1,7 @@
 <script>
   import { location, replace } from 'svelte-spa-router'
   import Stat from '../../lib/Stat.svelte';
-  import {MessageSquareWarning, Gavel, Info, AlertCircle} from 'lucide-svelte'
+  import {MessageSquareWarning, Gavel, Info, AlertCircle, FileWarning} from 'lucide-svelte'
   import { supabase } from '../../supabase';
   import { user_id } from '../../store';
   import { onMount } from 'svelte';
@@ -12,6 +12,7 @@
     replace("/dashboard")
   }
 
+  let majorOffenses = 0, minorOffenses = 0
   let appointment;
   let dashboard;
 
@@ -25,6 +26,16 @@
     }
     console.log(data);
     dashboard = data[0]
+
+    const {data:offensesData, error:offensesError} = await supabase.rpc("countoffenses", {user_id:$user_id})
+    
+    if(offensesError){
+      console.error(error);
+      return;
+    }
+    minorOffenses = offensesData[0].minor_offenses
+    majorOffenses = offensesData[0].major_offenses + Math.floor(minorOffenses / 3)
+
   }
   async function checkAppointment() {
     const {data, error} = await supabase
@@ -84,7 +95,8 @@
   <div class=" flex-wrap p-12 flex lg:flex-col justify-center items-center gap-12 mt-4">
     {#if dashboard}
     <Stat icon={MessageSquareWarning} label="Your Complaints" number={dashboard.complaints} time="" />
-    <Stat icon={Gavel} label="Offenses" number={dashboard.offenses} time="" />
+    <Stat icon={Gavel} label="Major Offenses" number={majorOffenses} time="" />
+    <Stat icon={FileWarning} label="Minor Offenses" number={minorOffenses} time="" />
     {/if}
   </div>
   

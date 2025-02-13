@@ -1,5 +1,5 @@
 <script>
-  import { auth} from "../store";
+  import { auth, user_name} from "../store";
   import logo from '../assets/NU_shield.svg'
   import { Bell, MessageSquareMore, Power, X } from "lucide-svelte";
   import { signOut } from "firebase/auth";
@@ -12,6 +12,7 @@
   import { slide } from "svelte/transition";
   import NotificationItem from "./NotificationItem.svelte";
   import notif from '../assets/notif.wav'
+  import moment from "moment";
   let notificationOpen = false;
   let notificationList = [];
   function logout() {
@@ -82,16 +83,10 @@
   </div>
 </div>
 
-<div class="hidden print:flex flex-col mt-3 justify-center items-center">
-  <div class="flex gap-2 items-center font-bold text-xl">
-    <img
-       src={logo}
-       alt="nu logo"
-       class="h-12 ms-10 sm:m-0"
-     /><span>NU Complaint</span>
-  </div>
-  <div class="font-bold">Complaint Reports</div>
-  <div>Printed by: {$user_id}</div>
+<div class="print:block hidden">
+  <img class="m-auto h-12 object-contain " src="./img/nu_logo.png" alt="National University Logo">
+  <div class="text-xs text-center pt-3">{$user_name} ({$user_id.toString().substring(0, 4)}-{$user_id.toString().slice(4)})</div>
+  <div class="text-xs text-center pb-4">{moment().format("MM/DD/YYYY hh:mma")}</div>
 </div>
 
 {#if notificationOpen}

@@ -8,7 +8,7 @@
   import Loader from "../../lib/Loader.svelte";
 
   // Selected time data
-  export let date1, date2, timeRange; 
+  export let date1, date2, timeRange, displayType;
   // sorted complaints objects
   let data = [];
   // chronological date data
@@ -22,17 +22,16 @@
   let pie, line;
   let loading = true;
   export let get_offenses = async () => {
-
     // Resets Data
     data = [];
-    lineData = []
+    lineData = [];
     sortedDate = [];
     dataContext = null;
-    loading = true
+    loading = true;
 
     // Get data from DB depending on selected time
     let offenses;
-    if(timeRange != "Custom"){
+    if (timeRange != "Custom") {
       const { data, error } = await supabase.rpc(
         "get_offenses_last_custom_days",
         {
@@ -43,24 +42,21 @@
         console.error(error);
         return;
       }
-      offenses = data
-    }else if (date1 && date2){
-      const { data, error } = await supabase.rpc(
-        "get_offenses_time_range",
-        {
-          date1: moment(date1).format("YYYY-MM-DDT00:00"),
-          date2: moment(date2).format("YYYY-MM-DDT23:59"),
-        }
-      );
+      offenses = data;
+    } else if (date1 && date2) {
+      const { data, error } = await supabase.rpc("get_offenses_time_range", {
+        date1: moment(date1).format("YYYY-MM-DDT00:00"),
+        date2: moment(date2).format("YYYY-MM-DDT23:59"),
+      });
       if (error) {
         console.error(error);
         return;
       }
-      offenses = data
-    }else{
+      offenses = data;
+    } else {
       return;
     }
-   
+
     // Count Category and Date Reports
     const offensesMap = {}; // Category: Number of reports
     const offensesDates = {}; // Date:Number of Reports
@@ -78,7 +74,7 @@
     });
 
     // Build context for AI API
-    let offenseDataContext = ""; 
+    let offenseDataContext = "";
     Object.entries(offensesMap).forEach(([violation, amt]) => {
       data.push({ violation, amt });
       offenseDataContext += `${violation}:${amt}, `;
@@ -98,7 +94,7 @@
 
     draw();
     loading = false;
-  }
+  };
 
   async function draw() {
     pie.data = {
@@ -169,66 +165,139 @@
   onMount(initCharts);
 </script>
 
-    {#if timeRange == "Custom" && (!date1 || !date2)}  
-    <div class="w-full text-center p-6">Select a date to generate a report between the time range..</div>
-    {:else if loading}
-    <div class="mx-auto w-full">
-      <Loader />
+{#if timeRange == "Custom" && (!date1 || !date2)}
+  <div class="w-full text-center p-6">
+    Select a date to generate a report between the time range..
+  </div>
+{:else if loading}
+  <div class="mx-auto w-full">
+    <Loader />
+  </div>
+{:else if data.length == 0}
+  <div class="w-full text-center p-6">No data on the selected time range..</div>
+{/if}
+<div class="flex-[3]">
+  {#if dataContext && dataContext != ""}
+    <AiReport reportType={"offense"} {dataContext} />
+  {/if}
+</div>
+<div
+  class="flex-[2] flex-col !print:h-full lg:items-start items-center print:items-center p-4 print:p-0 {data.length ==
+    0 || loading
+    ? 'hidden'
+    : 'flex'}"
+>
+  <div
+    class="chart sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 p-4 mx-2 bg-white shadow-lg {displayType ==
+    'Chart'
+      ? 'block'
+      : 'hidden'}"
+  >
+    <canvas bind:this={chart1} class="max-h-[300px] 2xl:max-h-[300px]">
+    </canvas>
+    <div class="">
+    <div class="chartTitle font-semibold text-xl pt-5">
+      Offense Report <span class="text-gray-400 text-sm"
+        >{timeRange != "Custom"
+          ? `Last ${timeRange}`
+          : `${moment(date1).format("MM/DD/YY")} to ${moment(date2).format("MM/DD/YY")}`}</span
+      >
     </div>
-    {:else if data.length == 0}
-    <div class="w-full text-center p-6">No data on the selected time range..</div>
+    {#if data.length > 0}
+      <div class="chartText">
+        Most Violated:
+        <span class="text-red-400">
+          {data
+            .filter(
+              (complaint) => complaint.amt == data[0].amt && complaint.violation
+            )
+            .map((comp) => comp.violation)
+            .join(", ")} with {data[0].amt} complaints</span
+        >
+      </div>
+      <div class="chartText">
+        Least Violated:
+        <span class="text-blue-400">
+          {data
+            .filter(
+              (complaint) =>
+                complaint.amt == data[data.length - 1].amt &&
+                complaint.violation
+            )
+            .map((comp) => comp.violation)
+            .join(", ")}
+        </span>
+      </div>
     {/if}
-    <div class="flex-[3]">
-      {#if dataContext && dataContext != ""}
-        <AiReport reportType={"offense"} {dataContext} />
-      {/if}
     </div>
-    <div class="flex-[2] flex-col !print:h-full print:items-center p-4 {data.length == 0 || loading ? "hidden" : "flex"}">
-      <div
-        class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 p-4 mx-2 bg-white shadow-lg"
-      >
-        <canvas bind:this={chart1} class="max-h-[300px] 2xl:max-h-[300px]">
-        </canvas>
-        <div class="font-semibold text-xl pt-5">
-          Offense Report <span class="text-gray-400 text-sm"
-            >Last 30 Days</span
-          >
-        </div>
-        {#if data.length > 0}
-          <div>
-            Most Violated:
-            <span class="text-red-400">
-              {data
-                .filter(
-                  (complaint) => complaint.amt == data[0].amt && complaint.violation
-                )
-                .map((comp) => comp.violation)
-                .join(", ")} with {data[0].amt} complaints</span
-            >
-          </div>
-          <div>
-            Least Violated:
-            <span class="text-blue-400">
-              {data
-                .filter(
-                  (complaint) =>
-                    complaint.amt == data[data.length - 1].amt && complaint.violation
-                )
-                .map((comp) => comp.violation)
-                .join(", ")}
-            </span>
-          </div>
-        {/if}
-      </div>
-      <div
-        class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 p-4 m-4 mx-2 bg-white shadow-lg"
-      >
-        <canvas bind:this={chart2} class="max-h-[500px]"> </canvas>
+  </div>
 
-        <div class="font-semibold text-xl pt-5">Daily Violation Count</div>
-        {#if sortedDate.length != 0}
-        <div class="">Day with most violation: {moment(sortedDate[0].date).format("MMM DD, YYYY")}</div>
-        <div class="">Day with least violation: {moment(sortedDate[sortedDate.length - 1].date).format("MMM DD, YYYY")}</div>
-        {/if}
+  <div
+    class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 mx-2 m-4 bg-white border shadow-lg tablePrint {displayType == "Table" ? "block" : "hidden"}"
+  >
+    <div class="text-xl font-bold text-center py-2 print:text-base">Number of Offense</div>
+      <table class="table max-w-[300px] mx-auto">
+        <thead class="border-2">
+          <tr class="text-center">
+            <th class="border">Offense Type</th>
+            <th class="border">Amount</th>
+          </tr>
+        </thead>
+        <tbody class="border">
+          {#each data as { violation, amt }}
+            <tr class="rowPrint">
+              <td>{violation}</td>
+              <td class="text-center">{amt}</td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+  </div>
+
+  <div
+    class="chart sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 p-4 m-4 mx-2 bg-white shadow-lg {displayType ==
+    'Chart'
+      ? 'block'
+      : 'hidden'}"
+  >
+    <canvas bind:this={chart2} class="max-h-[500px]"> </canvas>
+
+    <div>
+    <div class="chartTitle font-semibold text-xl pt-5">Offense per Day</div>
+    {#if sortedDate.length != 0}
+      <div class="chartText">
+        Day with most violation: {moment(sortedDate[0].date).format(
+          "MMM DD, YYYY"
+        )}
       </div>
+      <div class="chartText">
+        Day with least violation: {moment(
+          sortedDate[sortedDate.length - 1].date
+        ).format("MMM DD, YYYY")}
+      </div>
+    {/if}
     </div>
+  </div>
+
+  <div
+    class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 mx-2 m-4 bg-white border shadow-lg tablePrint {displayType == "Table" ? "block" : "hidden"}"
+  >
+    <div class="text-xl font-bold text-center py-2 print:text-base">Offense per Day</div>
+      <table class="table max-w-[300px] mx-auto">
+        <thead class="border-2">
+          <tr class="text-center">
+            <th class="border">Offense Type</th>
+            <th class="border">Amount</th>
+          </tr>
+        </thead>
+        <tbody class="border">
+          {#each lineData as { date, amt }}
+            <tr class="rowPrint">
+              <td>{moment(date).format("MMMM DD, YYYY")}</td>
+              <td class="text-center">{amt}</td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+  </div>
+</div>

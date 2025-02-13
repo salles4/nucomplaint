@@ -58,9 +58,9 @@
       {/if}
     </div>
     <div class="sticky bottom-0 p-4 bg-white border-t-2">
-      <button class="btn btn-sm btn-error">
+      <!-- <button class="btn btn-sm btn-error">
         Delete
-      </button>
+      </button> -->
     </div>
     
   </div>  

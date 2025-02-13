@@ -83,7 +83,7 @@
           body: new URLSearchParams({
             apikey: import.meta.env.VITE_MESSENGER,
             number: num,
-            sendername:"CODEVERSE",
+            sendername:"NUMOAxSDAO",
             message: `You have a scheduled counseling appointemnt in the Guidance Office at ${moment(counselingTime).format("MM/DD/YY hh:mma")} because of your multiple offenses. \n\nPlease attend on time.`
           }),
         }

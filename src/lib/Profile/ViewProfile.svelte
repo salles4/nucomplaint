@@ -21,8 +21,10 @@
     barangayVal,
     houseNumVal,
     postalVal;
+  let department, course, year;
   let changeProfile;
-  function getData() {
+  let studentData;
+  async function getData() {
     const {
       first_name,
       last_name,
@@ -49,13 +51,30 @@
     barangayVal = barangay;
     houseNumVal = house_number;
     postalVal = postal_code;
+    
+    const {data:dataa, error} = await supabase
+    .from("student_details")
+    .select("*")
+    .eq("student_id", $user_id)
+    .single()
+    
+    if(error){
+      console.error(error);
+    }
+    console.log(dataa);
+    
+    studentData = dataa;
+    department = dataa.department
+    course = dataa.course
+    year = dataa.year
+
   }
   onMount(getData);
 </script>
 
 <div class="h-full flex" in:fade>
   <div
-    class="bg-white min-w-[300px] w-full lg:max-w-[900px] max-w-[500px] p-4 py-6 h-fit m-auto flex flex-col gap-3"
+    class="bg-white min-w-[500px] w-full lg:max-w-[900px] max-w-[500px] p-4 py-6 h-fit m-auto flex flex-col gap-3"
   >
     <h2 class="text-center text-2xl font-bold">Your Profile</h2>
     
@@ -117,8 +136,44 @@
           <label for="gender"> Gender: </label>
           <input id="gender" disabled required bind:value={genderVal} />
         </div>
+        {#if studentData}
+        <hr class="my-2">
+        <div class="row">
+          <label for="department"> Department: </label>
+          <input
+            required
+            type="text"
+            id="department"
+            bind:value={department}
+            disabled
+          />
+        </div>
+        <div class="row">
+          <label for="course"> Course: </label>
+          <textarea
+            required
+            rows="2"
+            id="course"
+            bind:value={course}
+            disabled
+          />
+        </div>
+        <div class="row">
+          <label for="year"> Year Level: </label>
+          <input
+            required
+            type="text"
+            id="year"
+            bind:value={year}
+            disabled
+          />
+        </div>
+        {/if}
       </div>
       <div class="sect">
+        
+          <hr class="my-3 lg:hidden block">
+        
         <div class="row">
           <label for="region"> Region: </label>
           <input
@@ -173,6 +228,7 @@
             disabled
           />
         </div>
+        
       </div>
     </div>
     <hr />
@@ -198,7 +254,7 @@
 <ChangeProfilePic closeModal={()=>changeProfile = false} />
 {/if}
 <style>
-  input {
+  input, textarea {
     width: 60% !important;
   }
   label {
