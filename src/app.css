@@ -91,7 +91,14 @@ td{
 .chart{
    @apply  border h-fit
 }
+.timeline hr{
+    @apply bg-black print:!border-2 print:border-black
+  }
+
 @media print{
+  .badge{
+    @apply badge-neutral
+  }
   .tablePrint{
     @apply shadow-none m-0 py-0 p-0 border-0 block !min-w-[50%];
   }

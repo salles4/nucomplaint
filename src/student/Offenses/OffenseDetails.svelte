@@ -1,5 +1,5 @@
 <script>
-  import { ChevronUp, X } from "lucide-svelte";
+  import { ChevronUp, Circle, Printer, X } from "lucide-svelte";
   import { fade, fly } from "svelte/transition";
   import { supabase } from "../../supabase";
   import { onDestroy, onMount } from "svelte";
@@ -8,13 +8,36 @@
   import moment from "moment";
   import {pop, replace} from 'svelte-spa-router';
   import { user_id } from "../../store";
+  import { generateQRByID } from "../../scanner";
   
+  let timelineData = []
 
   export let offense_id
   export let details;
   let currentStatus = details.status;
   let newStatusSelected= details.status;
 
+  async function getTimeline() {
+    
+    const {data:timeline, error:timelineError} = await supabase
+    .from("status_updates")
+    .select("*")
+    .order('created_at', {ascending: false})
+    .eq("offense_id", offense_id)
+
+    if(timelineError){
+      alert("cant load timeline")
+      console.error(timelineError);
+      return;
+    }
+    timelineData = timeline
+
+  generatedQR()
+  }
+  function generatedQR (){
+    generateQRByID(`https://www.nucomplaint.xyz/#/offenses?id=${offense_id}`, "qrOffense")
+  }
+  onMount(getTimeline)
   async function updateStatus() {
     if(newStatusSelected && currentStatus != newStatusSelected){
       const {error} = await supabase
@@ -98,8 +121,41 @@
     </div>
   </div>
   {/if}
+        <!------------------------------------------- Timeline------------------------------------------- -->
+      <hr>
+      <div class="text-center font-bold text-lg my-2">Updates</div>
+      <ul class="timeline timeline-vertical timeline-compact timeline-snap-icon">
+        {#each timelineData as data,index}
+        <li>
+          {#if index != 0}
+            <hr>
+          {/if}
+          <div class="timeline-middle"><Circle fill="black" /></div>
+          <div class="timeline-end">
+            <div class="font-bold">
+              {data.title}
+              <span class="text-gray-400 text-sm">{moment(data.time_created).format("MMM DD, YYYY - hh:mm a")}</span>
+            </div>
+            {data.description}
+          </div>
+          <hr />
+        </li>
+        {/each}
+        <li>
+        <hr />
+          <div class="timeline-middle"><Circle fill="black" /></div>
+          <div class="timeline-end">
+            <div class="font-bold">
+              Offense Created
+              <span class="text-gray-400 text-sm">{moment(details.time_created).format("MMM DD, YYYY - hh:mm a")}</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+
 </div>
-<div class="sticky bottom-0 px-6 py-4 bg-white border-t-2 flex gap-2">
+<div class="sticky bottom-0 px-6 py-4 bg-white border-t-2 flex gap-2 print:hidden">
+  <button class="btn btn-sm btn-primary" on:click={()=> print()}><Printer size=20 /> Print</button>
 </div>
 {:else}
 <Loader />

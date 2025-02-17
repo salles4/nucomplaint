@@ -1,5 +1,5 @@
 <script>
-  import { ChevronUp, X } from "lucide-svelte";
+  import { ChevronUp, Circle, Printer, X } from "lucide-svelte";
   import { fade, fly } from "svelte/transition";
   import { supabase } from "../../supabase";
   import { onDestroy, onMount } from "svelte";
@@ -8,10 +8,12 @@
   import RightModal from "../../lib/RightModal.svelte";
   import { modal } from "../../store";
   import { addNotification } from "../../lib/addNotif";
+  import moment from "moment";
+  import { generateQRByID } from "../../scanner";
 
   export let complaint_id, closeDetails = null;
   let details;
-
+  let timelineData = []
   let currentStatus;
   let newStatusSelected;
   async function getDetails(){
@@ -26,6 +28,22 @@
       return;
     }
     details = data
+
+    
+    const {data:timeline, error:timelineError} = await supabase
+    .from("status_updates")
+    .select("*")
+    .order('created_at', {ascending: false})
+    .eq("complaint_id", complaint_id)
+
+    if(timelineError){
+      alert("cant load timeline")
+      console.error(timelineError);
+      return;
+    }
+    timelineData = timeline
+
+
     if(data.status == "Unread"){
       const {error} = await supabase
       .from("complaints")
@@ -42,6 +60,10 @@
     }
     currentStatus = data.status;
     newStatusSelected = data.status;
+  generatedQR()
+  }
+  function generatedQR (){
+    generateQRByID(`https://www.nucomplaint.xyz/#/complaints?id=${complaint_id}`, "qrOffense")
   }
   async function updateStatus() {
     if(newStatusSelected && currentStatus != newStatusSelected){
@@ -122,22 +144,56 @@
           {details.message}
         </div>
       </div>
+            <!------------------------------------------- Timeline------------------------------------------- -->
+      <hr>
+      <div class="text-center font-bold text-lg my-2">Updates</div>
+      <ul class="timeline timeline-vertical timeline-compact timeline-snap-icon">
+        {#each timelineData as data,index}
+        <li>
+          {#if index != 0}
+            <hr>
+          {/if}
+          <div class="timeline-middle"><Circle fill="black" /></div>
+          <div class="timeline-end">
+            <div class="font-bold">
+              {data.title}
+              <div class="text-gray-400 text-sm font-light">{moment(data.time_created).format("MMM DD, YYYY - hh:mm a")}</div>
+            </div>
+            {data.description}
+            <br><br>
+          </div>
+          <hr />
+        </li>
+        {/each}
+        <li>
+        <hr />
+          <div class="timeline-middle"><Circle fill="black" /></div>
+          <div class="timeline-end">
+            <div class="font-bold">
+              Offense Created
+              <div class="text-gray-400 text-sm font-light">{moment(details.time_created).format("MMM DD, YYYY - hh:mm a")}</div>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
-    <div class="sticky bottom-0 px-6 py-4 bg-white border-t-2 flex gap-2">
+    <div class="sticky bottom-0 px-6 py-4 bg-white border-t-2 flex gap-2 print:hidden">
       <a href="./#/complaint/{complaint_id}" class="btn btn-sm btn-primary">
         Reply
       </a>
+      <button class="btn btn-sm btn-primary" on:click={()=> print()}><Printer size=20 /> Print</button>
       <button class="btn btn-sm btn-error btn-outline" on:click={() => openDeleteModal()}>
         Delete
       </button>
-      <div class="ms-auto">
+      <a href="./#/complaint/status/{complaint_id}" class="btn btn-sm btn-primary ms-auto">Change Status</a>
+      <!-- <div class="ms-auto">
         Status:
         <select class="select-success px-2 min-w-fit max-w-xs select-sm" name="status" id="status" bind:value={newStatusSelected}>
           <option value="Unsettled">Unsettled</option>
           <option value="Settled">Settled</option>
           <option value="Archive">Archive</option>
         </select> 
-      </div>
+      </div> -->
     </div>
     {:else}
     <Loader />

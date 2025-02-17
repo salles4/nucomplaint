@@ -25,10 +25,10 @@
 </script>
 <div class="flex h-full overflow-hidden">
 {#if details}
-<div class="flex-1 bg-white md:w-[550px] overflow-y-auto flex-col lg:flex hidden">
+<div class="flex-1 bg-white md:w-[550px] overflow-y-auto flex-col lg:flex hidden print:block">
   <OffenseDetails offense_id={params.id} {details}/>
 </div>
-<div class="flex-[2] flex flex-col overflow-y-auto">
+<div class="flex-[2] flex flex-col overflow-y-auto print:hidden">
   <OffenseMessages offense_id={params.id} {details}/>
 </div>
 {/if}

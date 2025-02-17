@@ -34,6 +34,8 @@
   import Modal from "./lib/Modal.svelte";
   import UpdateProfile from "./lib/Profile/UpdateProfile.svelte";
   import ChangePassword from "./lib/Profile/ChangePassword.svelte";
+  import UpdateOffenseStatus from "./staff/Offenses/UpdateOffenseStatus.svelte";
+  import UpdateComplaintStatus from "./staff/Complaints/UpdateComplaintStatus.svelte";
   
 
   // Detects if there's changes on auth
@@ -108,10 +110,12 @@
           "/update/:id": UpdateProfile,
           "/updatepass": ChangePassword,
           "/complaints/": Complaints,
+          "/complaint/status/:id": UpdateComplaintStatus,
           "/complaints/:id": Complaints,
           "/complaint/:id": ComplaintPage,
           "/offenses": Offenses,
           "/offense/add": AddOffense,
+          "/offense/status/:id": UpdateOffenseStatus,
           "/offenses/:id": Offenses,
           "/offense/:id": OffensePage,
           "/appointments": Appointments,

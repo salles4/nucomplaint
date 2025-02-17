@@ -5,15 +5,32 @@
   import { badge } from "../../customCss";
   import Loader from "../../lib/Loader.svelte";
   import { pop } from "svelte-spa-router";
-  import { ArrowLeftCircle } from "lucide-svelte";
+  import { ArrowLeftCircle, Circle, Printer } from "lucide-svelte";
   import { modal } from "../../store";
   import { addNotification } from "../../lib/addNotif";
+  import moment from "moment";
+  import { generateQRByID } from "../../scanner";
   export let complaint_id
   export let details;
-
+  let timelineData = []
   let currentStatus;
   let newStatusSelected;
   async function getDetails(){
+
+    const {data:timeline, error:timelineError} = await supabase
+    .from("status_updates")
+    .select("*")
+    .order('created_at', {ascending: false})
+    .eq("complaint_id", complaint_id)
+
+    if(timelineError){
+      alert("cant load timeline")
+      console.error(timelineError);
+      return;
+    }
+    timelineData = timeline
+
+
     if(details.status == "Unread"){
       const {error} = await supabase
       .from("complaints")
@@ -30,6 +47,10 @@
     }
     currentStatus = details.status;
     newStatusSelected = details.status;
+  generatedQR()
+  }
+  function generatedQR (){
+    generateQRByID(`https://www.nucomplaint.xyz/#/complaints?id=${complaint_id}`, "qrOffense")
   }
   async function updateStatus() {
     if(newStatusSelected && currentStatus != newStatusSelected){
@@ -116,19 +137,54 @@
       {details.message}
     </div>
   </div>
+              <!------------------------------------------- Timeline------------------------------------------- -->
+      <hr>
+      <div class="text-center font-bold text-lg my-2">Updates</div>
+      <ul class="timeline timeline-vertical timeline-compact timeline-snap-icon">
+        {#each timelineData as data,index}
+        <li>
+          {#if index != 0}
+            <hr>
+          {/if}
+          <div class="timeline-middle"><Circle fill="black" /></div>
+          <div class="timeline-end">
+            <div class="font-bold">
+              {data.title}
+              <div class="text-gray-400 text-sm font-light">{moment(data.time_created).format("MMM DD, YYYY - hh:mm a")}</div>
+            </div>
+            {data.description}
+            <br><br>
+          </div>
+          <hr />
+        </li>
+        {/each}
+        <li>
+        <hr />
+          <div class="timeline-middle"><Circle fill="black" /></div>
+          <div class="timeline-end">
+            <div class="font-bold">
+              Offense Created
+              <div class="text-gray-400 text-sm font-light">{moment(details.time_created).format("MMM DD, YYYY - hh:mm a")}</div>
+            </div>
+          </div>
+        </li>
+      </ul>
 </div>
-<div class="sticky bottom-0 px-6 py-4 bg-white border-t-2 flex gap-2">
+<div class="sticky bottom-0 px-6 py-4 bg-white border-t-2 flex gap-2 print:hidden">
   <button class="btn btn-sm btn-error btn-outline" on:click={() => openDeleteModal()}>
     Delete
   </button>
-  <div class="ms-auto">
+  <button class="btn btn-sm btn-primary" on:click={()=> print()}><Printer size=20 /> Print</button>
+      <a href="./#/complaint/status/{complaint_id}" class="btn btn-sm btn-primary ms-auto">Change Status</a>
+
+  <!-- <div class="ms-auto">
     Status:
     <select class="select-success px-2 min-w-fit max-w-xs select-sm" name="status" id="status" bind:value={newStatusSelected}>
       <option value="Unsettled">Unsettled</option>
       <option value="Settled">Settled</option>
       <option value="Archive">Archive</option>
     </select> 
-  </div>
+  </div> -->
 </div>
 {:else}
 <Loader />
