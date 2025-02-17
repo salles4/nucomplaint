@@ -114,7 +114,7 @@
     Status:
     <select class="select-success px-2 min-w-fit max-w-xs select-sm" name="status" id="status" bind:value={newStatusSelected}>
       <option value="Reported">Reported</option>
-      <option value="Investigating">Investigating</option>
+      <option value="Processing">Processing</option>
       <option value="Guilty">Guilty</option>
       <option value="Dismissed">Dismissed</option>
       <option value="Archive">Archive</option>

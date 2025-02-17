@@ -88,21 +88,27 @@ label {
 td{
   @apply border-x-2
 }
+.chart{
+   @apply  border h-fit
+}
 @media print{
   .tablePrint{
-    @apply shadow-none m-0 py-4 border-0 block !min-w-[50%];
+    @apply shadow-none m-0 py-0 p-0 border-0 block !min-w-[50%];
+  }
+  .tableTitle{
+    @apply py-0
   }
   .rowPrint > td{
     @apply text-xs py-2 border-black/20 
   }
   .chart{
-    @apply shadow-none !p-0 !max-w-[45%] !min-w-[45%]
+    @apply shadow-none !p-0 !max-w-[45%] !min-w-[45%] border-0 bg-transparent
   }
   .chart canvas{
-    @apply scale-[.50] -translate-x-20 translate-y-10
+    @apply scale-[.70] -translate-x-20
   }
   .chartTitle{
-    @apply text-base
+    @apply text-base pt-0
   }
   .chartText{
     @apply text-xs

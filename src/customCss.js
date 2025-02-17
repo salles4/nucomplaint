@@ -7,7 +7,7 @@ const badgeDesign = {
   Done: "badge-success",
   Cancelled: "badge-error",
   
-  Investigating: "badge-warning",
+  Processing: "badge-warning",
   "For Counseling": "bg-indigo-600 border-0 text-white",
   Reported: "badge-primary",
   Guilty: "badge-error",

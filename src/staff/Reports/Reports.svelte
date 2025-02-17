@@ -1,16 +1,19 @@
 <script>
-  import { ArrowRight, Clock, Printer, Gavel, MessageSquareWarning, Table } from "lucide-svelte";
+  import { ArrowRight, Clock, Printer, Gavel, MessageSquareWarning, Table, CirclePlus, FileWarning } from "lucide-svelte";
   import ComplaintsReport from "./ComplaintsReport.svelte";
   import Tab from "../../lib/Tab.svelte";
   import active from "svelte-spa-router/active";
   import OffensesReport from "./OffensesReport.svelte";
   import moment from "moment";
+  import { user_name } from "../../store";
   let timeRange;
   let date1, date2
   let complaints;
   let offenses;
   let activeReportType = "Complaints"
-  let displayType;
+  let displayType = "Chart";
+  let addReport = false;
+  let reportInput = "Lorem ipsum dolor sit amet consectetur adipisicing elit. In aspernatur nostrum eligendi quasi dignissimos eius nemo molestias optio fugit, repellat, voluptates unde! Tempore earum voluptatibus maxime vel tenetur corrupti debitis esse minus, magni, inventore enim sint sapiente voluptate amet temporibus eligendi? Hic, consequuntur architecto maiores dolorem assumenda quasi harum ipsum.";
   function changeFilter(e) {
     activeReportType = e.target.closest("[data-condition]").dataset.condition;
     console.log(activeReportType);
@@ -94,26 +97,48 @@
       <ArrowRight />
       <input type="date" bind:value={date2} on:change={() => onTimeChange()}>
       {/if}
-      <div class="ms-4">
+      <!-- <div class="ms-4">
         <Table />
       </div>
       <select class="select select-sm py-0 select-bordered h-fit w-[120px]" name="time" bind:value={displayType}>
         <option>Chart</option>
         <option>Table</option>
-      </select>
+      </select> -->
     </div>
-    <button class="btn btn-primary btn-sm" on:click={() => {window.print()}}><Printer /> Export</button>
+    {#if !addReport}
+    <button class="btn btn-primary btn-sm" on:click={() => {addReport = true}}><CirclePlus /> Add Report</button>
+    {/if}
+  </div>
+  {#if addReport}
+  <div class="flex flex-col justify-center w-full items-center p-4 gap-2 print:hidden">
+    <div class="text-start lg:w-1/2 w-full">
+      Report:
+    </div>
+    <textarea bind:value={reportInput} class="lg:w-1/2 w-full h-[12rem] textarea textarea-bordered" name="report" id="report"></textarea>
+    <div class="flex lg:w-1/2 w-full gap-2 justify-end">
+      <button class="btn btn-primary btn-sm" on:click={() => {window.print()}}><Printer /> Export</button>
+      <button class="btn btn-secondary btn-sm" on:click={() => {addReport = false}}>Cancel</button>
+    </div>
+  </div>
+  {/if}
+  <div class="hidden print:block px-8">
+    <div class="">
+      <span class="font-bold text-lg"><FileWarning class="inline" /> Staff Report</span>
+      <br>
+      {reportInput}
+    </div>
   </div>
   {#if timeRange}
-    
-    <div class="justify-center flex-col lg:flex-row print:flex-col print:h-full {activeReportType == "Complaints" ? "flex" : "hidden"}">
+    <div class="justify-center flex-col lg:flex-row print:flex-col  {activeReportType == "Complaints" ? "flex" : "hidden"}">
       <ComplaintsReport {timeRange} {date1} {date2} bind:get_complaints={complaints} {displayType} />
     </div>
     
-    <div class="justify-center flex-col lg:flex-row print:flex-col print:h-full {activeReportType == "Offenses" ? "flex" : "hidden"}"> 
+    <div class="justify-center flex-col lg:flex-row print:flex-col {activeReportType == "Offenses" ? "flex" : "hidden"}"> 
       <OffensesReport {timeRange} {date1} {date2} bind:get_offenses={offenses} {displayType} />
     </div>
-
-  
   {/if}
+  <div class="w-fit ms-auto text-center hidden print:block mt-6 me-4">
+    <div class="font-bold">{$user_name}</div>
+    <div class="text-sm">{moment().format("MMM DD, YYYY")}</div>
+  </div>
 </div>

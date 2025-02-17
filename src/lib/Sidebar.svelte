@@ -38,7 +38,7 @@
         to: "dashboard",
         routes: ["/students", "/update/"],
       },
-      { icon: User, label: "Profile", to: "profile" },
+      { icon: User, label: "Profile", to: "profile", routes:["/updatepass"] },
       { icon: MessageSquareWarning, label: "Complaints", to: "complaints/", routes: ["/complaint/", "/complaints"], },
       {
         icon: Gavel,

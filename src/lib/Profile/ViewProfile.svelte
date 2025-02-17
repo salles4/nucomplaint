@@ -13,7 +13,6 @@
     nameVal,
     lNameVal,
     contactVal,
-    birthdateVal,
     genderVal,
     provinceVal,
     cityVal,
@@ -43,7 +42,6 @@
     emailVal = email;
     nameVal = `${first_name} ${middle_initial}${!middle_initial.endsWith(".") ? "." : ""} ${last_name}`;
     contactVal = contact;
-    birthdateVal = moment(birth_date).format("MMMM DD, YYYY");
     genderVal = gender;
     provinceVal = province;
     cityVal = city;
@@ -56,7 +54,7 @@
     .from("student_details")
     .select("*")
     .eq("student_id", $user_id)
-    .single()
+    .maybeSingle()
     
     if(error){
       console.error(error);
@@ -64,9 +62,11 @@
     console.log(dataa);
     
     studentData = dataa;
-    department = dataa.department
-    course = dataa.course
-    year = dataa.year
+    if(dataa){
+      department = dataa.department
+      course = dataa.course
+      year = dataa.year
+    }
 
   }
   onMount(getData);
@@ -120,16 +120,6 @@
             type="text"
             id="contact"
             bind:value={contactVal}
-          />
-        </div>
-        <div class="row">
-          <label for="birth_date"> Birth Date: </label>
-          <input
-            disabled
-            required
-            type="text"
-            id="birth_date"
-            bind:value={birthdateVal}
           />
         </div>
         <div class="row">
@@ -234,14 +224,13 @@
     <hr />
     <div class="flex items-center">
       <!-- <div class="link link-secondary">Change Password</div> -->
-      <div class="ms-auto gap-4">
+      <div class="gap-2 items-center w-full flex flex-wrap justify-center">
         <!-- <button class="btn btn-secondary" on:click>Edit Profile</button> -->
         {#if $auth == "staff"}
-        <button class="btn btn-ghost text-secondary underline btn-sm" on:click={()=>changeProfile = true}>Change Picture</button>
         <a href="./#/update/{$user_id}" class="btn btn-secondary btn-sm" >Edit Profile</a>
-        {:else}
+        {/if}
         <button class="btn btn-secondary btn-sm" on:click={()=>changeProfile = true}>Change Picture</button>
-         {/if}
+        <a href="./#/updatepass" class="btn btn-secondary btn-sm" >Change Password</a>
         <button
           class="btn btn-primary btn-outline btn-sm"
           on:click={() => replace("/")}>Back</button
@@ -262,5 +251,8 @@
   }
   .sect{
     @apply lg:w-[50%] w-full px-2
+  }
+  a, button{
+    @apply w-1/2 lg:w-1/5
   }
 </style>

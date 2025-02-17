@@ -129,7 +129,7 @@
       options: {
         plugins: {
           legend: {
-            position: "bottom",
+            position: "left",
             title: {
               display: true,
               padding: 10,
@@ -176,21 +176,21 @@
 {:else if data.length == 0 && !loading}
   <div class="w-full text-center p-6">No data on the selected time range..</div>
 {/if}
-<div class="flex-[3]">
+<!-- <div class="flex-[3]">
   {#if dataContext && dataContext != ""}
     <AiReport reportType={"complaint"} {dataContext} />
   {/if}
-</div>
+</div> -->
 <div
-  class="flex-[2] flex-col !print:h-full lg:items-start items-center print:items-center p-4 print:p-0 print:flex-row flex-wrap {data.length ==
+  class="justify-center !print:h-full p-4 print:p-0 flex-wrap {data.length ==
     0 || loading
     ? 'hidden'
     : 'flex'}"
 >
     <div
-      class="chart sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 p-4 mx-2 bg-white shadow-lg {displayType == "Chart" ? "block" : "hidden"}"
+      class="chart sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 h-fit mx-2 bg-white shadow-lg {displayType == "Chart" ? "block" : "hidden"}"
     >
-      <canvas bind:this={chart1} class="max-h-[300px] 2xl:max-h-[300px] ">
+      <canvas bind:this={chart1} class="max-h-[150px] ">
       </canvas>
       <div class="">
       <div class="chartTitle font-semibold text-xl pt-5">
@@ -228,32 +228,12 @@
       </div>
     </div>
 
-        <div
-      class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 mx-2 m-4 border bg-white shadow-lg tablePrint {displayType == "Table" ? "block" : "hidden"}"
-    >
-      <div class="text-xl font-bold text-center pb-4 print:text-base">Number of Complaints</div>
-      <table class="table max-w-[300px] mx-auto">
-        <thead class="border-2">
-          <tr class="text-center">
-            <th class="border">Complaint Type</th>
-            <th class="border">Amount</th>
-          </tr>
-        </thead>
-        <tbody class="border">
-          {#each data as { type, amt }}
-            <tr class="rowPrint">
-              <td>{type}</td>
-              <td class="text-center">{amt}</td>
-            </tr>
-          {/each}
-        </tbody>
-      </table>
-    </div>
+        
 
     <div
-      class="chart sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 p-4 m-4 mx-2 bg-white shadow-lg {displayType == "Chart" ? "block" : "hidden"}"
+      class="chart sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 h-fit mx-2 bg-white shadow-lg {displayType == "Chart" ? "block" : "hidden"}"
     >
-      <canvas bind:this={chart2} class="max-h-[500px]"> </canvas>
+      <canvas bind:this={chart2} class="max-h-[200px]"> </canvas>
 
       <div class="">
       <div class="chartTitle font-semibold text-xl pt-5">Daily Complaint</div>
@@ -273,10 +253,34 @@
       </div>
     </div>
 
+
     <div
-      class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 mx-2 m-2 border bg-white shadow-lg tablePrint {displayType == "Table" ? "block" : "hidden"}"
+      class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 mx-2 m-4 border bg-white shadow-lg tablePrint {displayType == "Table" || true ? "block" : "hidden"}"
     >
-      <div class="text-xl font-bold text-center pb-4 print:text-base">Complaints per Day</div>
+      <div class="text-xl font-bold text-center pb-4 print:text-base tableTitle">Number of Complaints</div>
+      <table class="table max-w-[300px] mx-auto">
+        <thead class="border-2">
+          <tr class="text-center">
+            <th class="border">Complaint Type</th>
+            <th class="border">Amount</th>
+          </tr>
+        </thead>
+        <tbody class="border">
+          {#each data as { type, amt }}
+            <tr class="rowPrint">
+              <td>{type}</td>
+              <td class="text-center">{amt}</td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+    </div>
+
+
+    <div
+      class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 mx-2 m-2 border bg-white shadow-lg tablePrint {displayType == "Table" || true ? "block" : "hidden"}"
+    >
+      <div class="text-xl font-bold text-center pb-4 print:text-base tableTitle">Complaints per Day</div>
       <table class="table max-w-[300px] mx-auto">
         <thead class="border-2">
           <tr class="text-center">

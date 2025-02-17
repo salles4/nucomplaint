@@ -33,6 +33,7 @@
   import OffensePage from "./staff/Offenses/OffensePage.svelte";
   import Modal from "./lib/Modal.svelte";
   import UpdateProfile from "./lib/Profile/UpdateProfile.svelte";
+  import ChangePassword from "./lib/Profile/ChangePassword.svelte";
   
 
   // Detects if there's changes on auth
@@ -105,6 +106,7 @@
           "/guards": GuardsList,
           "/profile": Profile,
           "/update/:id": UpdateProfile,
+          "/updatepass": ChangePassword,
           "/complaints/": Complaints,
           "/complaints/:id": Complaints,
           "/complaint/:id": ComplaintPage,
@@ -130,6 +132,7 @@
           "/": Dashboard,
           "/dashboard": StudentDashboard,
           "/profile": Profile,
+          "/updatepass": ChangePassword,
           "/complaints": StudentComplaints,
           "/complaints/:id": StudentComplaints,
           "/complaint/:id": StudentComplaintPage,

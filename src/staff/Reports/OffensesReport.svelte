@@ -129,7 +129,7 @@
       options: {
         plugins: {
           legend: {
-            position: "bottom",
+            position: "left",
             title: {
               display: true,
               padding: 10,
@@ -176,13 +176,13 @@
 {:else if data.length == 0}
   <div class="w-full text-center p-6">No data on the selected time range..</div>
 {/if}
-<div class="flex-[3]">
+<!-- <div class="flex-[3]">
   {#if dataContext && dataContext != ""}
     <AiReport reportType={"offense"} {dataContext} />
   {/if}
-</div>
+</div> -->
 <div
-  class="flex-[2] flex-col !print:h-full lg:items-start items-center print:items-center p-4 print:p-0 {data.length ==
+  class="justify-center !print:h-full p-4 print:p-0 flex-wrap {data.length ==
     0 || loading
     ? 'hidden'
     : 'flex'}"
@@ -193,7 +193,7 @@
       ? 'block'
       : 'hidden'}"
   >
-    <canvas bind:this={chart1} class="max-h-[300px] 2xl:max-h-[300px]">
+    <canvas bind:this={chart1} class="max-h-[150px]">
     </canvas>
     <div class="">
     <div class="chartTitle font-semibold text-xl pt-5">
@@ -233,34 +233,12 @@
   </div>
 
   <div
-    class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 mx-2 m-4 bg-white border shadow-lg tablePrint {displayType == "Table" ? "block" : "hidden"}"
-  >
-    <div class="text-xl font-bold text-center py-2 print:text-base">Number of Offense</div>
-      <table class="table max-w-[300px] mx-auto">
-        <thead class="border-2">
-          <tr class="text-center">
-            <th class="border">Offense Type</th>
-            <th class="border">Amount</th>
-          </tr>
-        </thead>
-        <tbody class="border">
-          {#each data as { violation, amt }}
-            <tr class="rowPrint">
-              <td>{violation}</td>
-              <td class="text-center">{amt}</td>
-            </tr>
-          {/each}
-        </tbody>
-      </table>
-  </div>
-
-  <div
     class="chart sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 p-4 m-4 mx-2 bg-white shadow-lg {displayType ==
     'Chart'
       ? 'block'
       : 'hidden'}"
   >
-    <canvas bind:this={chart2} class="max-h-[500px]"> </canvas>
+    <canvas bind:this={chart2} class="max-h-[200px]"> </canvas>
 
     <div>
     <div class="chartTitle font-semibold text-xl pt-5">Offense per Day</div>
@@ -280,9 +258,31 @@
   </div>
 
   <div
-    class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 mx-2 m-4 bg-white border shadow-lg tablePrint {displayType == "Table" ? "block" : "hidden"}"
+    class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 mx-2 m-4 bg-white border shadow-lg tablePrint {displayType == "Table" || true ? "block" : "hidden"}"
   >
-    <div class="text-xl font-bold text-center py-2 print:text-base">Offense per Day</div>
+    <div class="text-xl font-bold text-center py-2 print:text-base tableTitle">Number of Offense</div>
+      <table class="table max-w-[300px] mx-auto">
+        <thead class="border-2">
+          <tr class="text-center">
+            <th class="border">Offense Type</th>
+            <th class="border">Amount</th>
+          </tr>
+        </thead>
+        <tbody class="border">
+          {#each data as { violation, amt }}
+            <tr class="rowPrint">
+              <td>{violation}</td>
+              <td class="text-center">{amt}</td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+  </div>
+
+  <div
+    class="sm:w-[45%] w-full sm:min-w-[500px] sm:p-10 mx-2 m-4 bg-white border shadow-lg tablePrint {displayType == "Table" || true ? "block" : "hidden"}"
+  >
+    <div class="text-xl font-bold text-center py-2 print:text-base tableTitle">Offense per Day</div>
       <table class="table max-w-[300px] mx-auto">
         <thead class="border-2">
           <tr class="text-center">
