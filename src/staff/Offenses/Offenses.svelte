@@ -101,7 +101,7 @@
       icon: FileClock,
     },
     {
-      name: "Investigating",
+      name: "Processing",
       icon: Search,
     },
     {
