@@ -26,6 +26,11 @@
       alert("Password does not match.");
       return;
     }
+    if(newPassInput == oldPassInput){
+      alert("New password cannot be the same as the old password.")
+      return;
+    }
+    
     reauthenticateWithCredential(user, credential)
       .then(() => {
         // User re-authenticated.
